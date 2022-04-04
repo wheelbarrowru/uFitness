@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SamplePersonService {
-
+    //все что ниже не трогай
     private final SamplePersonRepository repository;
 
     @Autowired

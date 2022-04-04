@@ -1,6 +1,6 @@
 package com.example.data.service;
 
-import com.example.data.entity.User;
+import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
+    //все что ниже не трогай
     private final UserRepository repository;
 
     @Autowired

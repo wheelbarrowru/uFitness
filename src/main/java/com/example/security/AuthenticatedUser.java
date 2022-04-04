@@ -1,6 +1,6 @@
 package com.example.security;
 
-import com.example.data.entity.User;
+import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;

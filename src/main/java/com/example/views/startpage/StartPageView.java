@@ -1,18 +1,13 @@
 package com.example.views.startpage;
 
-import com.example.views.login.LoginView;
-import com.example.views.registration.RegistrationView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -25,18 +20,14 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class StartPageView extends VerticalLayout {
 
     private final Component welcomeToUFitness = new H1("Welcome to uFitness");
-    private Button login;
-    private Button registration;
+    private final Button login;
+    private final Button registration;
 
     public StartPageView() {
         login = new Button("Sign in");
         registration = new Button("Sign up");
-        login.addClickListener(e -> {
-            UI.getCurrent().navigate("login");
-        });
-        registration.addClickListener(event -> {
-            UI.getCurrent().navigate("registration");
-        });
+        login.addClickListener(e -> UI.getCurrent().navigate("login"));
+        registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
 
         //  setMargin(true);
         setSizeFull();
