@@ -1,8 +1,17 @@
 package com.example.views.startpage;
 
+import com.example.views.login.LoginView;
+import com.example.views.registration.RegistrationView;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -13,22 +22,36 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route(value = "start-page")
 @RouteAlias(value = "")
 @AnonymousAllowed
-public class StartPageView extends HorizontalLayout {
+public class StartPageView extends VerticalLayout {
 
-    private TextField name;
-    private Button sayHello;
+    private final Component welcomeToUFitness = new H1("Welcome to uFitness");
+    private Button login;
+    private Button registration;
 
     public StartPageView() {
-        name = new TextField("Your name");
-        sayHello = new Button("Say hello");
-        sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
+        login = new Button("Sign in");
+        registration = new Button("Sign up");
+        login.addClickListener(e -> {
+            UI.getCurrent().navigate("login");
+        });
+        registration.addClickListener(event -> {
+            UI.getCurrent().navigate("registration");
         });
 
-        setMargin(true);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
+        //  setMargin(true);
+        setSizeFull();
+        setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
 
-        add(name, sayHello);
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.addClassName("button-layout");
+        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        buttonLayout.add(login);
+        buttonLayout.add(registration);
+
+        setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
+        setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
+        add(welcomeToUFitness, buttonLayout);
     }
 
 }
