@@ -36,9 +36,12 @@ public class StartPageView extends VerticalLayout {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
         login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        login.setSizeFull();
         registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.setSizeFull();
         buttonLayout.add(login);
         buttonLayout.add(registration);
+        buttonLayout.setWidth("400px");
 
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
