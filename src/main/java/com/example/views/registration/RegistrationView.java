@@ -21,109 +21,39 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
+/**
+ * The main view that holds the registration form
+ * <p>
+ * This view is itself a component (specifically a VerticalLayout) to
+ * which the registration form is added. This view is made accessible
+ * to the end-user via the @Route annotation.
+ * <p>
+ * A new instance of this class is created for every new user and every
+ * browser tab/window.
+ */
 @PageTitle("Registration")
 @Route(value = "registration")
 @AnonymousAllowed
 @Uses(Icon.class)
-public class RegistrationView extends Div {
+public class RegistrationView extends VerticalLayout {
 
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField username = new TextField("Username");
+    /**
+     * Construct a new Vaadin view.
+     * <p>
+     * Build the initial UI state for the user accessing the application.
+     *
+     */
+    public RegistrationView() {
+        RegistrationForm registrationForm = new RegistrationForm();
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+        setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
 
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
+        add(registrationForm);
 
-    public RegistrationView(SamplePersonService personService) {
-        addClassName("registration-view");
-
-        add(createTitle());
-        add(createFormLayout());
-        add(createButtonLayout());
-
-        binder.bindInstanceFields(this);
-        clearForm();
-
-        cancel.addClickListener(e -> clearForm());
-        save.addClickListener(e -> {
-            personService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " details stored.");
-            clearForm();
-        });
+        RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
+        registrationFormBinder.addBindingAndValidation();
     }
-
-    private void clearForm() {
-        binder.setBean(new SamplePerson());
-    }
-
-    private Component createTitle() {
-        return new H3("Personal information");
-    }
-
-    private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, username);
-        return formLayout;
-    }
-
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save);
-        buttonLayout.add(cancel);
-        return buttonLayout;
-    }
-
-    private static class PhoneNumberField extends CustomField<String> {
-        private ComboBox<String> countryCode = new ComboBox<>();
-        private TextField number = new TextField();
-
-        public PhoneNumberField(String label) {
-            setLabel(label);
-            countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Country");
-            countryCode.setPattern("\\+\\d*");
-            countryCode.setPreventInvalidInput(true);
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
-            countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
-            number.setPattern("\\d*");
-            number.setPreventInvalidInput(true);
-            HorizontalLayout layout = new HorizontalLayout(countryCode, number);
-            layout.setFlexGrow(1.0, number);
-            add(layout);
-        }
-
-        @Override
-        protected String generateModelValue() {
-            if (countryCode.getValue() != null && number.getValue() != null) {
-                String s = countryCode.getValue() + " " + number.getValue();
-                return s;
-            }
-            return "";
-        }
-
-        @Override
-        protected void setPresentationValue(String phoneNumber) {
-            String[] parts = phoneNumber != null ? phoneNumber.split(" ", 2) : new String[0];
-            if (parts.length == 1) {
-                countryCode.clear();
-                number.setValue(parts[0]);
-            } else if (parts.length == 2) {
-                countryCode.setValue(parts[0]);
-                number.setValue(parts[1]);
-            } else {
-                countryCode.clear();
-                number.clear();
-            }
-        }
-    }
-
 }
