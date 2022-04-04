@@ -2,7 +2,7 @@ package com.example.data.generator;
 
 import com.example.data.Role;
 import com.example.data.entity.SamplePerson;
-import com.example.data.entity.User;
+import com.example.data.model.User;
 import com.example.data.repository.SamplePersonRepository;
 import com.example.data.repository.UserRepository;
 import com.vaadin.exampledata.DataType;

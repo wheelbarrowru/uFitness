@@ -1,4 +1,4 @@
-package com.example.data.entity;
+package com.example.data.model;
 
 import java.util.UUID;
 import javax.persistence.GeneratedValue;

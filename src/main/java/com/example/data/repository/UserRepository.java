@@ -1,6 +1,6 @@
 package com.example.data.repository;
 
-import com.example.data.entity.User;
+import com.example.data.model.User;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
