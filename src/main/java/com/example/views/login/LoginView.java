@@ -1,9 +1,12 @@
 package com.example.views.login;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import elemental.json.impl.JsonUtil;
 
 @PageTitle("Login")
 @Route(value = "login")
@@ -20,6 +23,12 @@ public class LoginView extends LoginOverlay {
 
         setForgotPasswordButtonVisible(false);
         setOpened(true);
+
+        addLoginListener(e -> System.out.println("lol"));
+        //addLoginListener(ComponentEventListener< AbstractLogin.LoginEvent> listener);
+
+        System.out.println(i18n.getForm().getPassword()+" "+ i18n.getAdditionalInformation());
+        System.out.println(i18n.getForm().getSubmit());
     }
 
 }

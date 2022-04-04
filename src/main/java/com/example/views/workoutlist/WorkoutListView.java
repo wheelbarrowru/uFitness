@@ -11,11 +11,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Workout List")
 @Route(value = "workout-list")
-@PermitAll
+//@PermitAll
+@AnonymousAllowed
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
     private OrderedList imageContainer;

@@ -14,6 +14,8 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,7 +23,8 @@ import javax.annotation.security.PermitAll;
 
 @PageTitle("Create Workout")
 @Route(value = "create-workout")
-@PermitAll
+//@PermitAll
+@AnonymousAllowed
 public class CreateWorkoutView extends Div {
 
     private static final Set<String> states = new LinkedHashSet<>();
