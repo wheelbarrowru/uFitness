@@ -17,38 +17,40 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 //@PermitAll
 @AnonymousAllowed
 public class CreateWorkoutView extends VerticalLayout {
-
-    private static final Component HEADER = new H2("Create your workout");
-    private static final Label TAGS_LABEL = new Label("Add tags to your workout");
-    private static final Label BODY_LABEL = new Label("Add your workout's description");
-    private static final Label NAME_LABEL = new Label("Add your workout's name");
-
-    private final TextField name;
-    private final TextArea body;
+    private final Component header;
+    private TextField name;
+    private TextArea body;
     private final Button button;
+    private final Label tagsLabel;
+    private final Label bodyLabel;
+    private final Label nameLabel;
 
-    private final TagsGrid tagsGrid;
+    private TagsGrid tagsGrid;
 
     public CreateWorkoutView() {
+        header = new H2("Create your workout");
+        nameLabel = new Label("Add your workout's name");
         name = new TextField();
 
+        bodyLabel = new Label("Add your workout's description");
         body = new TextArea();
         body.setWidthFull();
 
         button = new Button("Publish");
         button.addClickListener(e -> System.out.println("Publish workout"));
 
+        tagsLabel = new Label("Add tags to your workout");
         tagsGrid = new TagsGrid();
         tagsGrid.setWidth("50%");
 
-        VerticalLayout info = new VerticalLayout(NAME_LABEL, name, TAGS_LABEL, tagsGrid, BODY_LABEL, body, button);
+        VerticalLayout info = new VerticalLayout(nameLabel, name, tagsLabel, tagsGrid, bodyLabel, body, button);
         info.setWidth("70%");
 
-        setHorizontalComponentAlignment(Alignment.CENTER, HEADER);
-        setHorizontalComponentAlignment(Alignment.CENTER, info);
         info.setHorizontalComponentAlignment(Alignment.CENTER, button);
+        setHorizontalComponentAlignment(Alignment.CENTER, info);
+        setHorizontalComponentAlignment(Alignment.CENTER, header);
 
-        add(HEADER, info);
+        add(header, info);
     }
 
 }

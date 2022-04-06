@@ -19,24 +19,23 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class StartPageView extends VerticalLayout {
 
-    private static final Component welcomeToUFitness = new H1("Welcome to uFitness");
-
+    private final Component welcomeToUFitness = new H1("Welcome to uFitness");
     private final Button login;
     private final Button registration;
 
     public StartPageView() {
         login = new Button("Sign in");
-        login.addClickListener(e -> UI.getCurrent().navigate("login"));
-        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        login.setSizeFull();
-
         registration = new Button("Sign up");
+        login.addClickListener(e -> UI.getCurrent().navigate("login"));
         registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
-        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        registration.setSizeFull();
 
         setSizeFull();
-        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
+
+        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        login.setSizeFull();
+        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.setSizeFull();
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
