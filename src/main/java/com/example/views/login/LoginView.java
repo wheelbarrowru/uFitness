@@ -21,5 +21,4 @@ public class LoginView extends LoginOverlay {
         setForgotPasswordButtonVisible(false);
         setOpened(true);
     }
-
 }
