@@ -19,32 +19,34 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class StartPageView extends VerticalLayout {
 
-    private final Component welcomeToUFitness = new H1("Welcome to uFitness");
+    private static final Component welcomeToUFitness = new H1("Welcome to uFitness");
+
     private final Button login;
     private final Button registration;
 
     public StartPageView() {
         login = new Button("Sign in");
-        registration = new Button("Sign up");
         login.addClickListener(e -> UI.getCurrent().navigate("login"));
-        registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
+        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        login.setSizeFull();
 
-        //  setMargin(true);
+        registration = new Button("Sign up");
+        registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
+        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.setSizeFull();
+
         setSizeFull();
-        setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
-        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        login.setSizeFull();
-        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        registration.setSizeFull();
         buttonLayout.add(login);
         buttonLayout.add(registration);
         buttonLayout.setWidth("400px");
 
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
+
         add(welcomeToUFitness, buttonLayout);
     }
 
