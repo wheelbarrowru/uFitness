@@ -1,8 +1,8 @@
 package com.example.views.workoutlist;
 
+import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,9 +11,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @PageTitle("Workout List")
 @Route(value = "workout-list")
 //@PermitAll
@@ -21,8 +18,7 @@ import java.util.List;
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
     private OrderedList workoutContainer;
-    private Label tagsLabel;
-    private static TagsGrid tagsGrid;
+    private TagsGrid tagsGrid;
 
     public WorkoutListView() {
         constructUI();
@@ -30,7 +26,6 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         workoutContainer.add(new WorkoutListViewCard("part of body1"));
         workoutContainer.add(new WorkoutListViewCard("part of body2"));
         workoutContainer.add(new WorkoutListViewCard("part of body3"));
-
 
     }
 
@@ -59,7 +54,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         tagsGrid.setWidth("50%");
         tagsGrid.addClassNames("py-m");
         container.add(header, sortBy);
-        add(container, tagsGrid, workoutContainer);
 
+        add(container, tagsGrid, workoutContainer);
     }
 }
