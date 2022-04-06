@@ -1,4 +1,4 @@
-package com.example.views.workoutlist;
+package com.example.views.tagsgrid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +12,14 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.Route;
 
-@Route("grid-dynamic-height")
 public class TagsGrid extends Div {
 
-    private static final List<Tags> invitedTags = new ArrayList<Tags>();
+    private final List<Tags> invitedTags = new ArrayList<>();
 
-    private static Grid<Tags> grid;
-    private static Div hint;
+    private Grid<Tags> grid;
+    private Div hint;
+    private List<Tags> tags;
 
     public TagsGrid() {
         this.setupInvitationForm();
@@ -30,7 +29,7 @@ public class TagsGrid extends Div {
 
     private void setupInvitationForm() {
         //List<Tags> tags = DataService.getPeople();
-        List<Tags>  tags = new ArrayList<>();
+        tags = new ArrayList<>();
         tags.add(new Tags("legs"));
         tags.add(new Tags("eyes"));
         ComboBox<Tags> comboBox = new ComboBox<>();
@@ -99,4 +98,7 @@ public class TagsGrid extends Div {
         this.refreshGrid();
     }
 
+    public List<Tags> getTags() {
+        return tags;
+    }
 }

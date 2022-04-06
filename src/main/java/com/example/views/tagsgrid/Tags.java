@@ -1,4 +1,4 @@
-package com.example.views.workoutlist;
+package com.example.views.tagsgrid;
 //emulated class
 public class Tags {
     String name;
