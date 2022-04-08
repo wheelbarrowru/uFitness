@@ -1,4 +1,5 @@
 package com.example.data.dto;
+import com.example.data.model.User;
 import com.example.data.model.Workout;
 
 import javax.validation.constraints.Email;
@@ -30,8 +31,8 @@ public class UserDTO {
     private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
-    @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
-    private String hashedPassword;
+    // @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
+    private String password;
 
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
 
@@ -68,11 +69,11 @@ public class UserDTO {
     }
 
     public String getHashedPasswordPassword() {
-        return hashedPassword;
+        return password;
     }
 
     public void setHashedPassword(String password) {
-        this.hashedPassword = password;
+        this.password = password;
     }
 
     //public boolean isAllowsMarketing() {
@@ -89,6 +90,10 @@ public class UserDTO {
 
     public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
         this.favoriteTrainings = favoriteTrainings;
+    }
+
+    public User fromWithoutRoles() {
+        return new User();
     }
 
     @Override

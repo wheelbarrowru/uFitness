@@ -28,7 +28,6 @@ public class UserService implements UserDetailsService {
     }
 
 
-
     public Optional<User> get(UUID id) {
         return userRepository.findById(id);
     }
@@ -47,19 +46,6 @@ public class UserService implements UserDetailsService {
 
     public int count() {
         return (int) userRepository.count();
-    }
-
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
-
-        if (userFromDB != null) {
-            return false;
-        }
-
-        user.setRoles(Collections.singleton(USER));
-        user.setHashedPassword(user.getHashedPassword());
-        userRepository.save(user);
-        return true;
     }
 
 

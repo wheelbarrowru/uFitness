@@ -1,7 +1,11 @@
 package com.example.data.model;
 
 import com.example.data.Role;
+import com.example.data.controller.RegistrationController;
+import com.example.data.repository.UserRepository;
+import com.example.data.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +29,15 @@ public class User extends AbstractEntity {
     private String username;
     private String email;
 
-    @JsonIgnore
-    private String hashedPassword;
+    private String password;
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
     @OneToMany(mappedBy = "description", cascade = ALL)
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
-    @Lob
+    // @Lob
     //private String profilePictureUrl;
+
 
     public String getFirstname() {
         return firstname;
@@ -56,11 +60,11 @@ public class User extends AbstractEntity {
     }
 
     public String getHashedPassword() {
-        return hashedPassword;
+        return password;
     }
 
     public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+        this.password = hashedPassword;
     }
 
     public Set<Role> getRoles() {
@@ -92,5 +96,14 @@ public class User extends AbstractEntity {
 
     public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
         this.favoriteTrainings = favoriteTrainings;
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    public void saveUser(User user) {
+        RegistrationController.saveUser(user);
     }
 }
