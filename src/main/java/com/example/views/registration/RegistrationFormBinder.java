@@ -86,12 +86,14 @@ public class RegistrationFormBinder {
      * <p>
      * 2) Values in both fields match each other
      */
-    private ValidationResult usernameValidator(String username, ValueContext ctx){
+    private ValidationResult usernameValidator(String username, ValueContext ctx) {
         return ValidationResult.ok();
     }
-    private ValidationResult emailValidator(String email, ValueContext ctx){
+
+    private ValidationResult emailValidator(String email, ValueContext ctx) {
         return ValidationResult.ok();
     }
+
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
 
         /*
@@ -122,7 +124,7 @@ public class RegistrationFormBinder {
      */
     private void showSuccess(UserDTO userBean) {
         Notification notification =
-                Notification.show("Data saved, welcome "+ userBean.getFirstName());
+                Notification.show("Data saved, welcome " + userBean.getFirstName());
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         // Here you'd typically redirect the user to another view
