@@ -20,5 +20,6 @@ public class LoginView extends LoginOverlay {
 
         setForgotPasswordButtonVisible(false);
         setOpened(true);
+        addLoginListener(e -> System.out.println("Login user"));
     }
 }

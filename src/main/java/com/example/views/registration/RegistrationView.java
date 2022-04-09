@@ -27,7 +27,6 @@ public class RegistrationView extends VerticalLayout {
      * Construct a new Vaadin view.
      * <p>
      * Build the initial UI state for the user accessing the application.
-     *
      */
     public RegistrationView() {
         RegistrationForm registrationForm = new RegistrationForm();
@@ -38,5 +37,7 @@ public class RegistrationView extends VerticalLayout {
 
         RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
         registrationFormBinder.addBindingAndValidation();
+
+        registrationForm.addClickListener(e -> System.out.println("Registration"));
     }
 }
