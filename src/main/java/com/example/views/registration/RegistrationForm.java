@@ -5,7 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -24,28 +24,26 @@ import java.util.stream.Stream;
  */
 public class RegistrationForm extends FormLayout {
 
-    private H3 title;
+    private static final H2 title = new H2("Signup form");
 
-    private TextField firstName;
-    private TextField lastName;
+    private final TextField firstName;
+    private final TextField lastName;
 
-    private EmailField email;
+    private final EmailField email;
 
-    private TextField username;
+    private final TextField username;
 
-    private PasswordField password;
-    private PasswordField passwordConfirm;
+    private final PasswordField password;
+    private final PasswordField passwordConfirm;
 
-    private Checkbox allowMarketing;
+    private final Checkbox allowMarketing;
 
-    private Span errorMessageField;
+    private final Span errorMessageField;
 
-    private Button submitButton;
+    private final Button submitButton;
 
 
     public RegistrationForm() {
-        title = new H3("Signup form");
-
         firstName = new TextField("First name");
         lastName = new TextField("Last name");
         email = new EmailField("Email");
@@ -57,7 +55,7 @@ public class RegistrationForm extends FormLayout {
         password = new PasswordField("Password");
         passwordConfirm = new PasswordField("Confirm password");
 
-        setRequiredIndicatorVisible(firstName, lastName, email,username, password,
+        setRequiredIndicatorVisible(firstName, lastName, email, username, password,
                 passwordConfirm);
 
         errorMessageField = new Span();
@@ -65,7 +63,7 @@ public class RegistrationForm extends FormLayout {
         submitButton = new Button("Join the community");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        add(title, firstName, lastName, email,username, password,
+        add(title, firstName, lastName, email, username, password,
                 passwordConfirm, allowMarketing, errorMessageField,
                 submitButton);
 
@@ -84,15 +82,23 @@ public class RegistrationForm extends FormLayout {
         // or two (it just looks better that way)
         setColspan(title, 2);
         setColspan(email, 2);
-        setColspan(username,2);
+        setColspan(username, 2);
         setColspan(errorMessageField, 2);
         setColspan(submitButton, 2);
     }
-    public EmailField getEmailField(){return email; }
 
-    public TextField getUsernameField() {return username; }
+    public EmailField getEmailField() {
+        return email;
+    }
 
-    public PasswordField getPasswordField() { return password; }
+    public TextField getUsernameField() {
+        return username;
+    }
+
+    public PasswordField getPasswordField() {
+        return password;
+    }
+
 
     public TextField getFirstNameField() { return firstName; }
 
@@ -100,9 +106,14 @@ public class RegistrationForm extends FormLayout {
 
     public PasswordField getPasswordConfirmField() { return passwordConfirm; }
 
-    public Span getErrorMessageField() { return errorMessageField; }
 
-    public Button getSubmitButton() { return submitButton; }
+    public Span getErrorMessageField() {
+        return errorMessageField;
+    }
+
+    public Button getSubmitButton() {
+        return submitButton;
+    }
 
     private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));

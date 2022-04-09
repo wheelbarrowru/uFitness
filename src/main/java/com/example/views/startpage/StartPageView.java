@@ -29,19 +29,23 @@ public class StartPageView extends VerticalLayout {
         login.addClickListener(e -> UI.getCurrent().navigate("login"));
         registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
 
-        //  setMargin(true);
         setSizeFull();
         setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
 
+        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        login.setSizeFull();
+        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.setSizeFull();
+
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
-        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonLayout.add(login);
         buttonLayout.add(registration);
+        buttonLayout.setWidth("400px");
 
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
+
         add(welcomeToUFitness, buttonLayout);
     }
 
