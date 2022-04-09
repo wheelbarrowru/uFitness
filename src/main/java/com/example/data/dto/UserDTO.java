@@ -1,8 +1,14 @@
 package com.example.data.dto;
+import com.example.data.model.User;
+import com.example.data.model.Workout;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Main Bean class that we build the form for.
@@ -10,6 +16,8 @@ import java.util.Objects;
  * Uses Bean Validation (JSR-303) annotations for automatic validation.
  */
 public class UserDTO {
+
+    private UUID id = UUID.randomUUID();
 
     @NotBlank
     private String username;
@@ -20,14 +28,15 @@ public class UserDTO {
     private String lastName;
 
     @NotBlank
-    @Email
     private String email;
 
-    private boolean allowsMarketing;
+    //private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
     private String password;
+
+    private List<Workout> favoriteTrainings = new ArrayList<Workout>();
 
     public String getUsername() {
         return username;
@@ -61,20 +70,32 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getHashedPasswordPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setHashedPassword(String password) {
         this.password = password;
     }
 
-    public boolean isAllowsMarketing() {
-        return allowsMarketing;
+    //public boolean isAllowsMarketing() {
+        //return allowsMarketing;
+    //}
+
+    //public void setAllowsMarketing(boolean allowsMarketing) {
+        //this.allowsMarketing = allowsMarketing;
+    //}
+
+    public ArrayList<Workout> getFavoriteTrainings() {
+        return (ArrayList<Workout>) favoriteTrainings;
     }
 
-    public void setAllowsMarketing(boolean allowsMarketing) {
-        this.allowsMarketing = allowsMarketing;
+    public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
+        this.favoriteTrainings = favoriteTrainings;
+    }
+
+    public User fromWithoutRoles() {
+        return new User();
     }
 
     @Override
@@ -88,5 +109,9 @@ public class UserDTO {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    public UUID getId() {
+        return id;
     }
 }

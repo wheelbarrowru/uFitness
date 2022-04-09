@@ -94,6 +94,10 @@ public class RegistrationForm extends FormLayout {
 
     public PasswordField getPasswordField() { return password; }
 
+    public TextField getFirstNameField() { return firstName; }
+
+    public TextField getLastNameField() { return lastName; }
+
     public PasswordField getPasswordConfirmField() { return passwordConfirm; }
 
     public Span getErrorMessageField() { return errorMessageField; }
