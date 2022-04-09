@@ -20,15 +20,20 @@ import static javax.persistence.CascadeType.ALL;
 public class User extends AbstractEntity {
     //тут добавь поля, которые нам нужны будут, к ним геттеры и сеттеры (используй генератор)
     //все что ниже нагенерировано vaadin. Пока не трогай
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
 
+    @Column(name = "firstname", insertable = false, updatable = false)
     private String firstname;
+    @Column(name = "lastname", insertable = false, updatable = false)
     private String lastname;
+    @Column(name = "username", insertable = false, updatable = false)
     private String username;
+    @Column(name = "email", insertable = false, updatable = false)
     private String email;
 
+    @Column(name = "id", insertable = false, updatable = false)
+    private UUID Id = getId();
+
+    @Column(name = "hashed_password")
     private String password;
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
@@ -51,11 +56,11 @@ public class User extends AbstractEntity {
 
     public void setLastname(String lastname) { this.lastname = lastname; }
 
-    public String getMail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setMail(String name) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -96,11 +101,6 @@ public class User extends AbstractEntity {
 
     public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
         this.favoriteTrainings = favoriteTrainings;
-    }
-
-    @Override
-    public UUID getId() {
-        return id;
     }
 
     public void saveUser(User user) {

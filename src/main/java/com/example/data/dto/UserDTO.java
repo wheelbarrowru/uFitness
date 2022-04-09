@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Main Bean class that we build the form for.
@@ -15,6 +16,8 @@ import java.util.Objects;
  * Uses Bean Validation (JSR-303) annotations for automatic validation.
  */
 public class UserDTO {
+
+    private UUID id = UUID.randomUUID();
 
     @NotBlank
     private String username;
@@ -25,13 +28,12 @@ public class UserDTO {
     private String lastName;
 
     @NotBlank
-    @Email
     private String email;
 
-    private boolean allowsMarketing;
+    //private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
-    // @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
+    @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
     private String password;
 
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
@@ -107,5 +109,9 @@ public class UserDTO {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    public UUID getId() {
+        return id;
     }
 }

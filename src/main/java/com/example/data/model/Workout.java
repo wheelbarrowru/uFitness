@@ -15,9 +15,8 @@ public class Workout extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private UUID userid;
     private String description;
-    private int raiting = 0;
+    private int rating = 0;
     private String title;
 
     @ElementCollection
@@ -25,4 +24,19 @@ public class Workout extends AbstractEntity {
     private List<String> workoutTags = new ArrayList<String>();
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void changeRating(int rating) {
+        this.rating = (this.rating * 5 + rating) / 5;
+    }
 }

@@ -59,4 +59,17 @@ public class UserService implements UserDetailsService {
 
         return (UserDetails) user;
     }
+
+    public boolean saveUser(User user) {
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+
+        if (userFromDB != null) {
+            return false;
+        }
+
+        user.setRoles(Collections.singleton(USER));
+        //        user.setHashedPassword(user.getHashedPassword());
+        userRepository.save(user);
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.views.registration;
 
+import com.example.data.Role;
 import com.example.data.controller.UserController;
 import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
@@ -27,8 +28,9 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RegistrationFormBinder {
 
@@ -87,11 +89,22 @@ public class RegistrationFormBinder {
                 binder.writeBean(userBean);
                 User user = new User();
                 user = userBean.fromWithoutRoles();
+                System.out.println(userBean);
                 user.setFirstname(registrationForm.getFirstNameField().getValue());
                 user.setLastname(registrationForm.getLastNameField().getValue());
                 user.setUsername(registrationForm.getUsernameField().getValue());
                 user.setHashedPassword(registrationForm.getPasswordField().getValue());
-                user.setMail(registrationForm.getEmailField().getValue());
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println(registrationForm.getEmailField().getValue());
+                Set<Role> roles = Stream.of(Role.USER)
+                        .collect(Collectors.toCollection(HashSet::new));
+                user.setRoles(roles);
+                user.setEmail(userBean.getEmail());
+                user.setId(UUID.randomUUID());
                 user.saveUser(user);
                 // Run validators and write the values to the bean
 
@@ -118,12 +131,14 @@ public class RegistrationFormBinder {
      * <p>
      * 2) Values in both fields match each other
      */
-    private ValidationResult usernameValidator(String username, ValueContext ctx){
+    private ValidationResult usernameValidator(String username, ValueContext ctx) {
         return ValidationResult.ok();
     }
-    private ValidationResult emailValidator(String email, ValueContext ctx){
+
+    private ValidationResult emailValidator(String email, ValueContext ctx) {
         return ValidationResult.ok();
     }
+
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
 
         /*
@@ -154,7 +169,7 @@ public class RegistrationFormBinder {
      */
     private void showSuccess(UserDTO userBean) {
         Notification notification =
-                Notification.show("Data saved, welcome "+ userBean.getFirstName());
+                Notification.show("Data saved, welcome " + userBean.getFirstName());
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         // Here you'd typically redirect the user to another view
