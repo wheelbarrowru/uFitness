@@ -2,11 +2,10 @@ package com.example.views.registration;
 
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
 
 /**
  * The main view that holds the registration form
@@ -39,6 +38,6 @@ public class RegistrationView extends VerticalLayout {
         RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
         registrationFormBinder.addBindingAndValidation();
 
-        registrationForm.addClickListener(e -> System.out.println("Registration"));
+        //registrationForm.addClickListener(e -> System.out.println("Registration"));
     }
 }
