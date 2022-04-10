@@ -1,5 +1,6 @@
 package com.example.data.service;
 
+import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
 import java.util.Optional;
@@ -25,8 +26,8 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User update(User entity) {
-        return userRepository.save(entity);
+    public User update(UserDTO entity) {
+        return userRepository.save(convertToUser(entity));
     }
 
     public void delete(int id) {
@@ -41,6 +42,14 @@ public class UserService {
         return (int) userRepository.count();
     }
 
+    private User convertToUser(UserDTO userDTO){
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setFirstname(userDTO.getFirstName());
+        user.setLastname(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        return user;
+    }
 
    /* public boolean saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
