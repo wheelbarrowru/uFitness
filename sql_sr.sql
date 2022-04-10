@@ -18,7 +18,7 @@ create table tags
 
 
 );
-INSERT INTO tags (imessage)
+INSERT INTO tags (message)
 VALUES ('Biceps');
 INSERT INTO tags (message)
 VALUES ('Triceps');
