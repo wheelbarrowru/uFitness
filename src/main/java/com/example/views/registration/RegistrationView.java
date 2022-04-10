@@ -1,11 +1,12 @@
 package com.example.views.registration;
 
+import com.example.data.service.UserService;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
 /**
@@ -29,7 +30,7 @@ public class RegistrationView extends VerticalLayout {
      * <p>
      * Build the initial UI state for the user accessing the application.
      */
-    public RegistrationView() {
+    public RegistrationView(UserService userService) {
         RegistrationForm registrationForm = new RegistrationForm();
 
         setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
@@ -37,8 +38,7 @@ public class RegistrationView extends VerticalLayout {
         add(registrationForm);
 
         RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
-        registrationFormBinder.addBindingAndValidation();
+        registrationFormBinder.addBindingAndValidation(userService);
 
-        registrationForm.addClickListener(e -> System.out.println("Registration"));
     }
 }

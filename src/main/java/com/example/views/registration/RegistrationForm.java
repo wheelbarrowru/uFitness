@@ -87,6 +87,14 @@ public class RegistrationForm extends FormLayout {
         setColspan(submitButton, 2);
     }
 
+    public TextField getFirstNameField() {
+        return firstName;
+    }
+
+    public TextField getLastNameField() {
+        return lastName;
+    }
+
     public EmailField getEmailField() {
         return email;
     }
@@ -99,12 +107,9 @@ public class RegistrationForm extends FormLayout {
         return password;
     }
 
-
-    public TextField getFirstNameField() { return firstName; }
-
-    public TextField getLastNameField() { return lastName; }
-
-    public PasswordField getPasswordConfirmField() { return passwordConfirm; }
+    public PasswordField getPasswordConfirmField() {
+        return passwordConfirm;
+    }
 
 
     public Span getErrorMessageField() {
@@ -119,5 +124,3 @@ public class RegistrationForm extends FormLayout {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }
 }
-
-

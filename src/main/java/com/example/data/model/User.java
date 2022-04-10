@@ -1,109 +1,68 @@
 package com.example.data.model;
 
 import com.example.data.Role;
-import com.example.data.controller.RegistrationController;
-import com.example.data.repository.UserRepository;
-import com.example.data.service.UserService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import org.hibernate.Hibernate;
+import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import javax.persistence.*;
+import java.util.*;
 
-import static javax.persistence.CascadeType.ALL;
 
-@Entity
-@Table(name = "application_users")
+@Entity(name = "User")
+@Table(name = "users")
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends AbstractEntity {
-    //тут добавь поля, которые нам нужны будут, к ним геттеры и сеттеры (используй генератор)
-    //все что ниже нагенерировано vaadin. Пока не трогай
+    @JsonProperty(value = "id")
+    @Id
+    @SequenceGenerator(
+            name = "id",
+            sequenceName = "id",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "id"
+    )
+    @Column(name = "id", insertable = false, updatable = false)
+    private int Id;
 
-    @Column(name = "firstname", insertable = false, updatable = false)
+    @Column(name = "firstname")
     private String firstname;
-    @Column(name = "lastname", insertable = false, updatable = false)
+    @Column(name = "lastname")
     private String lastname;
-    @Column(name = "username", insertable = false, updatable = false)
+    @Column(name = "username")
     private String username;
-    @Column(name = "email", insertable = false, updatable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "id", insertable = false, updatable = false)
-    private UUID Id = getId();
-
-    @Column(name = "hashed_password")
+    @Column(name = "password")
     private String password;
+
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+    /*
     @OneToMany(mappedBy = "description", cascade = ALL)
+    @ToString.Exclude
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
-    // @Lob
-    //private String profilePictureUrl;
-
-
-    public String getFirstname() {
-        return firstname;
+    */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() { return lastname; }
-
-    public void setLastname(String lastname) { this.lastname = lastname; }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHashedPassword() {
-        return password;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.password = hashedPassword;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-   // public String getProfilePictureUrl() {
-        //return profilePictureUrl;
-    //}
-
-    //public void setProfilePictureUrl(String profilePictureUrl) {
-        //this.profilePictureUrl = profilePictureUrl;
-    //}
-
-    public ArrayList<Workout> getFavoriteTrainings() {
-        return (ArrayList<Workout>) favoriteTrainings;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
-        this.favoriteTrainings = favoriteTrainings;
-    }
-
-    public void saveUser(User user) {
-        RegistrationController.saveUser(user);
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
