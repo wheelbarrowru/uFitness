@@ -1,41 +1,20 @@
 package com.example.views.registration;
 
-import com.example.data.Role;
-import com.example.data.controller.UserController;
 import com.example.data.dto.UserDTO;
-import com.example.data.model.User;
-import com.example.data.repository.UserRepository;
 import com.example.data.service.UserService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSourceResolvable;
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.core.ResolvableType;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class RegistrationFormBinder {
 
     private RegistrationForm registrationForm;
-
+    private UserService userService;
 
     /**
      * Flag for disabling first run for password validation
@@ -50,7 +29,8 @@ public class RegistrationFormBinder {
      * Method to add the data binding and validation logics
      * to the registration form
      */
-    public void addBindingAndValidation() {
+    public void addBindingAndValidation(UserService userService) {
+        this.userService = userService;
         BeanValidationBinder<UserDTO> binder = new BeanValidationBinder<>(UserDTO.class);
 
         // The bindInstanceFields method facilitates automatic data binding and validation:
@@ -59,12 +39,9 @@ public class RegistrationFormBinder {
         binder.bindInstanceFields(registrationForm);
 
         // A custom validator for password fields to handle password-confirmation logic
-//        binder.forField(registrationForm.getPasswordField())
-//                .withValidator(this::passwordValidator).bind("password");
-//        binder.forField(registrationForm.getUsernameField())
-//                .withValidator(this::usernameValidator).bind("username");
-//        binder.forField(registrationForm.getEmailField())
-//                .withValidator(this::emailValidator).bind("email");
+        binder.forField(registrationForm.getPasswordField())
+                .withValidator(this::passwordValidator).bind("password");
+
         // The second password field is not connected to the Binder, but we
         // want the binder to re-check the password validator when the field
         // value changes. The easiest way is just to do that manually.
@@ -75,6 +52,10 @@ public class RegistrationFormBinder {
 
             binder.validate();
         });
+        binder.forField(registrationForm.getUsernameField())
+                .withValidator(this::usernameValidator).bind("username");
+        binder.forField(registrationForm.getEmailField())
+                .withValidator(this::emailValidator).bind("email");
 
         // Set the label where bean-level error messages go
         binder.setStatusLabel(registrationForm.getErrorMessageField());
@@ -84,33 +65,15 @@ public class RegistrationFormBinder {
             try {
 
                 // Create empty bean to store the details into
-
                 UserDTO userBean = new UserDTO();
-                binder.writeBean(userBean);
-                User user = new User();
-                user = userBean.fromWithoutRoles();
-                System.out.println(userBean);
-                user.setFirstname(registrationForm.getFirstNameField().getValue());
-                user.setLastname(registrationForm.getLastNameField().getValue());
-                user.setUsername(registrationForm.getUsernameField().getValue());
-                user.setHashedPassword(registrationForm.getPasswordField().getValue());
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println(registrationForm.getEmailField().getValue());
-                Set<Role> roles = Stream.of(Role.USER)
-                        .collect(Collectors.toCollection(HashSet::new));
-                user.setRoles(roles);
-                user.setEmail(userBean.getEmail());
-                user.setId(UUID.randomUUID());
-                user.saveUser(user);
+
                 // Run validators and write the values to the bean
+                binder.writeBean(userBean);
 
 
                 // Typically, you would here call backend to store the bean
-
+                userBean.setPassword(BCrypt.hashpw(userBean.getPassword(), BCrypt.gensalt()));
+                userService.update(userBean);
                 // Show success message if everything went well
                 showSuccess(userBean);
 
@@ -132,11 +95,12 @@ public class RegistrationFormBinder {
      * 2) Values in both fields match each other
      */
     private ValidationResult usernameValidator(String username, ValueContext ctx) {
-        return ValidationResult.ok();
+        return userService.checkNotExistUsername(username)? ValidationResult.ok() : ValidationResult.error("This username is busy");
     }
 
     private ValidationResult emailValidator(String email, ValueContext ctx) {
-        return ValidationResult.ok();
+
+        return userService.checkNotExistEmail(email)? ValidationResult.ok() : ValidationResult.error("This email is busy");
     }
 
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
@@ -171,7 +135,7 @@ public class RegistrationFormBinder {
         Notification notification =
                 Notification.show("Data saved, welcome " + userBean.getFirstName());
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-
         // Here you'd typically redirect the user to another view
+        UI.getCurrent().navigate("login");
     }
 }

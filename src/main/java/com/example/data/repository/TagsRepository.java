@@ -1,15 +1,10 @@
 package com.example.data.repository;
 
-import com.example.data.model.Workout;
+import com.example.data.model.Tags;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 @Repository
-public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
-
-
-
+public interface TagsRepository extends JpaRepository<Tags, Integer> {
 
 }
-

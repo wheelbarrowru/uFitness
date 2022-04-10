@@ -10,20 +10,20 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
     public int hashCode() {
-        if (id != null) {
-            return id.hashCode();
+        if (id==0) {
+            return id;
         }
         return super.hashCode();
     }
@@ -35,8 +35,8 @@ public abstract class AbstractEntity {
         }
         AbstractEntity other = (AbstractEntity) obj;
 
-        if (id != null) {
-            return id.equals(other.id);
+        if (id==0) {
+            return id==(other.id);
         }
         return super.equals(other);
     }
