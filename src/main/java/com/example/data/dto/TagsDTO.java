@@ -7,16 +7,10 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
-public class TrainingDTO {
+public class TagsDTO {
     @NotBlank
     private int id;
 
     @NotBlank
-    private String title;
-
-    @NotBlank
-    private String description;
-
-    @NotBlank
-    private int rating;
+    private String message;
 }
