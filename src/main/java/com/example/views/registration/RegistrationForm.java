@@ -111,6 +111,7 @@ public class RegistrationForm extends FormLayout {
         return passwordConfirm;
     }
 
+
     public Span getErrorMessageField() {
         return errorMessageField;
     }
