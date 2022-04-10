@@ -87,6 +87,14 @@ public class RegistrationForm extends FormLayout {
         setColspan(submitButton, 2);
     }
 
+    public TextField getFirstNameField() {
+        return firstName;
+    }
+
+    public TextField getLastNameField() {
+        return lastName;
+    }
+
     public EmailField getEmailField() {
         return email;
     }

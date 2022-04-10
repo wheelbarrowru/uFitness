@@ -1,16 +1,20 @@
 package com.example.views.registration;
 
 import com.example.data.dto.UserDTO;
+import com.example.data.service.UserService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class RegistrationFormBinder {
 
     private RegistrationForm registrationForm;
+    private UserService userService;
 
     /**
      * Flag for disabling first run for password validation
@@ -25,7 +29,8 @@ public class RegistrationFormBinder {
      * Method to add the data binding and validation logics
      * to the registration form
      */
-    public void addBindingAndValidation() {
+    public void addBindingAndValidation(UserService userService) {
+        this.userService = userService;
         BeanValidationBinder<UserDTO> binder = new BeanValidationBinder<>(UserDTO.class);
 
         // The bindInstanceFields method facilitates automatic data binding and validation:
@@ -65,8 +70,10 @@ public class RegistrationFormBinder {
                 // Run validators and write the values to the bean
                 binder.writeBean(userBean);
 
-                // Typically, you would here call backend to store the bean
 
+                // Typically, you would here call backend to store the bean
+                userBean.setPassword(BCrypt.hashpw(userBean.getPassword(), BCrypt.gensalt()));
+                userService.update(userBean);
                 // Show success message if everything went well
                 showSuccess(userBean);
 
@@ -88,11 +95,12 @@ public class RegistrationFormBinder {
      * 2) Values in both fields match each other
      */
     private ValidationResult usernameValidator(String username, ValueContext ctx) {
-        return ValidationResult.ok();
+        return userService.checkNotExistUsername(username)? ValidationResult.ok() : ValidationResult.error("This username is busy");
     }
 
     private ValidationResult emailValidator(String email, ValueContext ctx) {
-        return ValidationResult.ok();
+
+        return userService.checkNotExistEmail(email)? ValidationResult.ok() : ValidationResult.error("This email is busy");
     }
 
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
@@ -127,7 +135,7 @@ public class RegistrationFormBinder {
         Notification notification =
                 Notification.show("Data saved, welcome " + userBean.getFirstName());
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-
         // Here you'd typically redirect the user to another view
+        UI.getCurrent().navigate("login");
     }
 }

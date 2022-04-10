@@ -42,12 +42,20 @@ public class UserService {
         return (int) userRepository.count();
     }
 
+    public boolean checkNotExistUsername(String username){
+        return userRepository.findByUsername(username)==null;
+    }
+    public boolean checkNotExistEmail(String email){
+        return userRepository.findUserByEmail(email)==null;
+    }
+
     private User convertToUser(UserDTO userDTO){
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setFirstname(userDTO.getFirstName());
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
         return user;
     }
 

@@ -17,7 +17,6 @@ import java.util.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
-//@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends AbstractEntity {
     @JsonProperty(value = "id")
@@ -34,16 +33,16 @@ public class User extends AbstractEntity {
     @Column(name = "id", insertable = false, updatable = false)
     private int Id;
 
-    @Column(name = "firstname", insertable = false, updatable = false)
+    @Column(name = "firstname")
     private String firstname;
-    @Column(name = "lastname", insertable = false, updatable = false)
+    @Column(name = "lastname")
     private String lastname;
-    @Column(name = "username", insertable = false, updatable = false)
+    @Column(name = "username")
     private String username;
-    @Column(name = "email", insertable = false, updatable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "password", insertable = false, updatable = false)
+    @Column(name = "password")
     private String password;
 
     @Enumerated(EnumType.STRING)
