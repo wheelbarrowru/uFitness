@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class TrainingDTO {
+public class WorkoutDTO {
     @NotBlank
     private int id;
 
@@ -19,4 +20,6 @@ public class TrainingDTO {
 
     @NotBlank
     private int rating;
+
+    Set<TagsDTO> workoutTags;
 }
