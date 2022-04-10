@@ -26,42 +26,7 @@ create table workouts
     rating      REAL DEFAULT 0 NOT NULL,
     description VARCHAR(1000)                            NOT NULL
 );
-<<<<<<< HEAD
 
-=======
-INSERT INTO tags (message)
-VALUES ('Biceps');
-INSERT INTO tags (message)
-VALUES ('Triceps');
-INSERT INTO tags (message)
-VALUES ('Back');
-INSERT INTO tags (message)
-VALUES ('quadriceps');
-INSERT INTO tags (message)
-VALUES ('calves');
-INSERT INTO tags (message)
-VALUES ('chest');
-INSERT INTO tags (message)
-VALUES ('press');
-INSERT INTO tags (message)
-VALUES ('armsworkout');
-INSERT INTO tags (message)
-VALUES ('chest&back');
-INSERT INTO tags (message)
-VALUES ('legs');
-INSERT INTO tags (message)
-VALUES ('cardio');
-INSERT INTO tags (message)
-VALUES ('press&legs');
-INSERT INTO tags (message)
-VALUES ('arms&chest');
-INSERT INTO tags (message)
-VALUES ('stretching');
-INSERT INTO tags (message)
-VALUES ('crossfitworkout');
-INSERT INTO tags (message)
-VALUES ('lightweight');
->>>>>>> 590212f30df8d46bf32bcb628552f53f2e06d756
 INSERT INTO tags (message)
 VALUES ('biceps'),
        ('back'),
