@@ -57,14 +57,15 @@ public class SQLDialect extends Dialect {
         return "select last_insert_rowid()";
     }
 
-    public boolean supportsLimit() {
-        return true;
-    }
-
-    protected String getLimitString(String query, boolean hasOffset) {
-        return new StringBuffer(query.length() + 20).append(query).append(hasOffset ? " limit ? offset ?" : " limit ?")
-                .toString();
-    }
+//    @Deprecated
+//    public boolean supportsLimit() {
+//        return true;
+//    }
+//
+//    @Deprecated
+//    protected String getLimitString(String query, boolean hasOffset) {
+//        return query + (hasOffset ? " limit ? offset ?" : " limit ?");
+//    }
 
     public boolean supportsTemporaryTables() {
         return true;
@@ -98,7 +99,7 @@ public class SQLDialect extends Dialect {
         return false; // As specify in NHibernate dialect
     }
 
-    public boolean dropConstraints() {
+        public boolean dropConstraints() {
         return false;
     }
 
