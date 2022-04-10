@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import static com.example.data.Role.USER;
 
 @Service
-public class UserService implements UserDetailsService {
-    //все что ниже не трогай
+public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
@@ -28,7 +27,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Optional<User> get(UUID id) {
+    public Optional<User> get(int id) {
         return userRepository.findById(id);
     }
 
@@ -36,7 +35,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(entity);
     }
 
-    public void delete(UUID id) {
+    public void delete(int id) {
         userRepository.deleteById(id);
     }
 
@@ -49,19 +48,8 @@ public class UserService implements UserDetailsService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return (UserDetails) user;
-    }
-
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+       /* User userFromDB = userRepository.findByUsername(user.getUsername());
 
         if (userFromDB != null) {
             return false;
@@ -70,6 +58,8 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(USER));
         //        user.setHashedPassword(user.getHashedPassword());
         userRepository.save(user);
+
+        */
         return true;
     }
 }

@@ -4,11 +4,12 @@ import com.example.data.model.Workout;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+//import java.util.UUID;
 
 /**
  * Main Bean class that we build the form for.
@@ -16,8 +17,8 @@ import java.util.UUID;
  * Uses Bean Validation (JSR-303) annotations for automatic validation.
  */
 public class UserDTO {
-
-    private UUID id = UUID.randomUUID();
+    @NotBlank
+    private int id;
 
     @NotBlank
     private String username;
@@ -28,9 +29,10 @@ public class UserDTO {
     private String lastName;
 
     @NotBlank
+    @Email
     private String email;
 
-    //private boolean allowsMarketing;
+    private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
@@ -70,21 +72,21 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getHashedPasswordPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setHashedPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    //public boolean isAllowsMarketing() {
-        //return allowsMarketing;
-    //}
+    public boolean isAllowsMarketing() {
+        return allowsMarketing;
+    }
 
-    //public void setAllowsMarketing(boolean allowsMarketing) {
-        //this.allowsMarketing = allowsMarketing;
-    //}
+    public void setAllowsMarketing(boolean allowsMarketing) {
+        this.allowsMarketing = allowsMarketing;
+    }
 
     public ArrayList<Workout> getFavoriteTrainings() {
         return (ArrayList<Workout>) favoriteTrainings;
@@ -94,8 +96,12 @@ public class UserDTO {
         this.favoriteTrainings = favoriteTrainings;
     }
 
-    public User fromWithoutRoles() {
-        return new User();
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -111,7 +117,5 @@ public class UserDTO {
         return Objects.hash(email);
     }
 
-    public UUID getId() {
-        return id;
-    }
+
 }
