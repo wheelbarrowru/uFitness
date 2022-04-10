@@ -3,6 +3,7 @@ import com.example.data.model.User;
 import com.example.data.model.Workout;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Objects;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     @NotBlank
     private int id;
