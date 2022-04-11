@@ -59,21 +59,21 @@ public class WorkoutService {
 
         return workout;
     }
-    private WorkoutDTO convertToWorkoutDTO(Workout workout){
+    protected static WorkoutDTO convertToWorkoutDTO(Workout workout){
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
     }
-    private Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
+    protected static Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
         Set<Tags> tags = new HashSet<>();
         for(TagsDTO tagsDTO: tagsDTOSet){
             tags.add(TagsService.convertToTags(tagsDTO));
         }
         return tags;
     }
-    private Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
+    private static Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
         Set<TagsDTO> tagsDTO = new HashSet<>();
         for(Tags tags: tagsSet){
             tagsDTO.add(TagsService.convertToTagsDTO(tags));

@@ -1,30 +1,58 @@
 package com.example.views.workoutlist;
 
+import com.example.data.dto.TagsDTO;
+import com.example.data.dto.WorkoutDTO;
+import com.example.data.model.Workout;
+import com.example.data.service.WorkoutService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.internal.StringUtil;
 
 public class WorkoutListViewCard extends ListItem {
 
-    public WorkoutListViewCard(String text) {
+    public WorkoutListViewCard(int id, WorkoutService workoutService) {
         addClassNames("bg-contrast-5", "flex", "flex-col", "items-start", "p-m", "rounded-l");
 
+        WorkoutDTO workoutDTO = workoutService.getDTO(id);
 
         Span header = new Span();
         header.addClassNames("text-xl", "font-semibold");
-        header.setText("Title");
+        header.setText(StringUtils.abbreviate(workoutDTO.getTitle(), 27));
+
+        Span rating = new Span();
+        rating.addClassNames("text-l","text-primary-contrast");
+        rating.setText(String.valueOf(workoutDTO.getRating()));
 
         Span subtitle = new Span();
         subtitle.addClassNames("text-s", "text-secondary");
-        subtitle.setText("Tags");
+        StringBuffer tagsString = new StringBuffer();
+        for (TagsDTO tagsDTO : workoutDTO.getWorkoutTags()) {
+            tagsString.append(tagsDTO.getMessage()).append(", ");
+        }
+        tagsString.deleteCharAt(tagsString.length() - 1);
+        tagsString.deleteCharAt(tagsString.length() - 1);
+        String tags = tagsString.toString();
+        subtitle.setText(StringUtils.abbreviate(tags, 55));
 
-        Paragraph description = new Paragraph(text);
+        String shortDescription = StringUtils.abbreviate(workoutDTO.getDescription(), 150);
+        StringBuffer longDescription = new StringBuffer(shortDescription);
+        if (shortDescription.length() < 150) {
+            for (int i = shortDescription.length(); i < 150 - shortDescription.length(); ++i) {
+                longDescription.append(" ");
+            }
+        }
+
+        Paragraph description = new Paragraph(longDescription.toString());
         description.addClassName("my-m");
 
         Span badge = new Span();
         badge.getElement().setAttribute("theme", "badge");
         badge.setText("Label");
 
-        add(header, subtitle, description);
+        add(header, rating, subtitle, description);
+        addClickListener(e -> UI.getCurrent().navigate("workout/"+id));
     }
 }
