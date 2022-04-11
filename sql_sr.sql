@@ -23,7 +23,8 @@ CREATE TABLE workouts
     id          INTEGER
         CONSTRAINT workouts_pk PRIMARY KEY AUTOINCREMENT NOT NULL,
     title       VARCHAR(40)                              NOT NULL,
-    rating      REAL DEFAULT 0 NOT NULL,
+    rating      REAL    DEFAULT 0 NOT NULL,
+    count       INTEGER DEFAULT 0 NOT NULL,
     description VARCHAR(1000)                            NOT NULL
 );
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -38,6 +39,15 @@ public class WorkoutService {
 
     public int count() {
         return (int) workoutRepository.count();
+    }
+
+    @Transactional
+    public void updateRating(WorkoutDTO workoutDTO, String valueString){
+        int value = Integer.parseInt(valueString);
+        Workout workout = workoutRepository.findById(workoutDTO.getId()).get();
+        int count = workout.getCountVote();
+        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double)Math.round(100*(workout.getRating()*count+value)/(count+1))/100, value );
+
     }
 
     private Workout convertToWorkout(WorkoutDTO workoutDTO){
