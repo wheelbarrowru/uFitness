@@ -21,7 +21,7 @@ public class WorkoutDTO {
     private String description;
 
     @NotBlank
-    private int rating;
+    private double rating;
 
     @NotBlank
     Set<TagsDTO> workoutTags;

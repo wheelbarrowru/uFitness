@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -40,6 +41,15 @@ public class WorkoutService {
         return (int) workoutRepository.count();
     }
 
+    @Transactional
+    public void updateRating(WorkoutDTO workoutDTO, String valueString){
+        int value = Integer.parseInt(valueString);
+        Workout workout = workoutRepository.findById(workoutDTO.getId()).get();
+        int count = workout.getCountVote();
+        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double)Math.round(100*(workout.getRating()*count+value)/(count+1))/100, count + 1);
+
+    }
+
     private Workout convertToWorkout(WorkoutDTO workoutDTO){
         Workout workout = new Workout();
         workout.setTitle(workoutDTO.getTitle());
@@ -49,21 +59,21 @@ public class WorkoutService {
 
         return workout;
     }
-    private WorkoutDTO convertToWorkoutDTO(Workout workout){
+    protected static WorkoutDTO convertToWorkoutDTO(Workout workout){
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
     }
-    private Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
+    protected static Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
         Set<Tags> tags = new HashSet<>();
         for(TagsDTO tagsDTO: tagsDTOSet){
             tags.add(TagsService.convertToTags(tagsDTO));
         }
         return tags;
     }
-    private Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
+    private static Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
         Set<TagsDTO> tagsDTO = new HashSet<>();
         for(Tags tags: tagsSet){
             tagsDTO.add(TagsService.convertToTagsDTO(tags));

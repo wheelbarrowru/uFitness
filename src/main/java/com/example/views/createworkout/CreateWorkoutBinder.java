@@ -9,6 +9,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CreateWorkoutBinder {
     private CreateWorkoutForm createWorkoutForm;
@@ -16,6 +17,7 @@ public class CreateWorkoutBinder {
     public CreateWorkoutBinder(CreateWorkoutForm createWorkoutForm) {
         this.createWorkoutForm = createWorkoutForm;
     }
+    @Autowired
     public void addBindingAndValidation(WorkoutService workoutService){
         BeanValidationBinder<WorkoutDTO> binder = new BeanValidationBinder<>(WorkoutDTO.class);
         binder.bindInstanceFields(createWorkoutForm);

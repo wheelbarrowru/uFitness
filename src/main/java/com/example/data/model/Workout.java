@@ -38,7 +38,10 @@ public class Workout extends AbstractEntity {
     private String description;
 
     @Column(name = "rating")
-    private int rating;
+    private double rating;
+
+    @Column(name = "count")
+    private int countVote;
     //FIXME
     @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(

@@ -1,7 +1,6 @@
 package com.example.views.startpage;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
@@ -26,8 +25,8 @@ public class StartPageView extends VerticalLayout {
     public StartPageView() {
         login = new Button("Sign in");
         registration = new Button("Sign up");
-        login.addClickListener(e -> UI.getCurrent().navigate("login"));
-        registration.addClickListener(e -> UI.getCurrent().navigate("registration"));
+        login.addClickListener(e -> login.getUI().ifPresent(ui -> ui.navigate("login")));
+        registration.addClickListener(e -> registration.getUI().ifPresent(ui -> ui.navigate("registration")));
 
         setSizeFull();
         setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
