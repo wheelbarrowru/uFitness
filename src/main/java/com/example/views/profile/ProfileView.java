@@ -1,6 +1,7 @@
 package com.example.views.profile;
 
 import com.example.data.dto.UserDTO;
+import com.example.data.service.RestClientService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -25,6 +26,7 @@ import javax.annotation.security.RolesAllowed;
 public class ProfileView extends Div implements HasUrlParameter<Integer> {
 
     private final UserService userService;
+    private final RestClientService restClientService;
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer param) {
@@ -32,12 +34,14 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
     }
 
     public void addProfileForm(Integer param){
-        ProfileForm profileForm = new ProfileForm(userService, param);
+        ProfileForm profileForm = new ProfileForm(userService,restClientService,param);
         add(profileForm);
     }
 
-    public ProfileView(@Autowired UserService service) {
-        this.userService = service;
+    public ProfileView(@Autowired UserService userService,
+                       @Autowired RestClientService restClientService) {
+        this.userService = userService;
+        this.restClientService=restClientService;
     }
 
 

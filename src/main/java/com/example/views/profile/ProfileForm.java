@@ -1,6 +1,7 @@
 package com.example.views.profile;
 
 import com.example.data.dto.UserDTO;
+import com.example.data.service.RestClientService;
 import com.example.data.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
@@ -24,21 +25,21 @@ public class ProfileForm extends VerticalLayout {
     private Label email;
     private Label lastName;
 
-    public ProfileForm(UserService userService, Integer param){
-        UserDTO userDto = userService.getDTO(param);
-
+    public ProfileForm(UserService userService,RestClientService restClientService, Integer param){
+        UserDTO userDTO = restClientService.fetchUserProfile(param);
+        System.out.println(userDTO);
         usernameLabel.addClassNames("text-l");
         firstNameLabel.addClassNames("text-l");
         lastNameLabel.addClassNames("text-l");
         emailLabel.addClassNames("text-l");
 
-        username = new Label(userDto.getUsername());
+        username = new Label(userDTO.getUsername());
         username.addClassNames("text-l");
-        firstName = new Label(userDto.getFirstName());
+        firstName = new Label(userDTO.getFirstName());
         firstName.addClassNames("text-l");
-        lastName = new Label(userDto.getLastName());
+        lastName = new Label(userDTO.getLastName());
         lastName.addClassNames("text-l");
-        email = new Label(userDto.getEmail());
+        email = new Label(userDTO.getEmail());
         email.addClassNames("text-l");
         logout = new Button("Log out");
         delete = new Button("Delete my account");
