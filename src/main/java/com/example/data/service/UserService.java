@@ -59,6 +59,18 @@ public class UserService {
         return user;
     }
 
+    protected static UserDTO convertToWorkoutDTO(User user){
+        return new UserDTO(user.getId(),
+                user.getUsername(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword());
+    }
+
+    public UserDTO getDTO(int id){return convertToWorkoutDTO(get(id).orElse(new User())); }
+
+
    /* public boolean saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
 

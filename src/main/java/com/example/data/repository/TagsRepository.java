@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagsRepository extends JpaRepository<Tags, Integer> {
-    Tags findTagsBy(String tag);
-
-    Tags findTagsById(int id);
+//    Tags findTagsBy(String tag);
+//
+//    Tags findTagsById(int id);
 
 }

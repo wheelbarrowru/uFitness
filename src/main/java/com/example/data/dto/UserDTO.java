@@ -44,6 +44,16 @@ public class UserDTO {
     // FIXME Passwords should never be stored in plain text!
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
     private String password;
+
+    public UserDTO(int id, String username, String firstName, String lastName,
+                   String email, String password){
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
     /*
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
 

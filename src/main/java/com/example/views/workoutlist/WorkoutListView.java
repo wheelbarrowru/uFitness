@@ -1,5 +1,7 @@
 package com.example.views.workoutlist;
 
+import com.example.data.dto.UserDTO;
+import com.example.data.service.UserService;
 import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -12,6 +14,7 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @PageTitle("Workout List")
@@ -19,6 +22,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 //@PermitAll
 @AnonymousAllowed
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
+    private final UserService userService;
 
     private OrderedList workoutContainer;
     private TagsGrid tagsGrid;
@@ -26,7 +30,9 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private Button createWorkout;
     private Button logout;
 
-    public WorkoutListView() {
+    public WorkoutListView(@Autowired UserService userService) {
+        this.userService = userService;
+        UserDTO userDto = userService.getDTO();
         HorizontalLayout buttons = new HorizontalLayout();
 
         profile = new Button("Profile");
