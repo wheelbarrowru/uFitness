@@ -2,7 +2,10 @@ package com.example.views.tagsgrid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import com.example.data.dto.TagsDTO;
+import com.example.data.service.TagsService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -15,13 +18,14 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 
 public class TagsGrid extends Div {
 
-    private final List<Tags> invitedTags = new ArrayList<>();
+    private final List<TagsDTO> invitedTags = new ArrayList<>();
 
-    private Grid<Tags> grid;
+    private Grid<TagsDTO> grid;
     private Div hint;
-    private List<Tags> tags;
+    private Set<TagsDTO> tags;
 
-    public TagsGrid() {
+    public TagsGrid(TagsService tagsService) {
+        this.tags=tagsService.getSetOfDTO();
         this.setupInvitationForm();
         this.setupGrid();
         this.refreshGrid();
@@ -29,12 +33,11 @@ public class TagsGrid extends Div {
 
     private void setupInvitationForm() {
         //List<Tags> tags = DataService.getPeople();
-        tags = new ArrayList<>();
-        tags.add(new Tags("legs"));
-        tags.add(new Tags("eyes"));
-        ComboBox<Tags> comboBox = new ComboBox<>();
+
+
+        ComboBox<TagsDTO> comboBox = new ComboBox<>();
         comboBox.setItems(tags);
-        comboBox.setItemLabelGenerator(Tags::getName);
+        comboBox.setItemLabelGenerator(TagsDTO::getMessage);
 
         Button button = new Button("Add tag");
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -50,9 +53,9 @@ public class TagsGrid extends Div {
     }
 
     private void setupGrid() {
-        grid = new Grid<>(Tags.class, false);
+        grid = new Grid<>(TagsDTO.class, false);
         grid.setAllRowsVisible(true);
-        grid.addColumn(Tags::getName).setHeader("Tags");
+        grid.addColumn(TagsDTO::getMessage).setHeader("Tags");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, tag) -> {
                     button.addThemeVariants(ButtonVariant.LUMO_ICON,
@@ -84,21 +87,21 @@ public class TagsGrid extends Div {
         }
     }
 
-    private void sendInvitation(Tags tags) {
-        if (tags == null || invitedTags.contains(tags))
+    private void sendInvitation(TagsDTO tagsDTO) {
+        if (tagsDTO == null || invitedTags.contains(tagsDTO))
             return;
-        invitedTags.add(tags);
+        invitedTags.add(tagsDTO);
         this.refreshGrid();
     }
 
-    private void removeInvitation(Tags tag) {
-        if (tag == null)
+    private void removeInvitation(TagsDTO tagsDTO) {
+        if (tagsDTO == null)
             return;
-        invitedTags.remove(tag);
+        invitedTags.remove(tagsDTO);
         this.refreshGrid();
     }
 
-    public List<Tags> getTags() {
-        return tags;
+    public List<TagsDTO> getTags() {
+        return invitedTags;
     }
 }
