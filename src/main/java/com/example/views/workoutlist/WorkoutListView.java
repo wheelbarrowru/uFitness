@@ -1,7 +1,10 @@
 package com.example.views.workoutlist;
 
 import com.example.data.dto.UserDTO;
+import com.example.data.model.User;
+import com.example.data.repository.UserRepository;
 import com.example.data.service.UserService;
+import com.example.security.AuthenticatedUser;
 import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -16,27 +19,31 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 
 @PageTitle("Workout List")
 @Route(value = "workout-list")
 //@PermitAll
 @AnonymousAllowed
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
-    private final UserService userService;
-
+    private UserRepository userRepository;
     private OrderedList workoutContainer;
     private TagsGrid tagsGrid;
     private Button profile;
     private Button createWorkout;
     private Button logout;
 
-    public WorkoutListView(@Autowired UserService userService) {
-        this.userService = userService;
-        UserDTO userDto = userService.getDTO();
+    public WorkoutListView(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(this.userRepository);
+        Optional<User> user = authenticatedUser.get();
+        Integer id = user.get().getId();
         HorizontalLayout buttons = new HorizontalLayout();
 
+        String adress = "profile/" + Integer.toString(id);
         profile = new Button("Profile");
-        profile.addClickListener(e -> UI.getCurrent().navigate("profile"));
+        profile.addClickListener(e -> UI.getCurrent().navigate(adress));
 
         createWorkout = new Button("Create workout");
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));

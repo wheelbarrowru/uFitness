@@ -22,6 +22,7 @@ public class ProfileForm extends VerticalLayout {
     private Label username;
     private Label firstName;
     private Label email;
+    private Label lastName;
 
     public ProfileForm(UserService userService, Integer param){
         UserDTO userDto = userService.getDTO(param);
@@ -35,7 +36,7 @@ public class ProfileForm extends VerticalLayout {
         username.addClassNames("text-l");
         firstName = new Label(userDto.getFirstName());
         firstName.addClassNames("text-l");
-        Label lastName = new Label("2name");
+        lastName = new Label(userDto.getLastName());
         lastName.addClassNames("text-l");
         email = new Label(userDto.getEmail());
         email.addClassNames("text-l");
