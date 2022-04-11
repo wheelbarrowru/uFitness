@@ -1,18 +1,13 @@
 package com.example.data.dto;
-import com.example.data.model.User;
-import com.example.data.model.Workout;
+import com.example.data.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-//import java.util.UUID;
+import java.util.Set;
 
 /**
  * Main Bean class that we build the form for.
@@ -39,6 +34,9 @@ public class UserDTO {
     @Email
     private String email;
 
+    @NotBlank
+    private Set<Role> roles;
+
     private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
@@ -46,16 +44,6 @@ public class UserDTO {
     private String password;
     /*
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
-
-
-
-    public ArrayList<Workout> getFavoriteTrainings() {
-        return (ArrayList<Workout>) favoriteTrainings;
-    }
-
-    public void setFavoriteTrainings(ArrayList<Workout> favoriteTrainings) {
-        this.favoriteTrainings = favoriteTrainings;
-    }
 
     */
 

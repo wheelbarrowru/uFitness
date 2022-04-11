@@ -1,5 +1,6 @@
 package com.example.views.registration;
 
+import com.example.data.Role;
 import com.example.data.dto.UserDTO;
 import com.example.data.service.UserService;
 import com.vaadin.flow.component.UI;
@@ -11,6 +12,9 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class RegistrationFormBinder {
 
@@ -75,6 +79,9 @@ public class RegistrationFormBinder {
 
                 // Typically, you would here call backend to store the bean
                 userBean.setPassword(BCrypt.hashpw(userBean.getPassword(), BCrypt.gensalt()));
+                Set<Role> roles= new HashSet<Role>();
+                roles.add(Role.USER);
+                userBean.setRoles(roles);
                 userService.update(userBean);
                 // Show success message if everything went well
                 showSuccess(userBean);

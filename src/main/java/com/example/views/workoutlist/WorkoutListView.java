@@ -4,6 +4,7 @@ import com.example.data.dto.WorkoutDTO;
 import com.example.data.service.FindWorkoutsService;
 import com.example.data.service.TagsService;
 import com.example.data.service.WorkoutService;
+import com.example.security.AuthenticatedUser;
 import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -11,20 +12,19 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Set;
 
 
 @PageTitle("Workout List")
 @Route(value = "workout-list")
-//@PermitAll
-@AnonymousAllowed
+@RolesAllowed("USER")
+//@AnonymousAllowed
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
     private OrderedList workoutContainer;
@@ -33,10 +33,13 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private Button createWorkout;
     private Button logout;
     private TagsService tagsService;
+    private AuthenticatedUser authenticatedUser;
 
     @Autowired
-    public WorkoutListView(TagsService tagsService, WorkoutService workoutService, FindWorkoutsService findWorkoutsService) {
+    public WorkoutListView(TagsService tagsService, WorkoutService workoutService,
+                           FindWorkoutsService findWorkoutsService, AuthenticatedUser authenticatedUser) {
         this.tagsService=tagsService;
+        this.authenticatedUser=authenticatedUser;
 
         constructUI();
 
@@ -69,7 +72,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));
 
         logout = new Button("Log out");
-        logout.addClickListener(e -> System.out.println("logout"));
+        logout.addClickListener(e -> authenticatedUser.logout());
 
         buttons.add(profile,createWorkout,logout);
         buttons.addClassNames("justify-end");

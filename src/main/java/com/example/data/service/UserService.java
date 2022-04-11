@@ -4,7 +4,6 @@ import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,22 +55,8 @@ public class UserService {
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
+        user.setRoles(userDTO.getRoles());
         return user;
     }
 
-   /* public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
-
-        if (userFromDB != null) {
-            return false;
-        }
-
-        user.setRoles(Collections.singleton(USER));
-        //        user.setHashedPassword(user.getHashedPassword());
-        userRepository.save(user);
-
-
-        return true;
-    }
-    */
 }

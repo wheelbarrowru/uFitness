@@ -9,10 +9,12 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.RolesAllowed;
+
 @PageTitle("Workout")
 @Route(value = "workout")
-//@PermitAll
-@AnonymousAllowed
+@RolesAllowed("USER")
+//@AnonymousAllowed
 public class WorkoutView extends Div implements HasUrlParameter<Integer> {
     private WorkoutService workoutService;
 

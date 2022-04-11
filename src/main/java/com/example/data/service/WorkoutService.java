@@ -46,7 +46,7 @@ public class WorkoutService {
         int value = Integer.parseInt(valueString);
         Workout workout = workoutRepository.findById(workoutDTO.getId()).get();
         int count = workout.getCountVote();
-        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double)Math.round(100*(workout.getRating()*count+value)/(count+1))/100, value );
+        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double)Math.round(100*(workout.getRating()*count+value)/(count+1))/100, count + 1);
 
     }
 
