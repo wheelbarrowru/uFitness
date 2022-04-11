@@ -1,68 +1,61 @@
-create table users
+CREATE TABLE users
 (
-    id INTEGER CONSTRAINT users_pk PRIMARY KEY AUTOINCREMENT,
-    firstname VARCHAR(30),
-    lastname  VARCHAR(30),
-    username  VARCHAR(30),
-    email     VARCHAR(40),
-    password  VARCHAR(60)
+    id        INTEGER
+        CONSTRAINT users_pk PRIMARY KEY AUTOINCREMENT NOT NULL,
+    firstname VARCHAR(30)                             NOT NULL,
+    lastname  VARCHAR(30)                             NOT NULL,
+    username  VARCHAR(30)                             NOT NULL,
+    email     VARCHAR(40)                             NOT NULL,
+    password  VARCHAR(60)                             NOT NULL
 
 );
-INSERT INTO users (firstname, lastname, username, email, password)
-VALUES ('ivan','ivanov','vanya','ivan@mail.ru','12345678');
 
-create table tags
+CREATE TABLE tags
 (
-    id INTEGER CONSTRAINT tags_pk PRIMARY KEY AUTOINCREMENT,
-    message VARCHAR(30)
-
+    id      INTEGER
+        CONSTRAINT tags_pk PRIMARY KEY AUTOINCREMENT NOT NULL,
+    message VARCHAR(30)                              NOT NULL
 
 );
-INSERT INTO tags (imessage)
-VALUES ('Biceps');
-INSERT INTO tags (message)
-VALUES ('Triceps');
-INSERT INTO tags (message)
-VALUES ('Back');
-INSERT INTO tags (message)
-VALUES ('quadriceps');
-INSERT INTO tags (message)
-VALUES ('calves');
-INSERT INTO tags (message)
-VALUES ('chest');
-INSERT INTO tags (message)
-VALUES ('press');
-INSERT INTO tags (message)
-VALUES ('armsworkout');
-INSERT INTO tags (message)
-VALUES ('chest&back');
-INSERT INTO tags (message)
-VALUES ('legs');
-INSERT INTO tags (message)
-VALUES ('cardio');
-INSERT INTO tags (message)
-VALUES ('press&legs');
-INSERT INTO tags (message)
-VALUES ('arms&chest');
-INSERT INTO tags (message)
-VALUES ('stretching');
-INSERT INTO tags (message)
-VALUES ('crossfitworkout');
-INSERT INTO tags (message)
-VALUES ('lightweight');
-INSERT INTO tags (message)
-VALUES ('buttocks');
 
-
-
-create table workouts
+CREATE TABLE workouts
 (
-    id INTEGER CONSTRAINT workouts_pk PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(40),
-    rating REAL DEFAULT 0,
-    description VARCHAR(1000)
+    id          INTEGER
+        CONSTRAINT workouts_pk PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title       VARCHAR(40)                              NOT NULL,
+    rating      REAL DEFAULT 0 NOT NULL,
+    description VARCHAR(1000)                            NOT NULL
 );
-INSERT INTO workouts (title, description, rating) VALUES
-('exampleWorkout','do hard, do hard, do hard',3.4);
 
-select * from users;
+INSERT INTO tags (message)
+VALUES ('arms workout'),
+       ('arms & chest'),
+       ('back'),
+       ('biceps'),
+       ('buttocks'),
+       ('calves'),
+       ('cardio'),
+       ('chest'),
+       ('crossfit workout'),
+       ('chest&back'),
+       ('legs'),
+       ('lightweight'),
+       ('press'),
+       ('press & legs'),
+       ('quadriceps'),
+       ('shoulders'),
+       ('stretching'),
+       ('triceps');
+
+CREATE TABLE workouts_tags
+(
+    id          INTEGER
+        CONSTRAINT workouts_tags_pk PRIMARY KEY AUTOINCREMENT NOT NULL,
+    workouts_id INTEGER,
+    tags_id     INTEGER,
+    FOREIGN KEY (workouts_id) REFERENCES workouts (id),
+    FOREIGN KEY (tags_id) REFERENCES tags (id)
+);
+
+select *
+from users;

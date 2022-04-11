@@ -1,5 +1,6 @@
 package com.example.views.workoutlist;
 
+import com.example.data.service.TagsService;
 import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -25,8 +26,10 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private Button profile;
     private Button createWorkout;
     private Button logout;
+    private TagsService tagsService;
 
-    public WorkoutListView() {
+    public WorkoutListView(TagsService tagsService) {
+        this.tagsService=tagsService;
         HorizontalLayout buttons = new HorizontalLayout();
 
         profile = new Button("Profile");
@@ -72,7 +75,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         workoutContainer = new OrderedList();
         workoutContainer.addClassNames("gap-m", "grid", "list-none", "m-0", "p-0");
 
-        tagsGrid = new TagsGrid();
+        tagsGrid = new TagsGrid(tagsService);
         tagsGrid.setWidth("50%");
         tagsGrid.addClassNames("py-m");
         container.add(header, sortBy);

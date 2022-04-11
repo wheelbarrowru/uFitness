@@ -1,20 +1,20 @@
 package com.example.data.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "Workout")
 @Table(name = "workouts")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Workout extends AbstractEntity {
     @JsonProperty(value = "id")
@@ -31,24 +31,22 @@ public class Workout extends AbstractEntity {
     @Column(name = "id", insertable = false, updatable = false)
     private int id;
 
-    @Column(name = "title",insertable = false, updatable = false)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "description",insertable = false, updatable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "rating",insertable = false, updatable = false)
+    @Column(name = "rating")
     private int rating;
+    //FIXME
+    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "workouts_tags",
+            joinColumns = @JoinColumn(name = "workouts_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id"))
+    private Set<Tags> workoutTags;
 
-
-    @ElementCollection
-    @CollectionTable(name = "tags")
-    private List<String> workoutTags = new ArrayList<String>();
-
-
-    public void changeRating(int rating) {
-        this.rating = (this.rating * 5 + rating) / 5;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -61,5 +59,16 @@ public class Workout extends AbstractEntity {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Workout{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", workoutTags=" + workoutTags +
+                '}';
     }
 }

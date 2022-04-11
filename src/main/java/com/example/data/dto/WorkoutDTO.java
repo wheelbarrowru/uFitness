@@ -2,12 +2,15 @@ package com.example.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class TrainingDTO {
+@NoArgsConstructor
+public class WorkoutDTO {
     @NotBlank
     private int id;
 
@@ -19,4 +22,7 @@ public class TrainingDTO {
 
     @NotBlank
     private int rating;
+
+    @NotBlank
+    Set<TagsDTO> workoutTags;
 }
