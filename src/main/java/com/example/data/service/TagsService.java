@@ -8,14 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TagsService {
-    private final TagsRepository tagsRepository;
+    private static TagsRepository tagsRepository;
     @Autowired
     public TagsService(TagsRepository repository) {
-        this.tagsRepository = repository;
+        tagsRepository = repository;
     }
 
     public Optional<Tags> get(int id) {
@@ -32,8 +34,13 @@ public class TagsService {
         tagsRepository.deleteById(id);
     }
 
-    public Page<Tags> list(Pageable pageable) {
-        return tagsRepository.findAll(pageable);
+    public Set<TagsDTO> getSetOfDTO() {
+        Set<TagsDTO> tagsDTOSet = new HashSet<>();
+        Set<Tags> tags = new HashSet<>(tagsRepository.findAll());
+        for (Tags tag: tags){
+            tagsDTOSet.add(convertToTagsDTO(tag));
+        }
+        return tagsDTOSet;
     }
 
     public int count() {
@@ -41,10 +48,7 @@ public class TagsService {
     }
 
     protected static Tags convertToTags(TagsDTO tagsDTO){
-        Tags tags = new Tags();
-        tags.setMessage(tagsDTO.getMessage());
-        //TODO add workouts
-        return tags;
+        return tagsRepository.findByMessage(tagsDTO.getMessage());
     }
     protected static TagsDTO convertToTagsDTO(Tags tags){
         TagsDTO tagsDTO = new TagsDTO(tags.getId(), tags.getMessage());

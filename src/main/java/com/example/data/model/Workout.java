@@ -39,11 +39,11 @@ public class Workout extends AbstractEntity {
 
     @Column(name = "rating")
     private int rating;
-
-    @ManyToMany
+    //FIXME
+    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "workouts_tags",
-            joinColumns = @JoinColumn(name = "workout_id"),
+            joinColumns = @JoinColumn(name = "workouts_id"),
             inverseJoinColumns = @JoinColumn(name = "tags_id"))
     private Set<Tags> workoutTags;
 

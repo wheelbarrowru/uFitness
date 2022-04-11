@@ -10,10 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
+import java.util.Set;
 @Service
 public class WorkoutService {
     private final WorkoutRepository workoutRepository;
@@ -46,21 +45,30 @@ public class WorkoutService {
         workout.setTitle(workoutDTO.getTitle());
         workout.setDescription(workoutDTO.getDescription());
         workout.setRating(workoutDTO.getRating());
-        workout.setWorkoutTags(workoutDTO.getWorkoutTags().stream()
-                .map(TagsService::convertToTags)
-                .collect(Collectors.toSet()));
+        workout.setWorkoutTags(convertToTagsSet(workoutDTO.getWorkoutTags()));
 
         return workout;
     }
     private WorkoutDTO convertToWorkoutDTO(Workout workout){
-        WorkoutDTO workoutDTO = new WorkoutDTO(workout.getId(),
+        return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
-                workout.getWorkoutTags().stream()
-                        .map(TagsService::convertToTagsDTO)
-                        .collect(Collectors.toSet()));
-        return workoutDTO;
+                convertToTagsDTOSet(workout.getWorkoutTags()));
+    }
+    private Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
+        Set<Tags> tags = new HashSet<>();
+        for(TagsDTO tagsDTO: tagsDTOSet){
+            tags.add(TagsService.convertToTags(tagsDTO));
+        }
+        return tags;
+    }
+    private Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
+        Set<TagsDTO> tagsDTO = new HashSet<>();
+        for(Tags tags: tagsSet){
+            tagsDTO.add(TagsService.convertToTagsDTO(tags));
+        }
+        return tagsDTO;
     }
 
 }
