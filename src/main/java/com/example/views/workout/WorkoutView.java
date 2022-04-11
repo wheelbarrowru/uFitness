@@ -7,6 +7,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Workout")
 @Route(value = "workout")
@@ -15,7 +16,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class WorkoutView extends Div implements HasUrlParameter<Integer> {
     private WorkoutService workoutService;
 
-
+    @Autowired
     public WorkoutView(WorkoutService workoutService) {
         this.workoutService=workoutService;
     }

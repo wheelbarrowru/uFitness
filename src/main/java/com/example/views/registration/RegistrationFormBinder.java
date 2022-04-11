@@ -9,6 +9,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class RegistrationFormBinder {
@@ -29,6 +30,7 @@ public class RegistrationFormBinder {
      * Method to add the data binding and validation logics
      * to the registration form
      */
+    @Autowired
     public void addBindingAndValidation(UserService userService) {
         this.userService = userService;
         BeanValidationBinder<UserDTO> binder = new BeanValidationBinder<>(UserDTO.class);
