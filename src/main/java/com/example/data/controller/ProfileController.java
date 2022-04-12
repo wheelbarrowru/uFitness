@@ -1,16 +1,12 @@
 package com.example.data.controller;
 
 import com.example.data.dto.UserDTO;
-import com.example.data.model.User;
 import com.example.data.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 public class ProfileController {
@@ -22,10 +18,14 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/data/{id}")
-    public @ResponseBody UserDTO getProfile(@PathVariable int id){
-         return this.userService.getDTO(id);
+    public @ResponseBody UserDTO getProfile(@RequestHeader HttpHeaders headers, @PathVariable int id){
+        List<String> values =  headers.getValuesAsList("USER_AGENT");
+        if (values.contains("admin")){
+            return this.userService.getDTO(id);
+        }
+        else {
+            return new UserDTO();
+        }
     }
-
-
 
 }

@@ -1,25 +1,32 @@
 package com.example.data.service;
 
+
 import com.example.data.dto.UserDTO;
+import com.example.data.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
+
+import java.util.Objects;
 
 @Service
 public class RestClientService {
     @Value("${server.port}")
     private String serverPort;
 
-    public UserDTO fetchUserProfile(int id) {
-        System.out.println(serverPort);
-        final String url = String.format("http://localhost:" + serverPort + "/profile/data/" + id);
-        System.out.println(url);
-        final RequestHeadersSpec<?> spec = WebClient.create().get().uri(url);
+    @Autowired
+    public RestClientService(UserRepository userRepository) {
+    }
 
-        UserDTO response = spec.retrieve().toEntity(UserDTO.class).block().getBody();
-        System.out.println("response: "+response);
-        return response;
+    public UserDTO fetchUserProfile(int id) {
+        final String url = "http://localhost:" + serverPort + "/profile/data/" + id;
+
+        return Objects.requireNonNull(WebClient.create().get()
+                .uri(url)
+                .headers(headers -> headers.set("USER_AGENT", "admin"))
+                .retrieve().toEntity(UserDTO.class).
+                block()).getBody();
 
     }
 
