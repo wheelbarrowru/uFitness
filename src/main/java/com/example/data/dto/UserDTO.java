@@ -1,6 +1,7 @@
 package com.example.data.dto;
 import com.example.data.model.User;
 import com.example.data.model.Workout;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Objects;
  */
 @Data
 @AllArgsConstructor
+@ApiModel(value = "User entity", description = "Complete data of an entity user")
 @NoArgsConstructor
 public class UserDTO {
     @NotBlank
