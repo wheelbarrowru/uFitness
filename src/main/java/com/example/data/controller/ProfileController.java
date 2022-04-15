@@ -46,14 +46,7 @@ public class ProfileController {
     }
 
     public ResponseEntity<Object> Redirect() {
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url + "start_page")).build();
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
     }
-
-//    private void getDefaultDirectory() {
-//        UI ui = MyVaadinUI.getCurrent();
-//        VaadinSession session = ui.getSession();
-//        VaadinService service = session.getService();
-//        currentPath = VaadinServelet.getBaseDirectory(VaadinServlet.getCurrent());;
-//    }
 }
 
