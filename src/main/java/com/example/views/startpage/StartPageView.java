@@ -18,7 +18,6 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class StartPageView extends VerticalLayout {
 
-    private final Component welcomeToUFitness = new H1("Welcome to uFitness");
     private final Button login;
     private final Button registration;
 
@@ -42,6 +41,7 @@ public class StartPageView extends VerticalLayout {
         buttonLayout.add(registration);
         buttonLayout.setWidth("400px");
 
+        Component welcomeToUFitness = new H1("Welcome to uFitness");
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
 

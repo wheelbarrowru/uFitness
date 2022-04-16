@@ -35,16 +35,14 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private Button profile;
     private Button createWorkout;
     private Button logout;
-    private TagsService tagsService;
-    private AuthenticatedUser authenticatedUser;
-    private UserRepository userRepository;
+    private final TagsService tagsService;
+    private final AuthenticatedUser authenticatedUser;
 
     @Autowired
     public WorkoutListView(TagsService tagsService, WorkoutService workoutService,
                            FindWorkoutsService findWorkoutsService, UserRepository userRepository) {
         this.tagsService = tagsService;
-        this.userRepository = userRepository;
-        this.authenticatedUser = new AuthenticatedUser(this.userRepository);
+        this.authenticatedUser = new AuthenticatedUser(userRepository);
 
 
         constructUI();
@@ -72,11 +70,12 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         HorizontalLayout buttons = new HorizontalLayout();
 
         Optional<User> user = authenticatedUser.get();
-        Integer id = user.get().getId();
+        //FIXME
+        int id = user.get().getId();
 
-        String adress = "profile/" + Integer.toString(id);
+        String address = "profile/" + id;
         profile = new Button("Profile");
-        profile.addClickListener(e -> UI.getCurrent().navigate(adress));
+        profile.addClickListener(e -> UI.getCurrent().navigate(address));
 
         createWorkout = new Button("Create workout");
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));

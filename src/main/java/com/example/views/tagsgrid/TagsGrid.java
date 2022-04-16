@@ -22,7 +22,7 @@ public class TagsGrid extends Div {
 
     private Grid<TagsDTO> grid;
     private Div hint;
-    private Set<TagsDTO> tags;
+    private final Set<TagsDTO> tags;
 
     public TagsGrid(TagsService tagsService) {
         this.tags=tagsService.getSetOfDTO();

@@ -12,7 +12,7 @@ import com.vaadin.flow.data.binder.ValueContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CreateWorkoutBinder {
-    private CreateWorkoutForm createWorkoutForm;
+    private final CreateWorkoutForm createWorkoutForm;
 
     public CreateWorkoutBinder(CreateWorkoutForm createWorkoutForm) {
         this.createWorkoutForm = createWorkoutForm;
