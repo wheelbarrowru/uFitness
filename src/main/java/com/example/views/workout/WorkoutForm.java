@@ -17,17 +17,13 @@ import com.vaadin.flow.component.textfield.TextArea;
 
 public class WorkoutForm extends VerticalLayout {
 
-    private Component header;
-    private TextArea text;
-    private Label rating;
-
 
     public WorkoutForm(WorkoutService workoutService, int workoutID) {
         WorkoutDTO workoutDTO = workoutService.getDTO(workoutID);
-        header = new H2(workoutDTO.getTitle());
-        rating = new Label("Rating: "+workoutDTO.getRating());
+        Component header = new H2(workoutDTO.getTitle());
+        Label rating = new Label("Rating: " + workoutDTO.getRating());
 
-        text = new TextArea();
+        TextArea text = new TextArea();
         text.setValue(workoutDTO.getDescription());
         text.setReadOnly(true);
         text.setWidth("70%");
@@ -54,12 +50,12 @@ public class WorkoutForm extends VerticalLayout {
         setSizeFull();
 
         setHorizontalComponentAlignment(Alignment.CENTER, header);
-        setHorizontalComponentAlignment(Alignment.CENTER,rating);
+        setHorizontalComponentAlignment(Alignment.CENTER, rating);
         setHorizontalComponentAlignment(Alignment.CENTER, text);
         setHorizontalComponentAlignment(Alignment.CENTER,rateButtons);
         setHorizontalComponentAlignment(Alignment.CENTER,details);
 
-        add(header,rating, details, text, rateButtons);
+        add(header, rating, details, text, rateButtons);
     }
 
 }

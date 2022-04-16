@@ -1,29 +1,26 @@
 package com.example.views.profile;
 
-import com.example.data.dto.UserDTO;
 import com.example.data.service.RestClientService;
-import com.vaadin.flow.component.button.Button;
+import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
-import com.example.data.service.UserService;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.NoSuchElementException;
 
 @PageTitle("Profile")
 @Route(value = "profile")
-//@RolesAllowed("USER")
-@AnonymousAllowed
+@RolesAllowed("USER")
+//@AnonymousAllowed
 public class ProfileView extends Div implements HasUrlParameter<Integer> {
-
-    private final UserService userService;
+    private final String ERROR_MESSAGE = "You haven't access to this page";
     private final RestClientService restClientService;
+    private final AuthenticatedUser authenticatedUser;
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer param) {
@@ -31,14 +28,24 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
     }
 
     public void addProfileForm(Integer param){
-        ProfileForm profileForm = new ProfileForm(userService,restClientService,param);
-        add(profileForm);
+        H2 errorMessage = new H2(ERROR_MESSAGE);
+        try {
+            if (authenticatedUser.get().orElseThrow().getId() == param) {
+                ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, param);
+                add(profileForm);
+            } else {
+                add(errorMessage);
+            }
+        } catch (NoSuchElementException e){
+            add(errorMessage);
+        }
+
     }
 
-    public ProfileView(@Autowired UserService userService,
-                       @Autowired RestClientService restClientService) {
-        this.userService = userService;
+    public ProfileView(@Autowired RestClientService restClientService,
+                       @Autowired AuthenticatedUser authenticatedUser) {
         this.restClientService=restClientService;
+        this.authenticatedUser = authenticatedUser;
     }
 
 

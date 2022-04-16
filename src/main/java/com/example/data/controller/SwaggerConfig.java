@@ -23,10 +23,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiProfile() {
         return new ApiInfoBuilder()
-                .title("sbc order api")
-                .description("sbc order api")
+                .title("uFitness")
+                .description("Profile Controller order api")
                 .termsOfServiceUrl("http://localhost:8080")
-                .contact(new Contact("Ildar", "https://github.com/wheelbarrowru", "otvertka1213@gmail.com"))
+                .contact(new Contact("Ildar", "https://github.com/wheelbarrowru", "khabibulin_ildarr@mail.ru"))
                 .version("1.0.0")
                 .build();
     }

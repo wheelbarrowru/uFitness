@@ -2,14 +2,12 @@ package com.example.views.workoutlist;
 
 import com.example.data.dto.TagsDTO;
 import com.example.data.dto.WorkoutDTO;
-import com.example.data.model.Workout;
 import com.example.data.service.WorkoutService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.internal.StringUtil;
 
 public class WorkoutListViewCard extends ListItem {
 
@@ -40,9 +38,7 @@ public class WorkoutListViewCard extends ListItem {
         String shortDescription = StringUtils.abbreviate(workoutDTO.getDescription(), 150);
         StringBuffer longDescription = new StringBuffer(shortDescription);
         if (shortDescription.length() < 150) {
-            for (int i = shortDescription.length(); i < 150 - shortDescription.length(); ++i) {
-                longDescription.append(" ");
-            }
+            longDescription.append(" ".repeat(Math.max(0, 150 - shortDescription.length() - shortDescription.length())));
         }
 
         Paragraph description = new Paragraph(longDescription.toString());

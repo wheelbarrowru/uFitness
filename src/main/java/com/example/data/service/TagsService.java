@@ -4,8 +4,6 @@ import com.example.data.dto.TagsDTO;
 import com.example.data.model.Tags;
 import com.example.data.repository.TagsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -51,7 +49,6 @@ public class TagsService {
         return tagsRepository.findByMessage(tagsDTO.getMessage());
     }
     protected static TagsDTO convertToTagsDTO(Tags tags){
-        TagsDTO tagsDTO = new TagsDTO(tags.getId(), tags.getMessage());
-        return tagsDTO;
+        return new TagsDTO(tags.getId(), tags.getMessage());
     }
 }

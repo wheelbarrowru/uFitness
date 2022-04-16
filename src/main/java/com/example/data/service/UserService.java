@@ -3,15 +3,12 @@ package com.example.data.service;
 import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
-
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import static com.example.data.Role.USER;
+import java.util.Optional;
 
 @Service
 public class UserService {

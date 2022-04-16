@@ -21,14 +21,14 @@ import java.util.stream.Stream;
 
 public class CreateWorkoutForm extends FormLayout {
     private final Component header;
-    private TextField title;
-    private TextArea body;
+    private final TextField title;
+    private final TextArea body;
 
     private final Button button;
 
     private final Span errorMessageField;
 
-    private TagsGrid tagsGrid;
+    private final TagsGrid tagsGrid;
 
     public CreateWorkoutForm(TagsService tagsService) {
         header = new H2("Create your workout");
