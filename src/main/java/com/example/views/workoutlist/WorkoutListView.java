@@ -1,6 +1,8 @@
 package com.example.views.workoutlist;
 
 import com.example.data.dto.WorkoutDTO;
+import com.example.data.model.User;
+import com.example.data.repository.UserRepository;
 import com.example.data.service.FindWorkoutsService;
 import com.example.data.service.TagsService;
 import com.example.data.service.WorkoutService;
@@ -18,6 +20,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -34,22 +37,25 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private Button logout;
     private TagsService tagsService;
     private AuthenticatedUser authenticatedUser;
+    private UserRepository userRepository;
 
     @Autowired
     public WorkoutListView(TagsService tagsService, WorkoutService workoutService,
-                           FindWorkoutsService findWorkoutsService, AuthenticatedUser authenticatedUser) {
-        this.tagsService=tagsService;
-        this.authenticatedUser=authenticatedUser;
+                           FindWorkoutsService findWorkoutsService, UserRepository userRepository) {
+        this.tagsService = tagsService;
+        this.userRepository = userRepository;
+        this.authenticatedUser = new AuthenticatedUser(this.userRepository);
+
 
         constructUI();
 
         tagsGrid.addClickListener(event -> {
             workoutContainer.removeAll();
             Set<WorkoutDTO> workoutDTOSet = findWorkoutsService.findWorkoutsByTagsDTO(tagsGrid.getTags());
-            for(WorkoutDTO workoutDTO: workoutDTOSet){
-                workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(),workoutService));
+            for (WorkoutDTO workoutDTO : workoutDTOSet) {
+                workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
             }
-        } );
+        });
 
 
     }
@@ -65,8 +71,12 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
         HorizontalLayout buttons = new HorizontalLayout();
 
+        Optional<User> user = authenticatedUser.get();
+        Integer id = user.get().getId();
+
+        String adress = "profile/" + Integer.toString(id);
         profile = new Button("Profile");
-        profile.addClickListener(e -> UI.getCurrent().navigate("profile"));
+        profile.addClickListener(e -> UI.getCurrent().navigate(adress));
 
         createWorkout = new Button("Create workout");
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));
@@ -74,7 +84,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         logout = new Button("Log out");
         logout.addClickListener(e -> authenticatedUser.logout());
 
-        buttons.add(profile,createWorkout,logout);
+        buttons.add(profile, createWorkout, logout);
         buttons.addClassNames("justify-end");
 
         /*

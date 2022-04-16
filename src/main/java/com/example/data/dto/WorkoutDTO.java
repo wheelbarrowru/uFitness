@@ -1,5 +1,6 @@
 package com.example.data.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@ApiModel(value = "Training entity", description = "Complete data of an entity training")
 @NoArgsConstructor
 public class WorkoutDTO {
     @NotBlank
