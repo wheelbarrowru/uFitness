@@ -6,6 +6,7 @@ LICENSE.md
 .project
 .classpath
 
+uFit.db
 *.iml
 .DS_Store
 
