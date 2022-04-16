@@ -42,7 +42,7 @@ public class Workout extends AbstractEntity {
 
     @Column(name = "count")
     private int countVote;
-    //FIXME
+
     @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "workouts_tags",
