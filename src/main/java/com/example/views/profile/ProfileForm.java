@@ -2,7 +2,7 @@ package com.example.views.profile;
 
 import com.example.data.dto.UserDTO;
 import com.example.data.service.RestClientService;
-import com.example.data.service.UserService;
+import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
@@ -12,34 +12,28 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
 public class ProfileForm extends VerticalLayout {
-    private Button logout;
-    private Button delete;
+    private final Button logout;
+    private final Button delete;
 
-    private final H2 header = new H2("Your profile");
-    private final Label usernameLabel = new Label("Username: ");
-    private final Label firstNameLabel = new Label("First name: ");
-    private final Label lastNameLabel = new Label("Second name: ");
-    private final Label emailLabel = new Label("Email: ");
-    private Label username;
-    private Label firstName;
-    private Label email;
-    private Label lastName;
-
-    public ProfileForm(UserService userService,RestClientService restClientService, Integer param){
+    public ProfileForm(RestClientService restClientService, AuthenticatedUser authenticatedUser, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
-        System.out.println(userDTO);
+
+        Label usernameLabel = new Label("Username: ");
         usernameLabel.addClassNames("text-l");
+        Label firstNameLabel = new Label("First name: ");
         firstNameLabel.addClassNames("text-l");
+        Label lastNameLabel = new Label("Second name: ");
         lastNameLabel.addClassNames("text-l");
+        Label emailLabel = new Label("Email: ");
         emailLabel.addClassNames("text-l");
 
-        username = new Label(userDTO.getUsername());
+        Label username = new Label(userDTO.getUsername());
         username.addClassNames("text-l");
-        firstName = new Label(userDTO.getFirstName());
+        Label firstName = new Label(userDTO.getFirstName());
         firstName.addClassNames("text-l");
-        lastName = new Label(userDTO.getLastName());
+        Label lastName = new Label(userDTO.getLastName());
         lastName.addClassNames("text-l");
-        email = new Label(userDTO.getEmail());
+        Label email = new Label(userDTO.getEmail());
         email.addClassNames("text-l");
         logout = new Button("Log out");
         delete = new Button("Delete my account");
@@ -47,6 +41,7 @@ public class ProfileForm extends VerticalLayout {
         logout.setWidthFull();
         delete.setWidthFull();
 
+        logout.addClickListener(e -> authenticatedUser.logout());
 
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
@@ -67,6 +62,7 @@ public class ProfileForm extends VerticalLayout {
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
         setHorizontalComponentAlignment(Alignment.CENTER, buttons);
+        H2 header = new H2("Your profile");
         setHorizontalComponentAlignment(Alignment.CENTER, header);
         context.add(buttons);
         add(header, context);
