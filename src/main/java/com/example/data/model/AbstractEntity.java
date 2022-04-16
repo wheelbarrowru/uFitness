@@ -1,6 +1,5 @@
 package com.example.data.model;
 
-import java.util.UUID;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

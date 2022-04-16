@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class RegistrationFormBinder {
 
-    private RegistrationForm registrationForm;
+    private final RegistrationForm registrationForm;
     private UserService userService;
 
     /**
@@ -79,7 +79,7 @@ public class RegistrationFormBinder {
 
                 // Typically, you would here call backend to store the bean
                 userBean.setPassword(BCrypt.hashpw(userBean.getPassword(), BCrypt.gensalt()));
-                Set<Role> roles= new HashSet<Role>();
+                Set<Role> roles= new HashSet<>();
                 roles.add(Role.USER);
                 userBean.setRoles(roles);
                 userService.update(userBean);
