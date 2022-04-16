@@ -3,6 +3,7 @@ package com.example.data.service;
 import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,15 @@ public class UserService {
         return (int) userRepository.count();
     }
 
-    public boolean checkNotExistUsername(String username){
-        return userRepository.findByUsername(username)==null;
-    }
-    public boolean checkNotExistEmail(String email){
-        return userRepository.findUserByEmail(email)==null;
+    public boolean checkNotExistUsername(String username) {
+        return userRepository.findByUsername(username) == null;
     }
 
-    private User convertToUser(UserDTO userDTO){
+    public boolean checkNotExistEmail(String email) {
+        return userRepository.findUserByEmail(email) == null;
+    }
+
+    private User convertToUser(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setFirstname(userDTO.getFirstName());
@@ -58,5 +60,19 @@ public class UserService {
         user.setRoles(userDTO.getRoles());
         return user;
     }
+
+    protected static UserDTO convertToWorkoutDTO(User user) {
+        return new UserDTO(user.getId(),
+                user.getUsername(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword());
+    }
+
+    public UserDTO getDTO(int id) {
+        return convertToWorkoutDTO(get(id).orElse(new User()));
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.data.dto;
 import com.example.data.Role;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 @Data
 @AllArgsConstructor
+@ApiModel(value = "User entity", description = "Complete data of an entity user")
 @NoArgsConstructor
 public class UserDTO {
     @NotBlank
@@ -46,6 +48,15 @@ public class UserDTO {
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
 
     */
+    public UserDTO(int id, String username, String firstName, String lastName,
+                   String email, String password){
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
 
 }
