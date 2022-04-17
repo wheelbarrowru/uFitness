@@ -3,10 +3,13 @@ package com.example.views.profile;
 import com.example.data.dto.UserDTO;
 import com.example.data.repository.UserRepository;
 import com.example.data.service.RestClientService;
+import com.example.data.service.UserService;
 import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -32,7 +35,8 @@ public class ProfileForm extends VerticalLayout {
      * @see RestClientService#RestClientService()
      * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
      */
-    public ProfileForm(RestClientService restClientService, AuthenticatedUser authenticatedUser, Integer param) {
+    public ProfileForm(RestClientService restClientService, AuthenticatedUser authenticatedUser,
+                       UserService userService, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
 
         Label usernameLabel = new Label("Username: ");
@@ -59,6 +63,11 @@ public class ProfileForm extends VerticalLayout {
         delete.setWidthFull();
 
         logout.addClickListener(e -> authenticatedUser.logout());
+
+        delete.addClickListener(e -> {
+            userService.delete(param);
+            authenticatedUser.logout();
+        });
 
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);

@@ -2,6 +2,7 @@ package com.example.views.profile;
 
 import com.example.data.repository.UserRepository;
 import com.example.data.service.RestClientService;
+import com.example.data.service.UserService;
 import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -24,6 +25,7 @@ import java.util.NoSuchElementException;
 public class ProfileView extends Div implements HasUrlParameter<Integer> {
     private final RestClientService restClientService;
     private final AuthenticatedUser authenticatedUser;
+    private final UserService userService;
 
     /**
      * Method of setting params to addParameter
@@ -47,7 +49,7 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
         H2 errorMessage = new H2(ERROR_MESSAGE);
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
-                ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, param);
+                ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
                 add(profileForm);
             } else {
                 add(errorMessage);
@@ -66,9 +68,12 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
      * @see RestClientService#RestClientService()
      * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
      */
-    public ProfileView(@Autowired RestClientService restClientService, @Autowired AuthenticatedUser authenticatedUser) {
+    public ProfileView(@Autowired RestClientService restClientService,
+                       @Autowired AuthenticatedUser authenticatedUser,
+                       @Autowired UserService userService) {
         this.restClientService = restClientService;
         this.authenticatedUser = authenticatedUser;
+        this.userService = userService;
     }
 
 }
