@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Objects;
 
 /**
- * Class of RestClientService which connects UserDTO
+ * Class which help fetch UserDTO from ProfileController
  */
 @Service
 public class RestClientService {
@@ -18,17 +18,17 @@ public class RestClientService {
     private String serverPort;
 
     /**
-     * Autowired constructor of RestClientService
+     * No-argument constructor of RestClientService
      */
     @Autowired
     public RestClientService() {
     }
 
     /**
-     * This method fetch UserDTO to ProfileController
-     * FIXME
+     * This method fetch UserDTO from ProfileController using profile/data/{id}
+     *
      * @param id User's id
-     * @return Objects.requireNonNull
+     * @return UserDTO
      * @see UserDTO#UserDTO()
      */
     public UserDTO fetchUserProfile(int id) {

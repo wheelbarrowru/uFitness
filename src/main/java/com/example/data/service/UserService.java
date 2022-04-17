@@ -3,7 +3,6 @@ package com.example.data.service;
 import com.example.data.dto.UserDTO;
 import com.example.data.model.User;
 import com.example.data.repository.UserRepository;
-import com.example.data.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * UserService Class is responsible for interacting with UserDTO and User
+ * UserService class is responsible for interacting with UserDTO and User with <b>UserRepository</b>
  */
 @Service
 public class UserService {

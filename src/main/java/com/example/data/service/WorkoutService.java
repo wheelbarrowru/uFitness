@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * WorkoutService Class  is responsible for interacting with WorkoutDTO and Workout
+ * WorkoutService class  is responsible for interacting with WorkoutDTO and Workout with <b>WorkoutRepository</b>
  */
 @Service
 public class WorkoutService {
@@ -25,6 +25,7 @@ public class WorkoutService {
 
     /**
      * Constructor of WorkoutService
+     *
      * @param repository WorkoutRepository
      */
     @Autowired
@@ -34,6 +35,7 @@ public class WorkoutService {
 
     /**
      * This method returns workout which was found by id
+     *
      * @param id Workout id
      * @return Workout
      * @see WorkoutRepository#findById(Object)
@@ -43,17 +45,18 @@ public class WorkoutService {
     }
 
     /**
-     * This method get Workout from id of Workout
+     * This method get WorkoutDTO from Workout's id
+     *
      * @param id workout id
      * @return WorkoutDTO
      */
-    //FIXME
     public WorkoutDTO getDTO(int id) {
         return convertToWorkoutDTO(get(id).orElse(new Workout()));
     }
 
     /**
      * Method for updating userRepository with Workout
+     *
      * @param entity WorkoutDTO
      * @return workoutRepository with updated WorkoutDTO
      * @see WorkoutRepository#save(Object)
@@ -64,6 +67,7 @@ public class WorkoutService {
 
     /**
      * Method for deleting workout
+     *
      * @param id workout id
      * @see WorkoutRepository#deleteById(Object)
      */
@@ -73,6 +77,7 @@ public class WorkoutService {
 
     /**
      * This Method return List of pageable workouts
+     *
      * @param pageable Workout
      * @return WorkoutRepository
      * @see WorkoutRepository#findAll()
@@ -87,13 +92,14 @@ public class WorkoutService {
 
     /**
      * Method for counting new rating of workout after user's reaction
-     * @param workoutDTO WorkoutDTO object
+     *
+     * @param workoutDTO  WorkoutDTO object
      * @param valueString user's rating of the workout
+     * @throws NoSuchElementException throws if you can't update rating
      * @see WorkoutRepository#findById(Object)
      * @see WorkoutRepository#updateRatingAndCount(int, double, int)
      * @see WorkoutDTO#getId()
      * @see Workout#getCountVote()
-     * @exception NoSuchElementException throws if you can't update rating
      */
     @Transactional
     public void updateRating(WorkoutDTO workoutDTO, String valueString) {
@@ -109,6 +115,7 @@ public class WorkoutService {
 
     /**
      * Method for converting WorkoutDTO to workout
+     *
      * @param workoutDTO WorkoutDTO
      * @return Workout
      * @see Workout#setTitle(String)
@@ -128,6 +135,7 @@ public class WorkoutService {
 
     /**
      * Method for converting Workout to WorkoutDTO
+     *
      * @param workout Workout entity
      * @return WorkoutDTO
      * @see WorkoutDTO#getId()
@@ -146,6 +154,7 @@ public class WorkoutService {
 
     /**
      * This method convert TagsDTO into Set of Tags
+     *
      * @param tagsDTOSet Set of TagsDTO
      * @return Tags
      * @see TagsService#convertToTags(TagsDTO)
@@ -160,6 +169,7 @@ public class WorkoutService {
 
     /**
      * This method convert Tags into TagsDTO
+     *
      * @param tagsSet Set<Tags>
      * @return TagsDTO
      * @see TagsService#convertToTagsDTO(Tags)

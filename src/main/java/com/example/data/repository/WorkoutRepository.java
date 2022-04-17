@@ -7,15 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
- * WorkoutRepository interface
+ * WorkoutRepository interface help interact with database
  */
 @Repository
 public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
 
     /**
-     * This method update rating of workout
-     * @param id workout id
-     * @param rating workout rating
+     * This method update rating and count of voices of workout
+     * @param id workout's id
+     * @param rating workout's rating
      * @param count amount of user's grades
      */
     @Modifying
