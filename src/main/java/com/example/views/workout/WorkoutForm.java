@@ -49,7 +49,10 @@ public class WorkoutForm extends VerticalLayout {
         radioGroup.setLabel("Please rate the workout");
         radioGroup.setItems("1", "2", "3", "4", "5");
         HorizontalLayout rateButtons = new HorizontalLayout(radioGroup);
-        radioGroup.addValueChangeListener(e -> workoutService.updateRating(workoutDTO, radioGroup.getValue()));
+        radioGroup.addValueChangeListener(e -> {
+            workoutService.updateRating(workoutDTO, radioGroup.getValue());
+            radioGroup.setReadOnly(true);
+        });
 
         UnorderedList content = new UnorderedList();
         for (TagsDTO tagsDTO : workoutDTO.getWorkoutTags()) {
