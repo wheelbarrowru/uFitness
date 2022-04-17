@@ -48,7 +48,6 @@ public class UserDTO {
 
     private boolean allowsMarketing;
 
-    // FIXME Passwords should never be stored in plain text!
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
     @ApiModelProperty(notes = "User's password", required = true)
     private String password;

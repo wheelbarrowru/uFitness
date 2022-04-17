@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Hidden;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,8 @@ import java.util.List;
 @Hidden
 @Api(value="Profile Controller")
 public class ProfileController {
-    private final UserService userService;
+    @Setter
+    private UserService userService;
     @Value("${server.port}")
     private String serverPort;
     final String url = "http://localhost:" + serverPort + "/";

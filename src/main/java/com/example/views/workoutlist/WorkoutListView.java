@@ -20,6 +20,8 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.sql.SQLOutput;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -68,10 +70,11 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         header.addClassNames("mb-0", "mt-xl", "text-3xl");
 
         HorizontalLayout buttons = new HorizontalLayout();
-
+        String id = "?error";
         Optional<User> user = authenticatedUser.get();
-        //FIXME
-        int id = user.get().getId();
+        try {
+            id = String.valueOf(user.orElseThrow().getId());
+        } catch (NoSuchElementException ignored) { }
 
         String address = "profile/" + id;
         profile = new Button("Profile");

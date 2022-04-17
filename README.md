@@ -3,19 +3,24 @@ uFitness
 
 This project is under development
 
-### Team:
+## Team:
 - [Ildar Khabibulin](https://github.com/wheelbarrowru)
 - [Maksum Valeev](https://github.com/mvtValeev)
 
 ## Running the application
 
-The project is a standard Maven project. To run it from the command line,
+The project is a standard Maven project. Firstly, you should connect your database and create 
+tables using [our SQL script](sql-script.sql). We advise you to use the same names as us,
+which you can find in [properties](src/main/resources/application.properties). You also should
+use [our SQLDialect](src/main/java/com/example/SQLDialect.java). To run the project from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
 http://localhost:8080 in your browser.
 
 You can also import the project to your IDE of choice as you would with any
 Maven project. Read more on [how to import Vaadin projects to different 
 IDEs](https://vaadin.com/docs/latest/flow/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
+
+We also use swagger2 so you can visit http://localhost:8080/swagger-ui.html.
 
 ## Deploying to Production
 
@@ -33,6 +38,8 @@ Once the JAR file is built, you can run it using
   side/top bar and the main menu). This setup uses
   [App Layout](https://vaadin.com/components/vaadin-app-layout).
 - `views` package in `src/main/java` contains the server-side Java views of your application.
+- `data` package in `src/main/java` contains server controller, dto, model, repository and service packages.
+- `security` package in `src/main/java` contains security configuration files.
 - `views` folder in `frontend/` contains the client-side JavaScript views of your application.
 - `themes` folder in `frontend/` contains the custom CSS styles.
 

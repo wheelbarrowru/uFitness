@@ -36,10 +36,7 @@ public class CreateWorkoutBinder {
                 workoutService.update(workoutDTO);
 
                 showSuccess();
-            } catch (ValidationException e) {
-                //FIXME
-                //e.printStackTrace();
-                    }
+            } catch (ValidationException ignored) { }
                 }
                 );
     }

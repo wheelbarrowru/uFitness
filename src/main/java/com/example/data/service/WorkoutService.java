@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+
 @Service
 public class WorkoutService {
     private final WorkoutRepository workoutRepository;
@@ -23,11 +25,18 @@ public class WorkoutService {
         this.workoutRepository = repository;
     }
 
-    public Optional<Workout> get(int id) { return workoutRepository.findById(id); }
-    //FIXME
-    public WorkoutDTO getDTO(int id){return convertToWorkoutDTO(get(id).orElse(new Workout())); }
+    public Optional<Workout> get(int id) {
+        return workoutRepository.findById(id);
+    }
 
-    public Workout update(WorkoutDTO entity) { return workoutRepository.save(convertToWorkout(entity)); }
+    //FIXME
+    public WorkoutDTO getDTO(int id) {
+        return convertToWorkoutDTO(get(id).orElse(new Workout()));
+    }
+
+    public Workout update(WorkoutDTO entity) {
+        return workoutRepository.save(convertToWorkout(entity));
+    }
 
     public void delete(int id) {
         workoutRepository.deleteById(id);
@@ -42,16 +51,18 @@ public class WorkoutService {
     }
 
     @Transactional
-    public void updateRating(WorkoutDTO workoutDTO, String valueString){
+    public void updateRating(WorkoutDTO workoutDTO, String valueString) {
         int value = Integer.parseInt(valueString);
-        //FIXME
-        Workout workout = workoutRepository.findById(workoutDTO.getId()).get();
-        int count = workout.getCountVote();
-        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double)Math.round(100*(workout.getRating()*count+value)/(count+1))/100, count + 1);
-
+        try {
+            Workout workout = workoutRepository.findById(workoutDTO.getId()).orElseThrow();
+            int count = workout.getCountVote();
+            workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
+        } catch (NoSuchElementException e) {
+            System.out.println("Ошибка updateRating: " + workoutDTO);
+        }
     }
 
-    private Workout convertToWorkout(WorkoutDTO workoutDTO){
+    private Workout convertToWorkout(WorkoutDTO workoutDTO) {
         Workout workout = new Workout();
         workout.setTitle(workoutDTO.getTitle());
         workout.setDescription(workoutDTO.getDescription());
@@ -60,23 +71,26 @@ public class WorkoutService {
 
         return workout;
     }
-    protected static WorkoutDTO convertToWorkoutDTO(Workout workout){
+
+    protected static WorkoutDTO convertToWorkoutDTO(Workout workout) {
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
     }
-    protected static Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet){
+
+    protected static Set<Tags> convertToTagsSet(Set<TagsDTO> tagsDTOSet) {
         Set<Tags> tags = new HashSet<>();
-        for(TagsDTO tagsDTO: tagsDTOSet){
+        for (TagsDTO tagsDTO : tagsDTOSet) {
             tags.add(TagsService.convertToTags(tagsDTO));
         }
         return tags;
     }
-    private static Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet){
+
+    private static Set<TagsDTO> convertToTagsDTOSet(Set<Tags> tagsSet) {
         Set<TagsDTO> tagsDTO = new HashSet<>();
-        for(Tags tags: tagsSet){
+        for (Tags tags : tagsSet) {
             tagsDTO.add(TagsService.convertToTagsDTO(tags));
         }
         return tagsDTO;
