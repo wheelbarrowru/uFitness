@@ -1,12 +1,12 @@
 package com.example;
 
-import java.sql.Types;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
-import org.hibernate.Hibernate;
 import org.hibernate.type.StringType;
+
+import java.sql.Types;
 
 public class SQLDialect extends Dialect {
     public SQLDialect() {
@@ -49,23 +49,12 @@ public class SQLDialect extends Dialect {
     }
 
     public String getIdentityColumnString() {
-        // return "integer primary key autoincrement";
         return "integer";
     }
 
     public String getIdentitySelectString() {
         return "select last_insert_rowid()";
     }
-
-//    @Deprecated
-//    public boolean supportsLimit() {
-//        return true;
-//    }
-//
-//    @Deprecated
-//    protected String getLimitString(String query, boolean hasOffset) {
-//        return query + (hasOffset ? " limit ? offset ?" : " limit ?");
-//    }
 
     public boolean supportsTemporaryTables() {
         return true;
@@ -99,7 +88,7 @@ public class SQLDialect extends Dialect {
         return false; // As specify in NHibernate dialect
     }
 
-        public boolean dropConstraints() {
+    public boolean dropConstraints() {
         return false;
     }
 

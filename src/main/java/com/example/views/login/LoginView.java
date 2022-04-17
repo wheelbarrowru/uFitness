@@ -5,9 +5,17 @@ import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+/**
+ * * Front of login class  with <b>ERROR_MESSAGE</b> and <b>restClientService</b> and <b>authenticatedUser</b> properties.
+ * * This class creates a tab front login
+ * <p>Basic LoginI18n by Vaadin</p>
+ */
 @PageTitle("Login")
 @Route(value = "login")
 public class LoginView extends LoginOverlay {
+    /**
+     * Constructor - creating a front of login page
+     */
     public LoginView() {
         setAction("login");
 

@@ -12,6 +12,16 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+/**
+ * The main view that holds the start-page form
+ * <p>
+ * This view is itself a component (specifically a VerticalLayout) to
+ * which the start-page form is added. This view is made accessible
+ * to the end-user via the @Route annotation.
+ * <p>
+ * A new instance of this class opens every time you starts web application
+ * browser tab/window.
+ */
 @PageTitle("Start Page")
 @Route(value = "start-page")
 @RouteAlias(value = "")
@@ -21,6 +31,9 @@ public class StartPageView extends VerticalLayout {
     private final Button login;
     private final Button registration;
 
+    /**
+     * Constructor - creating a new view for start-page
+     */
     public StartPageView() {
         login = new Button("Sign in");
         registration = new Button("Sign up");
@@ -28,7 +41,7 @@ public class StartPageView extends VerticalLayout {
         registration.addClickListener(e -> registration.getUI().ifPresent(ui -> ui.navigate("registration")));
 
         setSizeFull();
-        setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         login.setSizeFull();

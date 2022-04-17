@@ -12,21 +12,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This is service class responsible for finding workouts
+ */
 @Service
 public class FindWorkoutsService {
     private final WorkoutRepository workoutRepository;
 
+    /**
+     * This method find workoutService by workoutRepository
+     *
+     * @param workoutRepository workoutRepository
+     * @see WorkoutRepository
+     */
     @Autowired
     public FindWorkoutsService(WorkoutRepository workoutRepository) {
-        this.workoutRepository=workoutRepository;
+        this.workoutRepository = workoutRepository;
     }
-    public Set<WorkoutDTO> findWorkoutsByTagsDTO(List<TagsDTO> tagsDTOSet){
+
+    /**
+     * This method make set of workouts with Tags in List tagsDTOSet
+     *
+     * @param tagsDTOSet Set of TagsDTO
+     * @return Set of WorkoutDTO
+     * @see WorkoutService#convertToTagsSet(Set)
+     * @see WorkoutService#convertToWorkoutDTO(Workout)
+     */
+    public Set<WorkoutDTO> findWorkoutsByTagsDTO(List<TagsDTO> tagsDTOSet) {
         Set<Tags> tagsSet = WorkoutService.convertToTagsSet(new HashSet<>(tagsDTOSet));
-        List<Workout> workouts =  workoutRepository.findAll();
+        List<Workout> workouts = workoutRepository.findAll();
         Set<WorkoutDTO> resultSet = new HashSet<>();
-        for (Workout workout:
-             workouts) {
-            if ( workout.getWorkoutTags().containsAll(tagsSet) ){
+        for (Workout workout :
+                workouts) {
+            if (workout.getWorkoutTags().containsAll(tagsSet)) {
                 resultSet.add(WorkoutService.convertToWorkoutDTO(workout));
             }
         }
