@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- *
+ * User super class
  */
 @MappedSuperclass
 public abstract class AbstractEntity {
@@ -19,6 +19,7 @@ public abstract class AbstractEntity {
 
     /**
      * This method returns Entity's id
+     *
      * @return Entity's id
      */
     public int getId() {
@@ -27,6 +28,7 @@ public abstract class AbstractEntity {
 
     /**
      * This method set Entity's id
+     *
      * @param id Entity's id
      */
     public void setId(int id) {
@@ -35,11 +37,12 @@ public abstract class AbstractEntity {
 
     /**
      * Method return hashcode of this class
+     *
      * @return hashcode
      */
     @Override
     public int hashCode() {
-        if (id==0) {
+        if (id == 0) {
             return id;
         }
         return super.hashCode();
@@ -47,6 +50,7 @@ public abstract class AbstractEntity {
 
     /**
      * This method return is objects equals or not
+     *
      * @param obj object
      * @return boolean
      */
@@ -57,8 +61,8 @@ public abstract class AbstractEntity {
         }
         AbstractEntity other = (AbstractEntity) obj;
 
-        if (id==0) {
-            return id==(other.id);
+        if (id == 0) {
+            return id == (other.id);
         }
         return super.equals(other);
     }

@@ -81,17 +81,20 @@ public class User extends AbstractEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    /**
-     * This method return is objects equals or not
-     * @param o object
-     * @return boolean
-     * @see User#getId()
-     */
+
     /*
     @OneToMany(mappedBy = "description", cascade = ALL)
     @ToString.Exclude
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
     */
+
+    /**
+     * This method return is objects equals or not
+     *
+     * @param o object
+     * @return boolean
+     * @see User#getId()
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,6 +105,7 @@ public class User extends AbstractEntity {
 
     /**
      * Method return hashcode of this class
+     *
      * @return hashcode
      */
     @Override
