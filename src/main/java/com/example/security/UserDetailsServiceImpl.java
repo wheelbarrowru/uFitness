@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * FIXME
+ * Service for loading user from backend and user's authorization
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -32,9 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * This methods returns user with security by username or throws exception if find any users with this username
+     * Returns user with security by username or throws exception if any user with this username was found
      * @param username username
-     * @return org.springframework.security.core.userdetails.User
+     * @return org.springframework.security.core.userDetails.User
      * @throws UsernameNotFoundException exception which means that there are no users with this username
      * @see UserRepository#findByUsername(String)
      */
@@ -51,9 +51,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     /**
-     * FIXME
+     * Return list of GrantedAuthority
      * @param user user
-     * @return user.getRoles().stream()
      * @see User#getRoles()
      */
     private static List<GrantedAuthority> getAuthorities(User user) {

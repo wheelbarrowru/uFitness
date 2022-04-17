@@ -14,8 +14,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Component;
 
 /**
- * FIXME
- * This Class works with authenticated user and protect his data
+ * This class works with authenticated user and protect his data with <b>UserRepository</b>
  */
 @Component
 public class AuthenticatedUser {
@@ -23,7 +22,7 @@ public class AuthenticatedUser {
     private final UserRepository userRepository;
 
     /**
-     * @param userRepository - userRepository
+     * @param userRepository userRepository
      * @see UserRepository
      */
     @Autowired
@@ -32,7 +31,7 @@ public class AuthenticatedUser {
     }
 
     /**
-     * @return Optional.ofNullable(context.getAuthentication())
+     * @return authorized status
      */
     private Optional<Authentication> getAuthentication() {
         SecurityContext context = SecurityContextHolder.getContext();
@@ -41,8 +40,8 @@ public class AuthenticatedUser {
     }
 
     /**
-     * Method which authenticate
-     * @return - userRepository
+     * Get authorized user
+     * @return userRepository
      * @see UserRepository#findByUsername(String)
      */
     public Optional<User> get() {

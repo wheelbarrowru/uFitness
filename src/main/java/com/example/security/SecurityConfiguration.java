@@ -21,7 +21,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
     /**
      * This method return encoder of passwords
-     * @return BCryptPasswordEncoder
+     * @return new password encoder
      * @see BCryptPasswordEncoder
      */
     @Bean
@@ -31,7 +31,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
     /**
      * This method protects user data in the workout-list section
-     * @param http - http
+     * @param http HttpSecurity
      * @throws Exception Authentication exception
      */
     @Override
@@ -44,7 +44,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
     /**
      * This method makes it so that the work of the Vaadin Security does not extend to the profile
-     * @param web web
+     * @param web WebSecurity
      * @throws Exception Authentication exception
      */
     @Override
