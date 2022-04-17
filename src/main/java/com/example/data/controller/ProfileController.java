@@ -2,6 +2,7 @@ package com.example.data.controller;
 
 import com.example.data.dto.UserDTO;
 import com.example.data.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@Api(value="GameOfThronesService")
 public class ProfileController {
     private final UserService userService;
     @Value("${server.port}")
@@ -30,7 +32,13 @@ public class ProfileController {
 
     @GetMapping({"/profile/data/{id}"})
     @ApiOperation(value = "Get Profile", notes = "Returns all the profile data")
-    @ApiResponses({@ApiResponse(code = 200, message = "Returns users profile information")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
     public @ResponseBody
     ResponseEntity<UserDTO> getProfile(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         List<String> values = headers.getValuesAsList("USER_AGENT");

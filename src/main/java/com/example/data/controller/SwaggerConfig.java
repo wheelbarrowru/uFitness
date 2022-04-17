@@ -18,7 +18,7 @@ public class SwaggerConfig {
     @Bean
     public Docket newsApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("api-Profile")
-                .apiInfo(apiProfile()).select().paths(PathSelectors.regex("/api.*")).build();
+                .apiInfo(apiProfile()).select().paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiProfile() {
