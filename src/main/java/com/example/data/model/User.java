@@ -15,6 +15,10 @@ import java.util.Objects;
 import java.util.Set;
 
 
+/**
+ * User entity class with <b>id</b>, <b>firstname</b>, <b>lastname</b>, <b>username</b>,
+ * <b>email</b>, <b><roles/b> and <b>password</b> properties.
+ */
 @Entity(name = "User")
 @Table(name = "users")
 @Getter
@@ -23,6 +27,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends AbstractEntity {
+    /**
+     * User's id
+     */
     @JsonProperty(value = "id")
     @Id
     @SequenceGenerator(
@@ -37,24 +44,49 @@ public class User extends AbstractEntity {
     @Column(name = "id", insertable = false, updatable = false)
     private int Id;
 
+    /**
+     * User's firstname
+     */
     @Column(name = "firstname")
     private String firstname;
 
+    /**
+     * User's lastname
+     */
     @Column(name = "lastname")
     private String lastname;
 
+    /**
+     * User's username
+     */
     @Column(name = "username")
     private String username;
 
+    /**
+     * User's email
+     */
     @Column(name = "email")
     private String email;
 
+    /**
+     * User's password
+     */
     @Column(name = "password")
     private String password;
 
+    /**
+     * User's Role
+     */
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    /**
+     * This method return is objects equals or not
+     * @param o object
+     * @return boolean
+     * @see User#getId()
+     */
     /*
     @OneToMany(mappedBy = "description", cascade = ALL)
     @ToString.Exclude
@@ -68,6 +100,10 @@ public class User extends AbstractEntity {
         return Objects.equals(getId(), user.getId());
     }
 
+    /**
+     * Method return hashcode of this class
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return getClass().hashCode();

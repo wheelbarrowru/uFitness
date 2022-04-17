@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Tags entity class with <b>id</b>, <b>message</b> and <b>workouts</b> properties.
+ */
 @Entity(name = "Tags")
 @Table(name = "tags")
 @Getter
@@ -18,6 +21,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Tags extends AbstractEntity{
 
+    /**
+     * Tags's id
+     */
     @JsonProperty(value = "id")
     @Id
     @SequenceGenerator(
@@ -32,13 +38,25 @@ public class Tags extends AbstractEntity{
     @Column(name = "id",insertable = false,updatable = false)
     private int Id;
 
+    /**
+     * Tags's name or "message"
+     */
     @Column(name = "message")
     private String message;
 
+    /**
+     * Workouts with this Tags
+     */
     @ManyToMany(mappedBy = "workoutTags",fetch = FetchType.EAGER)
     Set<Workout> workouts;
 
 
+    /**
+     * This method return is objects equals or not
+     * @param o object
+     * @return boolean
+     * @see Tags#getId()
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,11 +65,19 @@ public class Tags extends AbstractEntity{
         return Objects.equals(getId(), tags.getId());
     }
 
+    /**
+     * Method return hashcode of this class
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return getClass().hashCode();
     }
 
+    /**
+     * This method returns Tags's parameters in String format
+     * @return Workout in String format
+     */
     @Override
     public String toString() {
         return "Tags{" +
