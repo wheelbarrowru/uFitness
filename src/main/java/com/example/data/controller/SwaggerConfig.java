@@ -17,17 +17,17 @@ public class SwaggerConfig {
 
     @Bean
     public Docket newsApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("api-Profile")
+        return new Docket(DocumentationType.SWAGGER_2).groupName("API-Profile-Data")
                 .apiInfo(apiProfile()).select().paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiProfile() {
         return new ApiInfoBuilder()
-                .title("uFitness")
-                .description("Profile Controller order api")
+                .title("uFitness API")
+                .description("Profile Controller data API")
                 .termsOfServiceUrl("http://localhost:8080")
-                .contact(new Contact("Ildar", "https://github.com/wheelbarrowru", "khabibulin_ildarr@mail.ru"))
-                .version("1.0.0")
+                .contact(new Contact("Ildar Khabibulin", "https://github.com/wheelbarrowru", "khabibulin_ildarr@mail.ru"))
+                .version("1.3.0")
                 .build();
     }
 }
