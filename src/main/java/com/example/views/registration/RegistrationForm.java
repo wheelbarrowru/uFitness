@@ -25,8 +25,6 @@ import java.util.stream.Stream;
  */
 public class RegistrationForm extends FormLayout {
 
-    private static final H2 title = new H2("Signup form");
-
     private final TextField firstName;
     @Getter
     private final TextField lastName;
@@ -67,6 +65,7 @@ public class RegistrationForm extends FormLayout {
         submitButton = new Button("Join the community");
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        H2 title = new H2("Signup form");
         add(title, firstName, lastName, email, username, password, passwordConfirm, allowMarketing, errorMessageField, submitButton);
 
         setMaxWidth("500px");
