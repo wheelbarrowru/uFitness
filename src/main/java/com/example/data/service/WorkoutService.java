@@ -43,8 +43,9 @@ public class WorkoutService {
     }
 
     /**
-     * @param id
-     * @return
+     * This method get Workout from id of Workout
+     * @param id workout id
+     * @return WorkoutDTO
      */
     //FIXME
     public WorkoutDTO getDTO(int id) {
@@ -73,7 +74,7 @@ public class WorkoutService {
     /**
      * This Method return List of pageable workouts
      * @param pageable Workout
-     * @return wotkoutRepository
+     * @return WorkoutRepository
      * @see WorkoutRepository#findAll()
      */
     public Page<Workout> list(Pageable pageable) {
@@ -107,7 +108,7 @@ public class WorkoutService {
     }
 
     /**
-     * Method for converting WorkoutDTO to Workout
+     * Method for converting WorkoutDTO to workout
      * @param workoutDTO WorkoutDTO
      * @return Workout
      * @see Workout#setTitle(String)
