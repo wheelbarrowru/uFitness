@@ -22,6 +22,7 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -63,6 +64,10 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
 
         constructUI();
+
+        for (WorkoutDTO workoutDTO : findWorkoutsService.findWorkoutsByTagsDTO(new ArrayList<>())) {
+            workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
+        }
 
         tagsGrid.addClickListener(event -> {
             workoutContainer.removeAll();
