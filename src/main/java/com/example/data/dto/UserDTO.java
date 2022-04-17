@@ -1,6 +1,7 @@
 package com.example.data.dto;
 import com.example.data.Role;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,28 +22,35 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDTO {
     @NotBlank
+    @ApiModelProperty(notes = "The database generated user's ID")
     private int id;
 
     @NotBlank
+    @ApiModelProperty(notes = "User's username", required = true)
     private String username;
 
     @NotBlank
+    @ApiModelProperty(notes = "User's firstname", required = true)
     private String firstName;
 
     @NotBlank
+    @ApiModelProperty(notes = "User's lastname", required = true)
     private String lastName;
 
     @NotBlank
     @Email
+    @ApiModelProperty(notes = "User's email", required = true)
     private String email;
 
     @NotBlank
+    @ApiModelProperty(notes = "User's Role", required = true)
     private Set<Role> roles;
 
     private boolean allowsMarketing;
 
     // FIXME Passwords should never be stored in plain text!
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
+    @ApiModelProperty(notes = "User's password", required = true)
     private String password;
     /*
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();

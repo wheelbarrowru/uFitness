@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +18,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@Api(value="GameOfThronesService")
+@Hidden
+@Api(value="Profile Controller")
 public class ProfileController {
     private final UserService userService;
     @Value("${server.port}")
