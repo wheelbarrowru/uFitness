@@ -17,21 +17,41 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller class for connecting User and front of Profile page
+ */
 @RestController
 @Api(value = "Profile Data Controller", tags = "Profile Data Controller")
 public class ProfileController {
     @Setter
     private UserService userService;
+    /**
+     * Server Port parametr 
+     */
     @Value("${server.port}")
     private String serverPort;
+    /**
+     * Url of start-page 
+     */
     final String url = "http://localhost:" + serverPort + "/";
 
 
+    /**
+     * Constructor of ProfileController
+     * @param userService User's userServoce
+     */
     @Autowired
     public ProfileController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * This method for redirecting user on his Profile page 
+     * @param headers HttpHeaders
+     * @param id User's id
+     * @return User's profile page if id is correct and start-page if user's id isn't correct
+     * @see UserService#getDTO(int) 
+     */
     @GetMapping({"/profile/data/{id}"})
     @ApiOperation(value = "Get Profile Data", notes = "Returns all the profile data")
     @ApiResponses(value = {

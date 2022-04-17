@@ -8,9 +8,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Class for configuration SpringFox
+ */
 @Configuration
 @EnableSwagger2
 public class SpringFoxConfig {
+    /**
+     * This method creates swagger-ui web application
+     * @return Docket
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
