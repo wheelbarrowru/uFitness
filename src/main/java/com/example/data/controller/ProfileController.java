@@ -6,7 +6,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@Hidden
-@Api(value="Profile Controller")
+@Api(value = "Profile Data Controller", tags = "Profile Data Controller")
 public class ProfileController {
     @Setter
     private UserService userService;
@@ -35,9 +33,9 @@ public class ProfileController {
     }
 
     @GetMapping({"/profile/data/{id}"})
-    @ApiOperation(value = "Get Profile", notes = "Returns all the profile data")
+    @ApiOperation(value = "Get Profile Data", notes = "Returns all the profile data")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 200, message = "Successfully retrieved UserDTO"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
@@ -47,7 +45,7 @@ public class ProfileController {
     ResponseEntity<UserDTO> getProfile(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         List<String> values = headers.getValuesAsList("USER_AGENT");
         if (values.contains("admin")) {
-            return new ResponseEntity<>(this.userService.getDTO(id),HttpStatus.OK) ;
+            return new ResponseEntity<>(this.userService.getDTO(id), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
         }

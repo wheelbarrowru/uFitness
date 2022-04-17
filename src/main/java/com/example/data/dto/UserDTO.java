@@ -1,7 +1,8 @@
 package com.example.data.dto;
+
 import com.example.data.Role;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,45 +19,47 @@ import java.util.Set;
  */
 @Data
 @AllArgsConstructor
-@ApiModel(value = "User entity", description = "Complete data of an entity user")
+@ApiModel(value = "UserDTO", description = "Complete data of an userDTO")
 @NoArgsConstructor
 public class UserDTO {
     @NotBlank
-    @ApiModelProperty(notes = "The database generated user's ID")
+    @Schema(description = "User id")
     private int id;
 
     @NotBlank
-    @ApiModelProperty(notes = "User's username", required = true)
+    @Schema(description = "Username")
     private String username;
 
     @NotBlank
-    @ApiModelProperty(notes = "User's firstname", required = true)
+    @Schema(description = "User first name")
     private String firstName;
 
     @NotBlank
-    @ApiModelProperty(notes = "User's lastname", required = true)
+    @Schema(description = "User last name")
     private String lastName;
 
     @NotBlank
     @Email
-    @ApiModelProperty(notes = "User's email", required = true)
+    @Schema(description = "User email")
     private String email;
 
     @NotBlank
-    @ApiModelProperty(notes = "User's Role", required = true)
+    @Schema(description = "User role in system")
     private Set<Role> roles;
 
+    @Schema(description = "User allows for marketing")
     private boolean allowsMarketing;
 
     @Size(min = 8, max = 64, message = "Password must be 8-64 char long")
-    @ApiModelProperty(notes = "User's password", required = true)
+    @Schema(description = "User encrypted password")
     private String password;
+
     /*
     private List<Workout> favoriteTrainings = new ArrayList<Workout>();
 
     */
     public UserDTO(int id, String username, String firstName, String lastName,
-                   String email, String password){
+                   String email, String password) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
