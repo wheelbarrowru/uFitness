@@ -15,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Create a FormLayout with all our components. The FormLayout
@@ -27,14 +28,14 @@ import com.vaadin.flow.component.textfield.TextArea;
  */
 public class WorkoutForm extends VerticalLayout {
 
-
     /**
      * Constructor - creating a new view for workouts
-     * @param workoutService - object of workoutService
-     * @param workoutID - workout id
+     *
+     * @param workoutService basic service
+     * @param workoutID      workout's id
      * @see WorkoutService#WorkoutService(WorkoutRepository)
      */
-    public WorkoutForm(WorkoutService workoutService, int workoutID) {
+    public WorkoutForm(@Autowired WorkoutService workoutService, int workoutID) {
         WorkoutDTO workoutDTO = workoutService.getDTO(workoutID);
         Component header = new H2(workoutDTO.getTitle());
         Label rating = new Label("Rating: " + workoutDTO.getRating());
@@ -46,13 +47,12 @@ public class WorkoutForm extends VerticalLayout {
 
         RadioButtonGroup<String> radioGroup = new RadioButtonGroup<>();
         radioGroup.setLabel("Please rate the workout");
-        radioGroup.setItems("1", "2","3","4","5");
+        radioGroup.setItems("1", "2", "3", "4", "5");
         HorizontalLayout rateButtons = new HorizontalLayout(radioGroup);
-        radioGroup.addValueChangeListener(e -> workoutService
-                .updateRating(workoutDTO, radioGroup.getValue()));
+        radioGroup.addValueChangeListener(e -> workoutService.updateRating(workoutDTO, radioGroup.getValue()));
 
         UnorderedList content = new UnorderedList();
-        for(TagsDTO tagsDTO: workoutDTO.getWorkoutTags()){
+        for (TagsDTO tagsDTO : workoutDTO.getWorkoutTags()) {
             content.add(new ListItem(tagsDTO.getMessage()));
         }
 
@@ -68,8 +68,8 @@ public class WorkoutForm extends VerticalLayout {
         setHorizontalComponentAlignment(Alignment.CENTER, header);
         setHorizontalComponentAlignment(Alignment.CENTER, rating);
         setHorizontalComponentAlignment(Alignment.CENTER, text);
-        setHorizontalComponentAlignment(Alignment.CENTER,rateButtons);
-        setHorizontalComponentAlignment(Alignment.CENTER,details);
+        setHorizontalComponentAlignment(Alignment.CENTER, rateButtons);
+        setHorizontalComponentAlignment(Alignment.CENTER, details);
 
         add(header, rating, details, text, rateButtons);
     }

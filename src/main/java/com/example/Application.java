@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @Theme(value = "ufitness", variant = Lumo.DARK)
-@PWA(name = "uFitness", shortName = "uFitness", offlineResources = {})
+@PWA(name = "uFitness", shortName = "uFitness")
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 @EnableSwagger2
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {

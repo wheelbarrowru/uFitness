@@ -13,15 +13,15 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
-import java.sql.SQLOutput;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -37,14 +37,10 @@ import java.util.Set;
 @PageTitle("Workout List")
 @Route(value = "workout-list")
 @RolesAllowed("USER")
-//@AnonymousAllowed
 public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
     private OrderedList workoutContainer;
     private TagsGrid tagsGrid;
-    private Button profile;
-    private Button createWorkout;
-    private Button logout;
     private final TagsService tagsService;
     private final AuthenticatedUser authenticatedUser;
 
@@ -52,17 +48,16 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
      * Constructor of WorkoutListView
      * <p>
      * This method create new Authenticated user, calls constructUI method
+     *
+     * @param tagsService         basic service
+     * @param workoutService      basic service
+     * @param findWorkoutsService basic service
+     * @param userRepository      basic service
      * @see WorkoutListView#constructUI()
-     * @param tagsService - object of tagsService
-     * @param workoutService - object of workoutService
-     * @param findWorkoutsService - findWorkoutsService
-     * @param userRepository - user repository
      * @see UserRepository
      * @see TagsService#TagsService(TagsRepository)
      */
-    @Autowired
-    public WorkoutListView(TagsService tagsService, WorkoutService workoutService,
-                           FindWorkoutsService findWorkoutsService, UserRepository userRepository) {
+    public WorkoutListView(@Autowired TagsService tagsService, @Autowired WorkoutService workoutService, @Autowired FindWorkoutsService findWorkoutsService, @Autowired UserRepository userRepository) {
         this.tagsService = tagsService;
         this.authenticatedUser = new AuthenticatedUser(userRepository);
 
@@ -83,6 +78,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     /**
      * Method which create User Interface adding buttons for going to profile or workouts
      * This method creates tagsGrid by tagsService
+     *
      * @see TagsGrid#TagsGrid(TagsService)
      */
     private void constructUI() {
@@ -99,22 +95,24 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         Optional<User> user = authenticatedUser.get();
         try {
             id = String.valueOf(user.orElseThrow().getId());
-        } catch (NoSuchElementException ignored) { }
+        } catch (NoSuchElementException ignored) {
+        }
 
         String address = "profile/" + id;
-        profile = new Button("Profile");
+        Button profile = new Button("Profile");
         profile.addClickListener(e -> UI.getCurrent().navigate(address));
 
-        createWorkout = new Button("Create workout");
+        Button createWorkout = new Button("Create workout");
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));
 
-        logout = new Button("Log out");
+        Button logout = new Button("Log out");
         logout.addClickListener(e -> authenticatedUser.logout());
 
         buttons.add(profile, createWorkout, logout);
         buttons.addClassNames("justify-end");
 
         /*
+        ignore
         Select<String> sortBy = new Select<>();
         sortBy.setLabel("Sort by");
         sortBy.setItems("Popularity", "Newest first", "Oldest first");

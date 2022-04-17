@@ -13,7 +13,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 /**
- *The main view that holds the start-page form
+ * The main view that holds the start-page form
  * <p>
  * This view is itself a component (specifically a VerticalLayout) to
  * which the start-page form is added. This view is made accessible
@@ -41,7 +41,7 @@ public class StartPageView extends VerticalLayout {
         registration.addClickListener(e -> registration.getUI().ifPresent(ui -> ui.navigate("registration")));
 
         setSizeFull();
-        setJustifyContentMode ( FlexComponent.JustifyContentMode.CENTER );
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         login.setSizeFull();

@@ -21,37 +21,37 @@ import javax.annotation.security.RolesAllowed;
 @PageTitle("Workout")
 @Route(value = "workout")
 @RolesAllowed("USER")
-//@AnonymousAllowed
 public class WorkoutView extends Div implements HasUrlParameter<Integer> {
     private final WorkoutService workoutService;
 
     /**
-     * @param workoutService - object of workoutService
-     * @see WorkoutService#WorkoutService(WorkoutRepository)                       
+     * @param workoutService basic service
+     * @see WorkoutService#WorkoutService(WorkoutRepository)
      */
-    @Autowired
-    public WorkoutView(WorkoutService workoutService) {
-        this.workoutService=workoutService;
+    public WorkoutView(@Autowired WorkoutService workoutService) {
+        this.workoutService = workoutService;
     }
 
     /**
      * Method which set id to addWorkoutForm method
-     * @param event - event
-     * @param parameter - id of workout
+     *
+     * @param event     event
+     * @param parameter workout's id
      */
     @Override
     public void setParameter(BeforeEvent event, Integer parameter) {
-        addWorkoutForm(workoutService,parameter);
+        addWorkoutForm(workoutService, parameter);
     }
 
     /**
      * Method which creates new WorkoutForm
-     * @param workoutService - object of workoutService
-     * @param parameter - id of workout
-     * @see WorkoutService#WorkoutService(WorkoutRepository) 
-     * @see WorkoutForm#WorkoutForm(WorkoutService, int) 
+     *
+     * @param workoutService basic service
+     * @param parameter      workout's id
+     * @see WorkoutService#WorkoutService(WorkoutRepository)
+     * @see WorkoutForm#WorkoutForm(WorkoutService, int)
      */
-    private void addWorkoutForm(WorkoutService workoutService, int parameter){
+    private void addWorkoutForm(@Autowired WorkoutService workoutService, int parameter) {
         WorkoutForm workoutForm = new WorkoutForm(workoutService, parameter);
         add(workoutForm);
     }

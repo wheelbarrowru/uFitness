@@ -7,7 +7,8 @@ import com.vaadin.flow.router.Route;
 
 /**
  * * Front of login class  with <b>ERROR_MESSAGE</b> and <b>restClientService</b> and <b>authenticatedUser</b> properties.
- *  * This class creates a tab front login
+ * * This class creates a tab front login
+ * <p>Basic LoginI18n by Vaadin</p>
  */
 @PageTitle("Login")
 @Route(value = "login")

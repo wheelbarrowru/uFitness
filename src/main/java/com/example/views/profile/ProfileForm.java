@@ -22,20 +22,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
  * accessible to the user.
  */
 public class ProfileForm extends VerticalLayout {
-    /**
-     * Field of logout button
-     */
-    private final Button logout;
-    /**
-     * Field of delete button
-     */
-    private final Button delete;
 
     /**
      * Constructor - creating a new form of profile
-     * @param restClientService - client service
-     * @param authenticatedUser - security class of user authentication
-     * @param param - user's id
+     *
+     * @param restClientService basic service
+     * @param authenticatedUser security class of user authentication
+     * @param param             user's id
      * @see RestClientService#RestClientService()
      * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
      */
@@ -59,8 +52,8 @@ public class ProfileForm extends VerticalLayout {
         lastName.addClassNames("text-l");
         Label email = new Label(userDTO.getEmail());
         email.addClassNames("text-l");
-        logout = new Button("Log out");
-        delete = new Button("Delete my account");
+        Button logout = new Button("Log out");
+        Button delete = new Button("Delete my account");
         delete.addClassNames("bg-error", "text-error-contrast");
         logout.setWidthFull();
         delete.setWidthFull();

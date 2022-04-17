@@ -1,9 +1,5 @@
 package com.example.views.tagsgrid;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import com.example.data.dto.TagsDTO;
 import com.example.data.repository.TagsRepository;
 import com.example.data.service.TagsService;
@@ -16,6 +12,11 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Class of window which we use for creating or searching workouts
@@ -31,10 +32,10 @@ public class TagsGrid extends Div {
     /**
      * Constructor - creating a new tags view
      *
-     * @param tagsService - tagsService
+     * @param tagsService basic service
      * @see TagsService#TagsService(TagsRepository)
      */
-    public TagsGrid(TagsService tagsService) {
+    public TagsGrid(@Autowired TagsService tagsService) {
         this.tags = tagsService.getSetOfDTO();
         this.setupInvitationForm();
         this.setupGrid();
@@ -45,9 +46,6 @@ public class TagsGrid extends Div {
      * Method for creating a form for adding tags
      */
     private void setupInvitationForm() {
-        //List<Tags> tags = DataService.getPeople();
-
-
         ComboBox<TagsDTO> comboBox = new ComboBox<>();
         comboBox.setItems(tags);
         comboBox.setItemLabelGenerator(TagsDTO::getMessage);
@@ -107,7 +105,7 @@ public class TagsGrid extends Div {
     }
 
     /**
-     * @param tagsDTO - DTO of tag entity
+     * @param tagsDTO DTO of tag entity
      * @see TagsDTO#TagsDTO(int, String)
      */
     private void sendInvitation(TagsDTO tagsDTO) {
@@ -118,7 +116,7 @@ public class TagsGrid extends Div {
     }
 
     /**
-     * @param tagsDTO - DTO of tag entity
+     * @param tagsDTO DTO of tag entity
      * @see TagsDTO#TagsDTO(int, String)
      */
     private void removeInvitation(TagsDTO tagsDTO) {

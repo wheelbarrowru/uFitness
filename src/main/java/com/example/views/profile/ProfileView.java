@@ -21,17 +21,16 @@ import java.util.NoSuchElementException;
 @PageTitle("Profile")
 @Route(value = "profile")
 @RolesAllowed("USER")
-//@AnonymousAllowed
 public class ProfileView extends Div implements HasUrlParameter<Integer> {
-    private final String ERROR_MESSAGE = "You haven't access to this page";
     private final RestClientService restClientService;
     private final AuthenticatedUser authenticatedUser;
 
     /**
      * Method of setting params to addParameter
-     * @param beforeEvent - Abstract before event class
-     * that has the common functionalities for  BeforeLeaveEvent and BeforeEnterEvent
-     * @param param - id
+     *
+     * @param beforeEvent Abstract before event class
+     *                    that has the common functionalities for  BeforeLeaveEvent and BeforeEnterEvent
+     * @param param       id
      */
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer param) {
@@ -40,9 +39,11 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
 
     /**
      * Method to create ProfileForm
-     * @param param - user's id
+     *
+     * @param param user's id
      */
-    public void addProfileForm(Integer param){
+    public void addProfileForm(Integer param) {
+        String ERROR_MESSAGE = "You haven't access to this page";
         H2 errorMessage = new H2(ERROR_MESSAGE);
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
@@ -51,7 +52,7 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
             } else {
                 add(errorMessage);
             }
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             add(errorMessage);
         }
 
@@ -59,18 +60,15 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
 
     /**
      * Constructor - creating a front of user's profile
-     * @param restClientService - restClientService
-     * @param authenticatedUser - security class of user authentication
+     *
+     * @param restClientService basic service
+     * @param authenticatedUser security class of user authentication
      * @see RestClientService#RestClientService()
      * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
      */
-    public ProfileView(@Autowired RestClientService restClientService,
-                       @Autowired AuthenticatedUser authenticatedUser) {
-        this.restClientService=restClientService;
+    public ProfileView(@Autowired RestClientService restClientService, @Autowired AuthenticatedUser authenticatedUser) {
+        this.restClientService = restClientService;
         this.authenticatedUser = authenticatedUser;
     }
-
-
-
 
 }

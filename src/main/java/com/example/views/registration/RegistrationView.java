@@ -7,6 +7,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -30,7 +31,7 @@ public class RegistrationView extends VerticalLayout {
      * <p>
      * Build the initial UI state for the user accessing the application.
      */
-    public RegistrationView(UserService userService) {
+    public RegistrationView(@Autowired UserService userService) {
         RegistrationForm registrationForm = new RegistrationForm();
 
         setHorizontalComponentAlignment(Alignment.CENTER, registrationForm);
