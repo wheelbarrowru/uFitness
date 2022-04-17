@@ -58,7 +58,7 @@ public class TagsService {
 
     /**
      * Method for deleting tags
-     * @param id tagsRapository's id
+     * @param id tagsRepository's id
      * @see TagsRepository#deleteById(Object)
      */
     public void delete(int id) {
