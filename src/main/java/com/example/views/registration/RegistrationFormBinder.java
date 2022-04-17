@@ -2,6 +2,7 @@ package com.example.views.registration;
 
 import com.example.data.Role;
 import com.example.data.dto.UserDTO;
+import com.example.data.repository.UserRepository;
 import com.example.data.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class RegistrationFormBinder {
 
     private final RegistrationForm registrationForm;
@@ -26,6 +28,9 @@ public class RegistrationFormBinder {
      */
     private boolean enablePasswordValidation;
 
+    /**
+     * @param registrationForm - registration form
+     */
     public RegistrationFormBinder(RegistrationForm registrationForm) {
         this.registrationForm = registrationForm;
     }
@@ -107,11 +112,23 @@ public class RegistrationFormBinder {
         return userService.checkNotExistUsername(username)? ValidationResult.ok() : ValidationResult.error("This username is busy");
     }
 
+    /**
+     * THis method shows is user's email busy or not
+     * @param email - user's emael
+     * @param ctx - context
+     * @return ValidationResult
+     */
     private ValidationResult emailValidator(String email, ValueContext ctx) {
 
         return userService.checkNotExistEmail(email)? ValidationResult.ok() : ValidationResult.error("This email is busy");
     }
 
+    /**
+     * This method checks is user's password correct
+     * @param pass1 - first password
+     * @param ctx -ValueContext
+     * @return - is passwords match
+     */
     private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
 
         /*

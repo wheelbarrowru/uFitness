@@ -42,7 +42,6 @@ public class RegistrationForm extends FormLayout {
 
     private final Button submitButton;
 
-
     public RegistrationForm() {
         firstName = new TextField("First name");
         lastName = new TextField("Last name");
@@ -87,39 +86,66 @@ public class RegistrationForm extends FormLayout {
         setColspan(submitButton, 2);
     }
 
+    /**
+     * @return user's first name
+     */
     public TextField getFirstNameField() {
         return firstName;
     }
 
+    /**
+     * @return user's last name
+     */
     public TextField getLastNameField() {
         return lastName;
     }
 
+    /**
+     * @return user's email
+     */
     public EmailField getEmailField() {
         return email;
     }
 
+    /**
+     * @return user's username
+     */
     public TextField getUsernameField() {
         return username;
     }
 
+    /**
+     * @return user's password
+     */
     public PasswordField getPasswordField() {
         return password;
     }
 
+    /**
+     * @return second password to confirm user's password
+     */
     public PasswordField getPasswordConfirmField() {
         return passwordConfirm;
     }
 
 
+    /**
+     * @return error message
+     */
     public Span getErrorMessageField() {
         return errorMessageField;
     }
 
+    /**
+     * @return submit button
+     */
     public Button getSubmitButton() {
         return submitButton;
     }
 
+    /**
+     * @param components
+     */
     private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }

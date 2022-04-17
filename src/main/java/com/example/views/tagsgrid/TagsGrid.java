@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.data.dto.TagsDTO;
+import com.example.data.repository.TagsRepository;
 import com.example.data.service.TagsService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,6 +17,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 
+/**
+ * Class of window which we use for creating or searching workouts
+ */
 public class TagsGrid extends Div {
 
     private final List<TagsDTO> invitedTags = new ArrayList<>();
@@ -24,13 +28,22 @@ public class TagsGrid extends Div {
     private Div hint;
     private final Set<TagsDTO> tags;
 
+    /**
+     * Constructor - creating a new tags view
+     *
+     * @param tagsService - tagsService
+     * @see TagsService#TagsService(TagsRepository)
+     */
     public TagsGrid(TagsService tagsService) {
-        this.tags=tagsService.getSetOfDTO();
+        this.tags = tagsService.getSetOfDTO();
         this.setupInvitationForm();
         this.setupGrid();
         this.refreshGrid();
     }
 
+    /**
+     * Method for creating a form for adding tags
+     */
     private void setupInvitationForm() {
         //List<Tags> tags = DataService.getPeople();
 
@@ -52,6 +65,9 @@ public class TagsGrid extends Div {
         add(layout);
     }
 
+    /**
+     * Method for setting up gird
+     */
     private void setupGrid() {
         grid = new Grid<>(TagsDTO.class, false);
         grid.setAllRowsVisible(true);
@@ -76,6 +92,9 @@ public class TagsGrid extends Div {
         add(hint, grid);
     }
 
+    /**
+     * Method for updating grid
+     */
     private void refreshGrid() {
         if (invitedTags.size() > 0) {
             grid.setVisible(true);
@@ -87,6 +106,10 @@ public class TagsGrid extends Div {
         }
     }
 
+    /**
+     * @param tagsDTO - DTO of tag entity
+     * @see TagsDTO#TagsDTO(int, String)
+     */
     private void sendInvitation(TagsDTO tagsDTO) {
         if (tagsDTO == null || invitedTags.contains(tagsDTO))
             return;
@@ -94,6 +117,10 @@ public class TagsGrid extends Div {
         this.refreshGrid();
     }
 
+    /**
+     * @param tagsDTO - DTO of tag entity
+     * @see TagsDTO#TagsDTO(int, String)
+     */
     private void removeInvitation(TagsDTO tagsDTO) {
         if (tagsDTO == null)
             return;
@@ -101,6 +128,10 @@ public class TagsGrid extends Div {
         this.refreshGrid();
     }
 
+    /**
+     * @return invited tags
+     * @see TagsDTO#TagsDTO(int, String)
+     */
     public List<TagsDTO> getTags() {
         return invitedTags;
     }

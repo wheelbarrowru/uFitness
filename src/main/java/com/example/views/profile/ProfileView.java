@@ -1,5 +1,6 @@
 package com.example.views.profile;
 
+import com.example.data.repository.UserRepository;
 import com.example.data.service.RestClientService;
 import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.html.Div;
@@ -13,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 import java.util.NoSuchElementException;
 
+/**
+ * Front of profile class with <b>ERROR_MESSAGE</b> and <b>restClientService</b> and <b>authenticatedUser</b> properties.
+ * This class creates a tab front profile
+ */
 @PageTitle("Profile")
 @Route(value = "profile")
 @RolesAllowed("USER")
@@ -22,11 +27,21 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
     private final RestClientService restClientService;
     private final AuthenticatedUser authenticatedUser;
 
+    /**
+     * Method of setting params to addParameter
+     * @param beforeEvent - Abstract before event class
+     * that has the common functionalities for  BeforeLeaveEvent and BeforeEnterEvent
+     * @param param - id
+     */
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer param) {
         addProfileForm(param);
     }
 
+    /**
+     * Method to create ProfileForm
+     * @param param - user's id
+     */
     public void addProfileForm(Integer param){
         H2 errorMessage = new H2(ERROR_MESSAGE);
         try {
@@ -42,6 +57,13 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
 
     }
 
+    /**
+     * Constructor - creating a front of user's profile
+     * @param restClientService - restClientService
+     * @param authenticatedUser - security class of user authentication
+     * @see RestClientService#RestClientService()
+     * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
+     */
     public ProfileView(@Autowired RestClientService restClientService,
                        @Autowired AuthenticatedUser authenticatedUser) {
         this.restClientService=restClientService;

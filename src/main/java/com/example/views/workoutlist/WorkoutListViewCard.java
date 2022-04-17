@@ -2,6 +2,7 @@ package com.example.views.workoutlist;
 
 import com.example.data.dto.TagsDTO;
 import com.example.data.dto.WorkoutDTO;
+import com.example.data.repository.WorkoutRepository;
 import com.example.data.service.WorkoutService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.ListItem;
@@ -9,8 +10,17 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Front of login class  with <b>ERROR_MESSAGE</b> and <b>id</b> and <b>workoutService</b> properties.
+ */
 public class WorkoutListViewCard extends ListItem {
 
+    /**
+     * Constructor of WorkoutListViewCard
+     * @param id - workout id
+     * @param workoutService - workoutService
+     * @see WorkoutService#WorkoutService(WorkoutRepository)
+     */
     public WorkoutListViewCard(int id, WorkoutService workoutService) {
         addClassNames("bg-contrast-5", "flex", "flex-col", "items-start", "p-m", "rounded-l");
 

@@ -1,6 +1,8 @@
 package com.example.views.createworkout;
 
 import com.example.data.dto.WorkoutDTO;
+import com.example.data.repository.WorkoutRepository;
+import com.example.data.service.TagsService;
 import com.example.data.service.WorkoutService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
@@ -11,12 +13,29 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * FIXME
+ */
 public class CreateWorkoutBinder {
+    /**
+     * field of class create workout form
+     */
     private final CreateWorkoutForm createWorkoutForm;
 
+    /**
+     * Constructor - creating a new object
+     * @param createWorkoutForm - object of creatingWorkoutForm
+     * @see CreateWorkoutForm#CreateWorkoutForm(TagsService)
+     */
     public CreateWorkoutBinder(CreateWorkoutForm createWorkoutForm) {
         this.createWorkoutForm = createWorkoutForm;
     }
+
+    /**
+     * Method to add Binding And Validation
+     * @param workoutService - workoutService
+     * @see WorkoutService#WorkoutService(WorkoutRepository)
+     */
     @Autowired
     public void addBindingAndValidation(WorkoutService workoutService){
         BeanValidationBinder<WorkoutDTO> binder = new BeanValidationBinder<>(WorkoutDTO.class);
@@ -40,12 +59,28 @@ public class CreateWorkoutBinder {
                 }
                 );
     }
+
+    /**
+     * @param title - title
+     * @param ctx - context
+     * @return -
+     */
     private ValidationResult titleValidation(String title, ValueContext ctx){
         return !title.isEmpty()? ValidationResult.ok(): ValidationResult.error("Title cannot be empty");
     }
+
+    /**
+     * @param body - body
+     * @param ctx - context
+     * @return -
+     */
     private ValidationResult bodyValidation(String body, ValueContext ctx){
         return !body.isEmpty()? ValidationResult.ok(): ValidationResult.error("Description cannot be empty");
     }
+
+    /**
+     * Method which show is data saved or not
+     */
     private void showSuccess() {
         Notification notification =
                 Notification.show("Data saved");

@@ -1,6 +1,7 @@
 package com.example.views.profile;
 
 import com.example.data.dto.UserDTO;
+import com.example.data.repository.UserRepository;
 import com.example.data.service.RestClientService;
 import com.example.security.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
@@ -11,10 +12,33 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
+/**
+ * Create a FormLayout with all our components. The FormLayout
+ * doesn't have any logic (validation, etc.), but it allows us to
+ * configure responsiveness from Java code and its defaults looks
+ * nicer than just using a Div or a VerticalLayout.
+ * <p>
+ * This FormLayout itself is added to the MainView, where it is made
+ * accessible to the user.
+ */
 public class ProfileForm extends VerticalLayout {
+    /**
+     * Field of logout button
+     */
     private final Button logout;
+    /**
+     * Field of delete button
+     */
     private final Button delete;
 
+    /**
+     * Constructor - creating a new form of profile
+     * @param restClientService - client service
+     * @param authenticatedUser - security class of user authentication
+     * @param param - user's id
+     * @see RestClientService#RestClientService()
+     * @see AuthenticatedUser#AuthenticatedUser(UserRepository)
+     */
     public ProfileForm(RestClientService restClientService, AuthenticatedUser authenticatedUser, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
 

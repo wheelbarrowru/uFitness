@@ -2,6 +2,7 @@ package com.example.views.workout;
 
 import com.example.data.dto.TagsDTO;
 import com.example.data.dto.WorkoutDTO;
+import com.example.data.repository.WorkoutRepository;
 import com.example.data.service.WorkoutService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.details.Details;
@@ -15,9 +16,24 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
 
+/**
+ * Create a FormLayout with all our components. The FormLayout
+ * doesn't have any logic (validation, etc.), but it allows us to
+ * configure responsiveness from Java code and its defaults looks
+ * nicer than just using a Div or a VerticalLayout.
+ * <p>
+ * This FormLayout itself is added to the MainView, where it is made
+ * accessible to the user.
+ */
 public class WorkoutForm extends VerticalLayout {
 
 
+    /**
+     * Constructor - creating a new view for workouts
+     * @param workoutService - object of workoutService
+     * @param workoutID - workout id
+     * @see WorkoutService#WorkoutService(WorkoutRepository)
+     */
     public WorkoutForm(WorkoutService workoutService, int workoutID) {
         WorkoutDTO workoutDTO = workoutService.getDTO(workoutID);
         Component header = new H2(workoutDTO.getTitle());

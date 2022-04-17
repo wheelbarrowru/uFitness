@@ -1,6 +1,7 @@
 package com.example.views.createworkout;
 
 import com.example.data.dto.TagsDTO;
+import com.example.data.repository.TagsRepository;
 import com.example.data.service.TagsService;
 import com.example.views.tagsgrid.TagsGrid;
 import com.vaadin.flow.component.Component;
@@ -19,6 +20,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * Create a FormLayout with all our components. The FormLayout
+ * doesn't have any logic (validation, etc.), but it allows us to
+ * configure responsiveness from Java code and its defaults looks
+ * nicer than just using a Div or a VerticalLayout.
+ * <p>
+ * This FormLayout itself is added to the MainView, where it is made
+ * accessible to the user.
+ */
 public class CreateWorkoutForm extends FormLayout {
     private final Component header;
     private final TextField title;
@@ -30,6 +40,11 @@ public class CreateWorkoutForm extends FormLayout {
 
     private final TagsGrid tagsGrid;
 
+    /**
+     * Constructor - creating a new form for creating workout
+     * @param tagsService - tagsService
+     * @see TagsService#TagsService(TagsRepository)
+     */
     public CreateWorkoutForm(TagsService tagsService) {
         header = new H2("Create your workout");
         title = new TextField("Add your workout's title");
@@ -69,30 +84,52 @@ public class CreateWorkoutForm extends FormLayout {
 
         setMaxWidth("800px");
     }
+
+    /**
+     * @return - getButton
+     */
     public Button getButton() {
         return button;
     }
 
+    /**
+     * @return - error
+     */
     public Span getErrorMessageField() {
         return errorMessageField;
     }
 
+    /**
+     * @return - tags grid
+     */
     public TagsGrid getTagsGrid() {
         return tagsGrid;
     }
 
+    /**
+     * @return - title
+     */
     public TextField getTitle() {
         return title;
     }
 
+    /**
+     * @return - body
+     */
     public TextArea getBody() {
         return body;
     }
 
+    /**
+     * @return - tags
+     */
     public Set<TagsDTO> getTagsSet() {
         return new HashSet<>(tagsGrid.getTags());
     }
 
+    /**
+     * @param components - component
+     */
     private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }

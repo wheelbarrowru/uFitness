@@ -2,6 +2,7 @@ package com.example.views.workoutlist;
 
 import com.example.data.dto.WorkoutDTO;
 import com.example.data.model.User;
+import com.example.data.repository.TagsRepository;
 import com.example.data.repository.UserRepository;
 import com.example.data.service.FindWorkoutsService;
 import com.example.data.service.TagsService;
@@ -26,6 +27,13 @@ import java.util.Optional;
 import java.util.Set;
 
 
+/**
+ * The main view that holds the Workout list form
+ * <p>
+ * This view is itself a component (specifically a VerticalLayout) to
+ * which the workout list form is added. This view is made accessible
+ * to the end-user via the @Route annotation.
+ */
 @PageTitle("Workout List")
 @Route(value = "workout-list")
 @RolesAllowed("USER")
@@ -40,6 +48,18 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
     private final TagsService tagsService;
     private final AuthenticatedUser authenticatedUser;
 
+    /**
+     * Constructor of WorkoutListView
+     * <p>
+     * This method create new Authenticated user, calls constructUI method
+     * @see WorkoutListView#constructUI()
+     * @param tagsService - object of tagsService
+     * @param workoutService - object of workoutService
+     * @param findWorkoutsService - findWorkoutsService
+     * @param userRepository - user repository
+     * @see UserRepository
+     * @see TagsService#TagsService(TagsRepository)
+     */
     @Autowired
     public WorkoutListView(TagsService tagsService, WorkoutService workoutService,
                            FindWorkoutsService findWorkoutsService, UserRepository userRepository) {
@@ -60,6 +80,11 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
 
     }
 
+    /**
+     * Method which create User Interface adding buttons for going to profile or workouts
+     * This method creates tagsGrid by tagsService
+     * @see TagsGrid#TagsGrid(TagsService)
+     */
     private void constructUI() {
         addClassNames("workout-list-view", "max-w-screen-lg", "mx-auto", "pb-l", "px-l");
 
