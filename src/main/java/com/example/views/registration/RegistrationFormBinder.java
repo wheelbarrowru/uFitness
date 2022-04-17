@@ -136,8 +136,8 @@ public class RegistrationFormBinder {
      * Method which show is data saved or not <p>Notify user about result and navigate to login page</p>
      */
     private void showSuccess(UserDTO userBean) {
-        Notification notification = Notification.show("Data saved, welcome "
-                + userBean.getFirstName()+ " to uFitness!");
+        Notification notification = Notification.show("Data saved, welcome to uFitness "
+                + userBean.getFirstName()+ "!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         UI.getCurrent().navigate("login");
