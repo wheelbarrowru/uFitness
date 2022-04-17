@@ -13,26 +13,45 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * FIXME
+ * This Class works with authenticated user and protect his data
+ */
 @Component
 public class AuthenticatedUser {
 
     private final UserRepository userRepository;
 
+    /**
+     * @param userRepository - userRepository
+     * @see UserRepository
+     */
     @Autowired
     public AuthenticatedUser(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * @return Optional.ofNullable(context.getAuthentication())
+     */
     private Optional<Authentication> getAuthentication() {
         SecurityContext context = SecurityContextHolder.getContext();
         return Optional.ofNullable(context.getAuthentication())
                 .filter(authentication -> !(authentication instanceof AnonymousAuthenticationToken));
     }
 
+    /**
+     * Method which authenticate
+     * @return - userRepository
+     * @see UserRepository#findByUsername(String)
+     */
     public Optional<User> get() {
         return getAuthentication().map(authentication -> userRepository.findByUsername(authentication.getName()));
     }
 
+    /**
+     * Method to log out of your account
+     */
     public void logout() {
         UI.getCurrent().getPage().setLocation(SecurityConfiguration.LOGOUT_URL);
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
