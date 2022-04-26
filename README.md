@@ -11,8 +11,7 @@ This project is under development
 
 The project is a standard Maven project. Firstly, you should connect your database and create 
 tables using [our SQL script](sql-script.sql). We advise you to use the same names as us,
-which you can find in [properties](src/main/resources/application.properties). You also should
-use [our SQLDialect](src/main/java/com/example/SQLDialect.java). To run the project from the command line,
+which you can find in [properties](src/main/resources/application.properties). To run the project from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
 http://localhost:8080 in your browser.
 

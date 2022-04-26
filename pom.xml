@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/346d9d73-c24d-4066-b950-844b2911eca6 -->
-    <groupId>com.example.ufiness.vaadin</groupId>
+    <groupId>ru.mipt.ufiness.vaadin</groupId>
     <artifactId>ufitness</artifactId>
     <name>uFitness</name>
     <version>1.0-SNAPSHOT</version>
@@ -145,6 +145,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.gwenn</groupId>
+            <artifactId>sqlite-dialect</artifactId>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
