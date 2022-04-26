@@ -1,9 +1,5 @@
 package ru.mipt.views.createworkout;
 
-import ru.mipt.data.dto.WorkoutDTO;
-import ru.mipt.data.repository.WorkoutRepository;
-import ru.mipt.data.service.TagsService;
-import ru.mipt.data.service.WorkoutService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -12,6 +8,10 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.data.dto.WorkoutDTO;
+import ru.mipt.data.repository.WorkoutRepository;
+import ru.mipt.data.service.TagsService;
+import ru.mipt.data.service.WorkoutService;
 
 /**
  * Binding and Validation class for creating workout with <b>WorkoutService</b>
@@ -50,11 +50,16 @@ public class CreateWorkoutBinder {
             try {
                 WorkoutDTO workoutDTO = new WorkoutDTO();
                 binder.writeBean(workoutDTO);
+                if (createWorkoutForm.getTagsSet().isEmpty()) {
+                    throw new Exception();
+                }
                 workoutDTO.setWorkoutTags(createWorkoutForm.getTagsSet());
                 workoutService.update(workoutDTO);
 
                 showSuccess();
             } catch (ValidationException ignored) {
+            } catch (Exception e) {
+                showFail();
             }
         });
     }
@@ -85,5 +90,11 @@ public class CreateWorkoutBinder {
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         UI.getCurrent().navigate("workout-list");
+    }
+
+    private void showFail() {
+        Notification notification = Notification.show("Choose at least one tag");
+        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+
     }
 }
