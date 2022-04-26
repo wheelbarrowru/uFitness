@@ -9,9 +9,8 @@ This project is under development
 
 ## Running the application
 
-The project is a standard Maven project. Firstly, you should connect your database and create 
-tables using [our SQL script](sql-script.sql). We advise you to use the same names as us,
-which you can find in [properties](src/main/resources/application.properties). To run the project from the command line,
+The project is a standard Maven project. Firstly, you should connect your database. We advise you to use the same names as us,
+which you can find in [properties](src/main/resources/application.properties). You can use [data.sql](src/main/resources/data.sql) for testing. To run the project from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
 http://localhost:8080 in your browser.
 
