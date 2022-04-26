@@ -1,5 +1,7 @@
 package ru.mipt.views.workoutlist;
 
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.User;
@@ -14,9 +16,6 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Main;
-import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -76,6 +75,10 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
             for (WorkoutDTO workoutDTO : workoutDTOSet) {
                 workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
             }
+            if (workoutDTOSet.isEmpty()) {
+                workoutContainer.add(new ListItem(new Text("There are no workouts with the given tags")));
+            }
+
         });
 
 
