@@ -39,7 +39,8 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
         super.configure(http);
         setLoginView(http, LoginView.class, LOGOUT_URL);
-        http.formLogin().defaultSuccessUrl("/workout-list", true);
+        http.formLogin().defaultSuccessUrl("/workout-list", true).
+                and().rememberMe();
     }
 
     /**

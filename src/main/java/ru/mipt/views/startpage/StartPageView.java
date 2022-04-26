@@ -37,7 +37,7 @@ public class StartPageView extends VerticalLayout {
     public StartPageView() {
         login = new Button("Sign in");
         registration = new Button("Sign up");
-        login.addClickListener(e -> login.getUI().ifPresent(ui -> ui.navigate("login")));
+        login.addClickListener(e -> login.getUI().ifPresent(ui -> ui.navigate("workout-list")));
         registration.addClickListener(e -> registration.getUI().ifPresent(ui -> ui.navigate("registration")));
 
         setSizeFull();
