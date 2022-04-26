@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Tags extends AbstractEntity{
+public class Tags extends AbstractEntity {
 
     /**
      * Tags's id
@@ -35,7 +35,7 @@ public class Tags extends AbstractEntity{
             strategy = GenerationType.SEQUENCE,
             generator = "id"
     )
-    @Column(name = "id",insertable = false,updatable = false)
+    @Column(name = "id", insertable = false, updatable = false)
     private int Id;
 
     /**
@@ -47,12 +47,13 @@ public class Tags extends AbstractEntity{
     /**
      * Workouts with this Tags
      */
-    @ManyToMany(mappedBy = "workoutTags",fetch = FetchType.EAGER)
-    Set<Workout> workouts;
+    @ManyToMany(mappedBy = "workoutTags", fetch = FetchType.EAGER)
+    private Set<Workout> workouts;
 
 
     /**
      * This method return is objects equals or not
+     *
      * @param o object
      * @return boolean
      * @see Tags#getId()
@@ -67,6 +68,7 @@ public class Tags extends AbstractEntity{
 
     /**
      * Method return hashcode of this class
+     *
      * @return hashcode
      */
     @Override
@@ -76,6 +78,7 @@ public class Tags extends AbstractEntity{
 
     /**
      * This method returns Tags's parameters in String format
+     *
      * @return Workout in String format
      */
     @Override

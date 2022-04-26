@@ -1,18 +1,18 @@
 package ru.mipt.data.controller;
 
-import ru.mipt.data.dto.UserDTO;
-import ru.mipt.data.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.mipt.data.dto.UserDTO;
+import ru.mipt.data.service.UserService;
 
 import java.net.URI;
 import java.util.List;
@@ -25,19 +25,10 @@ import java.util.List;
 public class ProfileController {
     @Setter
     private UserService userService;
-    /**
-     * Server Port parametr 
-     */
-    @Value("${server.port}")
-    private String serverPort;
-    /**
-     * Url of start-page 
-     */
-    final String url = "http://localhost:" + serverPort + "/";
-
 
     /**
      * Constructor of ProfileController
+     *
      * @param userService User's userServoce
      */
     @Autowired
@@ -46,11 +37,12 @@ public class ProfileController {
     }
 
     /**
-     * This method for redirecting user on his Profile page 
+     * This method for redirecting user on his Profile page
+     *
      * @param headers HttpHeaders
-     * @param id User's id
+     * @param id      User's id
      * @return User's profile page if id is correct and start-page if user's id isn't correct
-     * @see UserService#getDTO(int) 
+     * @see UserService#getDTO(int)
      */
     @GetMapping({"/profile/data/{id}"})
     @ApiOperation(value = "Get Profile Data", notes = "Returns all the profile data")
@@ -67,7 +59,9 @@ public class ProfileController {
         if (values.contains("admin")) {
             return new ResponseEntity<>(this.userService.getDTO(id), HttpStatus.OK);
         } else {
-            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
+            final String url =
+                    ServletUriComponentsBuilder.fromCurrentRequestUri().replacePath(null).build().toUriString();
+            return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).location(URI.create(url)).build();
         }
 
     }
