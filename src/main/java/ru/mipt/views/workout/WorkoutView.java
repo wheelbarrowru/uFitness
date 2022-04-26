@@ -1,13 +1,17 @@
 package ru.mipt.views.workout;
 
-import ru.mipt.data.repository.WorkoutRepository;
-import ru.mipt.data.service.WorkoutService;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.data.repository.WorkoutRepository;
+import ru.mipt.data.service.WorkoutService;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -53,6 +57,14 @@ public class WorkoutView extends Div implements HasUrlParameter<Integer> {
      */
     private void addWorkoutForm(@Autowired WorkoutService workoutService, int parameter) {
         WorkoutForm workoutForm = new WorkoutForm(workoutService, parameter);
-        add(workoutForm);
+        addClassName("m-s");
+
+        Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
+        back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
+        back.addClickShortcut(Key.ESCAPE);
+        back.addThemeVariants(ButtonVariant.LUMO_LARGE);
+        back.addClassName("m-s");
+
+        add(back, workoutForm);
     }
 }

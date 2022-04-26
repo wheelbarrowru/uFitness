@@ -1,5 +1,9 @@
 package ru.mipt.views.createworkout;
 
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import ru.mipt.data.repository.TagsRepository;
 import ru.mipt.data.repository.WorkoutRepository;
 import ru.mipt.data.service.TagsService;
@@ -33,7 +37,17 @@ public class CreateWorkoutView extends VerticalLayout {
         CreateWorkoutForm createWorkoutForm = new CreateWorkoutForm(tagsService);
         setHorizontalComponentAlignment(Alignment.CENTER, createWorkoutForm);
 
-        add(createWorkoutForm);
+        Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
+        back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
+        setHorizontalComponentAlignment(Alignment.START, back);
+        back.addClickShortcut(Key.ESCAPE);
+        back.addThemeVariants(ButtonVariant.LUMO_LARGE);
+
+        addClassName("m-0");
+        back.addClassName("m-0");
+        createWorkoutForm.addClassName("m-0");
+
+        add(back, createWorkoutForm);
         CreateWorkoutBinder createWorkoutBinder = new CreateWorkoutBinder(createWorkoutForm);
         createWorkoutBinder.addBindingAndValidation(workoutService);
     }

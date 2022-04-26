@@ -1,8 +1,6 @@
 package ru.mipt.views.tagsgrid;
 
-import ru.mipt.data.dto.TagsDTO;
-import ru.mipt.data.repository.TagsRepository;
-import ru.mipt.data.service.TagsService;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -13,6 +11,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.data.dto.TagsDTO;
+import ru.mipt.data.repository.TagsRepository;
+import ru.mipt.data.service.TagsService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class TagsGrid extends Div {
     private Grid<TagsDTO> grid;
     private Div hint;
     private final Set<TagsDTO> tags;
+    private Button button;
 
     /**
      * Constructor - creating a new tags view
@@ -50,7 +52,7 @@ public class TagsGrid extends Div {
         comboBox.setItems(tags);
         comboBox.setItemLabelGenerator(TagsDTO::getMessage);
 
-        Button button = new Button("Add tag");
+        button = new Button("Add tag");
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         button.addClickListener(e -> {
             sendInvitation(comboBox.getValue());
@@ -132,5 +134,10 @@ public class TagsGrid extends Div {
      */
     public List<TagsDTO> getTags() {
         return invitedTags;
+    }
+
+    public void setButtonIconAndText(Component icon, String text) {
+        button.setIcon(icon);
+        button.setText(text);
     }
 }

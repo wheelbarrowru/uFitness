@@ -1,16 +1,20 @@
 package ru.mipt.views.profile;
 
-import ru.mipt.data.repository.UserRepository;
-import ru.mipt.data.service.RestClientService;
-import ru.mipt.data.service.UserService;
-import ru.mipt.security.AuthenticatedUser;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.data.repository.UserRepository;
+import ru.mipt.data.service.RestClientService;
+import ru.mipt.data.service.UserService;
+import ru.mipt.security.AuthenticatedUser;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.NoSuchElementException;
@@ -50,7 +54,16 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
-                add(profileForm);
+
+                Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
+                back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
+                back.addClickShortcut(Key.ESCAPE);
+                back.addThemeVariants(ButtonVariant.LUMO_LARGE);
+
+                addClassName("m-s");
+                back.addClassName("m-s");
+
+                add(back, profileForm);
             } else {
                 add(errorMessage);
             }

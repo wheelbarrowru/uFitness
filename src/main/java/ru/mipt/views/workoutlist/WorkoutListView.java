@@ -1,5 +1,6 @@
 package ru.mipt.views.workoutlist;
 
+import com.vaadin.flow.component.icon.VaadinIcon;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.User;
 import ru.mipt.data.repository.TagsRepository;
@@ -68,7 +69,7 @@ public class WorkoutListView extends Main implements HasComponents, HasStyle {
         for (WorkoutDTO workoutDTO : findWorkoutsService.findWorkoutsByTagsDTO(new ArrayList<>())) {
             workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
         }
-
+        tagsGrid.setButtonIconAndText(VaadinIcon.SEARCH.create(), "Search");
         tagsGrid.addClickListener(event -> {
             workoutContainer.removeAll();
             Set<WorkoutDTO> workoutDTOSet = findWorkoutsService.findWorkoutsByTagsDTO(tagsGrid.getTags());
