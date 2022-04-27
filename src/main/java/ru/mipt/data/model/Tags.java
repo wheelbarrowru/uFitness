@@ -22,6 +22,15 @@ import java.util.Set;
 public class Tags extends AbstractEntity {
 
     /**
+     * one parameter constructor
+     *
+     * @param message tag's name
+     */
+    public Tags(String message) {
+        this.message = message;
+    }
+
+    /**
      * Tags's id
      */
     @JsonProperty(value = "id")
