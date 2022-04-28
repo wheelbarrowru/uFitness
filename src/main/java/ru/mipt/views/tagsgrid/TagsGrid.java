@@ -1,10 +1,10 @@
 package ru.mipt.views.tagsgrid;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -18,6 +18,7 @@ import ru.mipt.data.service.TagsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class of window which we use for creating or searching workouts
@@ -29,7 +30,6 @@ public class TagsGrid extends Div {
     private Grid<TagsDTO> grid;
     private Div hint;
     private final Set<TagsDTO> tags;
-    private Button button;
 
     /**
      * Constructor - creating a new tags view
@@ -49,10 +49,10 @@ public class TagsGrid extends Div {
      */
     private void setupInvitationForm() {
         ComboBox<TagsDTO> comboBox = new ComboBox<>();
-        comboBox.setItems(tags);
+        comboBox.setItems(tags.stream().sorted().collect(Collectors.toList()));
         comboBox.setItemLabelGenerator(TagsDTO::getMessage);
 
-        button = new Button("Add tag");
+        Button button = new Button("Add tag");
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         button.addClickListener(e -> {
             sendInvitation(comboBox.getValue());
@@ -66,7 +66,7 @@ public class TagsGrid extends Div {
     }
 
     /**
-     * Method for setting up gird
+     * Method for setting up grid
      */
     private void setupGrid() {
         grid = new Grid<>(TagsDTO.class, false);
@@ -82,11 +82,12 @@ public class TagsGrid extends Div {
                 })).setHeader("Manage");
 
         grid.setItems(invitedTags);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         hint = new Div();
         hint.setText("No tags has been added");
         hint.getStyle().set("padding", "var(--lumo-size-l)")
-                .set("text-align", "center").set("font-style", "italic")
+                .set("text-align", "center")
                 .set("color", "var(--lumo-contrast-70pct)");
 
         add(hint, grid);
@@ -136,8 +137,4 @@ public class TagsGrid extends Div {
         return invitedTags;
     }
 
-    public void setButtonIconAndText(Component icon, String text) {
-        button.setIcon(icon);
-        button.setText(text);
-    }
 }
