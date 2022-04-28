@@ -34,27 +34,6 @@ public class FindWorkoutsService {
     /**
      * This method make set of workouts with Tags in List tagsDTOSet
      *
-     * @param tagsDTOSet Set of TagsDTO
-     * @return Set of WorkoutDTO
-     * @see WorkoutService#convertToTagsSet(Set)
-     * @see WorkoutService#convertToWorkoutDTO(Workout)
-     */
-    public Set<WorkoutDTO> findWorkoutsByTagsDTO(List<TagsDTO> tagsDTOSet) {
-        Set<Tags> tagsSet = WorkoutService.convertToTagsSet(new HashSet<>(tagsDTOSet));
-        List<Workout> workouts = workoutRepository.findAll();
-        Set<WorkoutDTO> resultSet = new HashSet<>();
-        for (Workout workout :
-                workouts) {
-            if (workout.getWorkoutTags().containsAll(tagsSet)) {
-                resultSet.add(WorkoutService.convertToWorkoutDTO(workout));
-            }
-        }
-        return resultSet;
-    }
-
-    /**
-     * This method make set of workouts with Tags in List tagsDTOSet
-     *
      * @param title      searching title
      * @param tagsDTOSet Set of TagsDTO
      * @return Set of WorkoutDTO
