@@ -67,15 +67,27 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
 
         constructUI();
 
-        search.addValueChangeListener(e -> System.out.println());
-
-        Set<WorkoutDTO> workoutDTOSet0 = findWorkoutsService.findWorkoutsByTagsDTO(tagsGrid.getTags());
+        Set<WorkoutDTO> workoutDTOSet0 = findWorkoutsService.findWorkoutsByTitleAndTagsDTO(search.getValue(), tagsGrid.getTags());
         for (WorkoutDTO workoutDTO : workoutDTOSet0.stream().sorted().collect(Collectors.toList())) {
             workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
         }
+
+        search.addValueChangeListener(event -> {
+                    workoutContainer.removeAll();
+                    Set<WorkoutDTO> workoutDTOSet = findWorkoutsService.findWorkoutsByTitleAndTagsDTO(search.getValue(), tagsGrid.getTags());
+                    for (WorkoutDTO workoutDTO : workoutDTOSet.stream().sorted().collect(Collectors.toList())) {
+                        workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
+                    }
+                    if (workoutDTOSet.isEmpty()) {
+                        workoutContainer.add(new ListItem(new Text("There are no workouts with the given tags")));
+                    }
+                }
+        );
+
+
         tagsGrid.addClickListener(event -> {
             workoutContainer.removeAll();
-            Set<WorkoutDTO> workoutDTOSet = findWorkoutsService.findWorkoutsByTagsDTO(tagsGrid.getTags());
+            Set<WorkoutDTO> workoutDTOSet = findWorkoutsService.findWorkoutsByTitleAndTagsDTO(search.getValue(), tagsGrid.getTags());
             for (WorkoutDTO workoutDTO : workoutDTOSet.stream().sorted().collect(Collectors.toList())) {
                 workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
             }
