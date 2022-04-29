@@ -57,6 +57,8 @@ public class RegistrationFormBinder {
         });
         binder.forField(registrationForm.getUsernameField()).withValidator(this::usernameValidator).bind("username");
         binder.forField(registrationForm.getEmailField()).withValidator(this::emailValidator).bind("email");
+        binder.forField(registrationForm.getFirstNameField()).withValidator(this::firstNameValidator).bind("firstName");
+        binder.forField(registrationForm.getLastName()).withValidator(this::lastNameValidator).bind("lastName");
 
         binder.setStatusLabel(registrationForm.getErrorMessageField());
 
@@ -81,13 +83,14 @@ public class RegistrationFormBinder {
     }
 
     /**
-     * Method to validate that:
-     * <p>
-     * 1) Password is at least 8 characters long
-     * <p>
-     * 2) Values in both fields match each other
+     * Method to validate that password is free
+     *
+     * @param username for validate
      */
     private ValidationResult usernameValidator(String username, ValueContext ctx) {
+        if (username == null || username.length() > 30) {
+            return ValidationResult.error("Username should be less than 30 characters and not null");
+        }
         return userService.checkNotExistUsername(username) ? ValidationResult.ok() : ValidationResult.error("This username is busy");
     }
 
@@ -99,12 +102,26 @@ public class RegistrationFormBinder {
      * @return ValidationResult
      */
     private ValidationResult emailValidator(String email, ValueContext ctx) {
-
+        if (email.length() >= 40) {
+            return ValidationResult.error("Email should be less than 40 characters");
+        }
         return userService.checkNotExistEmail(email) ? ValidationResult.ok() : ValidationResult.error("This email is busy");
     }
 
+    private ValidationResult firstNameValidator(String firstName, ValueContext ctx) {
+        return firstName.length() < 30 ? ValidationResult.ok() : ValidationResult.error("Name should be less than 30 characters");
+    }
+
+    private ValidationResult lastNameValidator(String lastName, ValueContext ctx) {
+        return lastName.length() < 35 ? ValidationResult.ok() : ValidationResult.error("Last name should be less than 35 characters");
+    }
+
     /**
-     * This method checks is user's password correct
+     * Method to validate that:
+     * <p>
+     * 1) Password is at least 8 characters long
+     * <p>
+     * 2) Values in both fields match each other
      *
      * @param pass1 first password
      * @param ctx   ValueContext
@@ -137,7 +154,7 @@ public class RegistrationFormBinder {
      */
     private void showSuccess(UserDTO userBean) {
         Notification notification = Notification.show("Data saved, welcome to uFitness "
-                + userBean.getFirstName()+ "!");
+                + userBean.getFirstName() + "!");
         notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         UI.getCurrent().navigate("login");

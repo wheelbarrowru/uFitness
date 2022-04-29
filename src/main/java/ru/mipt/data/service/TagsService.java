@@ -40,7 +40,8 @@ public class TagsService {
     }
 
     /**
-     * Method which convert Tags into TagsGTO or create new Tags object
+     * Method to get converted Tags into TagsGTO by id
+     * <p> Return empty TagsDTO if tag hasn't found</p>
      *
      * @param id Tags id
      * @return TagsDTO
@@ -48,6 +49,19 @@ public class TagsService {
      */
     public TagsDTO getDTO(int id) {
         return convertToTagsDTO(get(id).orElse(new Tags()));
+    }
+
+    //TODO test me
+
+    /**
+     * Method to get converted Tags into TagsGTO by message
+     * <p> Return empty TagsDTO if tag hasn't found</p>
+     *
+     * @param message name
+     * @return TagsDTO
+     */
+    public TagsDTO getDTOByMessage(String message) {
+        return tagsRepository.findByMessage(message) != null ? convertToTagsDTO(tagsRepository.findByMessage(message)) : new TagsDTO(0, null);
     }
 
     /**
