@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.data.dto.TagsDTO;
+import ru.mipt.data.model.Tags;
 import ru.mipt.data.repository.TagsRepository;
 import ru.mipt.data.service.TagsService;
 
@@ -31,6 +32,8 @@ public class TagsGrid extends Div {
     private Grid<TagsDTO> grid;
     private Div hint;
     private final Set<TagsDTO> tags;
+    private ComboBox<TagsDTO> comboBox;
+    private boolean allowCustomValue = false;
 
     /**
      * Constructor - creating a new tags view
@@ -40,7 +43,7 @@ public class TagsGrid extends Div {
      */
     public TagsGrid(@Autowired TagsService tagsService) {
         this.tags = tagsService.getSetOfDTO();
-        this.setupInvitationForm();
+        this.setupInvitationForm(tagsService);
         this.setupGrid();
         this.refreshGrid();
     }
@@ -48,10 +51,16 @@ public class TagsGrid extends Div {
     /**
      * Method for creating a form for adding tags
      */
-    private void setupInvitationForm() {
-        ComboBox<TagsDTO> comboBox = new ComboBox<>();
+    private void setupInvitationForm(@Autowired TagsService tagsService) {
+        comboBox = new ComboBox<>();
         comboBox.setItems(tags.stream().sorted().collect(Collectors.toList()));
         comboBox.setItemLabelGenerator(TagsDTO::getMessage);
+        comboBox.addCustomValueSetListener(e -> {
+            if (allowCustomValue) {
+                tagsService.update(new Tags(e.getDetail()));
+                comboBox.setValue(tagsService.getDTOByMessage(e.getDetail()));
+            }
+        });
 
         Button button = new Button("Add tag");
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -137,6 +146,11 @@ public class TagsGrid extends Div {
      */
     public List<TagsDTO> getTags() {
         return invitedTags;
+    }
+
+    public void setAllowCustomValue(boolean bol) {
+        comboBox.setAllowCustomValue(bol);
+        allowCustomValue = true;
     }
 
 }

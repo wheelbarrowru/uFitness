@@ -66,6 +66,7 @@ public class CreateWorkoutForm extends FormLayout {
 
         tagsGrid = new TagsGrid(tagsService);
         tagsGrid.setMaxWidth("320px");
+        tagsGrid.setAllowCustomValue(true);
 
         setRequiredIndicatorVisible(title, body);
 
