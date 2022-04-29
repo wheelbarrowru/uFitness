@@ -33,5 +33,5 @@ jobs:
       with:
           node-version: '14'
           
-    - name: Run Maven Package
-      run: mvn -B clean package -Pproduction
+    - name: Run Project
+      run: ./mvnw test -B -D"license.skip=true"
