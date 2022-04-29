@@ -1,5 +1,6 @@
 package ru.mipt.views.tagsgrid;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -58,6 +59,7 @@ public class TagsGrid extends Div {
             sendInvitation(comboBox.getValue());
             comboBox.setValue(null);
         });
+        button.addClickShortcut(Key.ENTER);
 
         HorizontalLayout layout = new HorizontalLayout(comboBox, button);
         layout.setFlexGrow(1, comboBox);

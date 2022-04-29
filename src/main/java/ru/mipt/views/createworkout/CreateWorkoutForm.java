@@ -1,5 +1,6 @@
 package ru.mipt.views.createworkout;
 
+import com.vaadin.flow.data.value.ValueChangeMode;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.repository.TagsRepository;
 import ru.mipt.data.service.TagsService;
@@ -54,6 +55,10 @@ public class CreateWorkoutForm extends FormLayout {
 
         body = new TextArea("Add your workout's description");
         body.setWidthFull();
+        int charLimit = 1000;
+        body.setMaxLength(charLimit);
+        body.setValueChangeMode(ValueChangeMode.EAGER);
+        body.addValueChangeListener(e -> e.getSource().setHelperText(e.getValue().length() + "/" + charLimit));
 
         button = new Button("Publish");
         button.setMaxWidth("120px");
