@@ -9,6 +9,8 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +58,15 @@ public class TagsGrid extends Div {
         comboBox.setItems(tags.stream().sorted().collect(Collectors.toList()));
         comboBox.setItemLabelGenerator(TagsDTO::getMessage);
         comboBox.addCustomValueSetListener(e -> {
-            if (allowCustomValue) {
-                tagsService.update(new Tags(e.getDetail()));
-                comboBox.setValue(tagsService.getDTOByMessage(e.getDetail()));
+            if (e.getDetail().length() < 25) {
+                if (allowCustomValue) {
+                    tagsService.update(new Tags(e.getDetail()));
+                    comboBox.setValue(tagsService.getDTOByMessage(e.getDetail()));
+                }
+            } else {
+                Notification notification = Notification.show("New tag should be less than 25 characters");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+
             }
         });
 
