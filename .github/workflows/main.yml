@@ -34,4 +34,6 @@ jobs:
           node-version: '14'
           
     - name: Run Project
-      run: chmod +x mvnw ./mvnw test -B -D"license.skip=true"
+      run: |
+         chmod +x mvnw 
+         ./mvnw test -B -D"license.skip=true"
