@@ -70,6 +70,8 @@ public class CreateWorkoutBinder {
      * @return ValidationResult
      */
     private ValidationResult titleValidation(String title, ValueContext ctx) {
+        if (title.length() > 100) return ValidationResult.error("Title should be less than 100 characters");
+
         return !title.isEmpty() ? ValidationResult.ok() : ValidationResult.error("Title cannot be empty");
     }
 
@@ -79,6 +81,8 @@ public class CreateWorkoutBinder {
      * @return ValidationResult
      */
     private ValidationResult bodyValidation(String body, ValueContext ctx) {
+        if (body.length() > 1000) return ValidationResult.error("Description should be less than 1000 characters");
+
         return !body.isEmpty() ? ValidationResult.ok() : ValidationResult.error("Description cannot be empty");
     }
 
