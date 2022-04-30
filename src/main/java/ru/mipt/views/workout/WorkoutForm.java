@@ -34,7 +34,7 @@ public class WorkoutForm extends VerticalLayout {
     private final MenuBar ratingBar;
     private final String STAR_SIZE = "33px";
     private final String PALE_STAR_COLOR = "rgb(113, 117, 40)";
-    private Label rating;
+    private final Label rating;
 
     /**
      * Constructor - creating a new view for workouts
