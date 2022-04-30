@@ -1,16 +1,17 @@
 package ru.mipt.views.profile;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Section;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import ru.mipt.data.dto.UserDTO;
 import ru.mipt.data.repository.UserRepository;
 import ru.mipt.data.service.RestClientService;
 import ru.mipt.data.service.UserService;
 import ru.mipt.security.AuthenticatedUser;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
 /**
@@ -37,31 +38,33 @@ public class ProfileForm extends VerticalLayout {
                        UserService userService, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
 
-        Label usernameLabel = new Label("Username: ");
-        usernameLabel.addClassNames("text-l");
-        Label firstNameLabel = new Label("First name: ");
-        firstNameLabel.addClassNames("text-l");
-        Label lastNameLabel = new Label("Second name: ");
-        lastNameLabel.addClassNames("text-l");
-        Label emailLabel = new Label("Email: ");
-        emailLabel.addClassNames("text-l");
-
-        Label username = new Label(userDTO.getUsername());
+        TextField username = new TextField("Username");
+        username.setValue(userDTO.getUsername());
         username.addClassNames("text-l");
-        Label firstName = new Label(userDTO.getFirstName());
-        firstName.addClassNames("text-l");
-        Label lastName = new Label(userDTO.getLastName());
-        lastName.addClassNames("text-l");
-        Label email = new Label(userDTO.getEmail());
-        email.addClassNames("text-l");
-        Button logout = new Button("Log out");
-        Button delete = new Button("Delete my account");
-        delete.addClassNames("bg-error", "text-error-contrast");
-        logout.setWidthFull();
-        delete.setWidthFull();
+        username.setReadOnly(true);
 
+        TextField firstName = new TextField("First name");
+        firstName.setValue(userDTO.getFirstName());
+        firstName.addClassNames("text-l");
+        firstName.setReadOnly(true);
+
+        TextField lastName = new TextField("Last name");
+        lastName.setValue(userDTO.getLastName());
+        lastName.addClassNames("text-l");
+        lastName.setReadOnly(true);
+
+        TextField email = new TextField("Email");
+        email.setValue(userDTO.getEmail());
+        email.addClassNames("text-l");
+        email.setReadOnly(true);
+
+        Button logout = new Button("Log out");
+        logout.setWidthFull();
         logout.addClickListener(e -> authenticatedUser.logout());
 
+        Button delete = new Button("Delete my account");
+        delete.addClassNames("bg-error", "text-error-contrast");
+        delete.setWidthFull();
         delete.addClickListener(e -> {
             userService.delete(param);
             authenticatedUser.logout();
@@ -70,25 +73,20 @@ public class ProfileForm extends VerticalLayout {
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
-        VerticalLayout context = new VerticalLayout();
-        context.add(new HorizontalLayout(usernameLabel, username));
-        context.add(new HorizontalLayout(firstNameLabel, firstName));
-        context.add(new HorizontalLayout(lastNameLabel, lastName));
-        context.add(new HorizontalLayout(emailLabel, email));
-        context.setWidth("450px");
+        Section context = new Section(username, firstName, lastName, email);
+        context.addClassNames("flex", "flex-col", "mb-xl", "mt-m", "mx-s");
+        context.setMinWidth("400px");
 
         HorizontalLayout buttons = new HorizontalLayout(logout, delete);
-        buttons.addClassNames("justify-between", "self-end");
-        buttons.setWidthFull();
-
-        HorizontalLayout space = new HorizontalLayout();
-        context.add(space);
+        buttons.addClassNames("justify-between", "self-end", "mt-xl");
+        buttons.setMinWidth("400px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
         setHorizontalComponentAlignment(Alignment.CENTER, buttons);
+
         H2 header = new H2("Your profile");
         setHorizontalComponentAlignment(Alignment.CENTER, header);
-        context.add(buttons);
-        add(header, context);
+
+        add(header, context, buttons);
     }
 }

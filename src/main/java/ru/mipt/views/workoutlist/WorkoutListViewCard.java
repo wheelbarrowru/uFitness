@@ -47,10 +47,10 @@ public class WorkoutListViewCard extends ListItem {
         String tags = tagsString.toString();
         subtitle.setText(StringUtils.abbreviate(tags, 55));
 
-        String shortDescription = StringUtils.abbreviate(workoutDTO.getDescription(), 150);
+        String shortDescription = StringUtils.abbreviate(workoutDTO.getDescription(), 145);
         StringBuilder longDescription = new StringBuilder(shortDescription);
-        if (shortDescription.length() < 150) {
-            longDescription.append(" ".repeat(Math.max(0, 150 - shortDescription.length() - shortDescription.length())));
+        if (shortDescription.length() < 145) {
+            longDescription.append(" ".repeat(Math.max(0, 145 - shortDescription.length() - shortDescription.length())));
         }
 
         Span description = new Span();
