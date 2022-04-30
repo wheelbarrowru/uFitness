@@ -59,9 +59,7 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
                 back.addClickShortcut(Key.ESCAPE);
                 back.addThemeVariants(ButtonVariant.LUMO_LARGE);
-
-                addClassName("m-s");
-                back.addClassName("m-s");
+                back.addClassName("m-m");
 
                 add(back, profileForm);
             } else {
