@@ -1,12 +1,15 @@
 package ru.mipt.data.service;
 
-import ru.mipt.data.dto.UserDTO;
-import ru.mipt.data.model.User;
-import ru.mipt.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.mipt.data.dto.UserDTO;
+import ru.mipt.data.dto.WorkoutDTO;
+import ru.mipt.data.model.User;
+import ru.mipt.data.model.Workout;
+import ru.mipt.data.repository.UserRepository;
 
 import java.util.Optional;
 import java.util.Set;
@@ -163,6 +166,64 @@ public class UserService {
      */
     public UserDTO getDTO(int id) {
         return convertToUserDTO(get(id).orElse(new User()));
+    }
+
+    //TODO test me
+
+    /**
+     * Get set of workoutDTOs of favorite workouts
+     *
+     * @param id user's id
+     * @return favorite workoutDTO set
+     */
+    public Set<WorkoutDTO> getFavoriteWorkouts(int id) {
+        User user = userRepository.findUserById(id);
+        return WorkoutService.convertToWorkoutDTOSet(
+                user.getFavoriteWorkouts()
+        );
+    }
+//TODO test me
+
+    /**
+     * Add favorite workout
+     *
+     * @param userId    id
+     * @param workoutId id
+     */
+    @Transactional
+    public void addFavoriteWorkout(int userId, int workoutId) {
+        userRepository.addFavoriteWorkouts(userId, workoutId);
+    }
+//TODO test me
+
+    /**
+     * Remove workout from favorites
+     *
+     * @param userId    id
+     * @param workoutId id
+     */
+    @Transactional
+    public void removeFavoriteWorkouts(int userId, int workoutId) {
+        userRepository.removeFavoriteWorkouts(userId, workoutId);
+    }
+    //TODO test me
+
+    /**
+     * Check if user added workout as favorite
+     *
+     * @param workoutId workout's id for test
+     * @param userId    user's for test
+     * @return boolean check result
+     */
+    @Transactional
+    public boolean checkFavorite(int workoutId, int userId) {
+        Set<Workout> workouts = get(userId).orElse(new User()).getFavoriteWorkouts();
+        for (Workout workout : workouts) {
+            if (workout.getId() == workoutId) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

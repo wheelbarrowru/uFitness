@@ -34,7 +34,7 @@ public class WorkoutDTO implements Comparable<WorkoutDTO> {
      */
     @Override
     public int compareTo(WorkoutDTO o) {
-        int rating = (int) (o.getRating() - this.getRating());
+        int rating = (int) (o.getRating() * 100 - this.getRating() * 100);
         return rating != 0 ? rating : this.getTitle().compareTo(o.getTitle());
     }
 
