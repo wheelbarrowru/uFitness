@@ -152,6 +152,12 @@ public class WorkoutService {
                 convertToTagsDTOSet(workout.getWorkoutTags()));
     }
 
+    /**
+     * Method for converting Workout set to WorkoutDTO set
+     *
+     * @param workoutSet set to convert
+     * @return set of WorkoutDTO
+     */
     //TODO test me
     protected static Set<WorkoutDTO> convertToWorkoutDTOSet(Set<Workout> workoutSet) {
         Set<WorkoutDTO> workoutDTOSet = new HashSet<>();

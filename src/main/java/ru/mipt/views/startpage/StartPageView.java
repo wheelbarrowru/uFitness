@@ -43,9 +43,9 @@ public class StartPageView extends VerticalLayout {
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
-        login.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        login.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_PRIMARY);
         login.setSizeFull();
-        registration.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registration.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_PRIMARY);
         registration.setSizeFull();
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -54,7 +54,8 @@ public class StartPageView extends VerticalLayout {
         buttonLayout.add(registration);
         buttonLayout.setWidth("400px");
 
-        Component welcomeToUFitness = new H1("Welcome to uFitness");
+        H1 welcomeToUFitness = new H1("Welcome to uFitness");
+        welcomeToUFitness.addClassName("text-3xl");
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
 

@@ -83,7 +83,7 @@ public class RegistrationFormBinder {
     }
 
     /**
-     * Method to validate that password is free
+     * Method to validate that username is free, less than 30 characters and in English
      *
      * @param username for validate
      */
@@ -91,11 +91,14 @@ public class RegistrationFormBinder {
         if (username == null || username.length() > 30) {
             return ValidationResult.error("Username should be less than 30 characters and not null");
         }
+        if (!username.matches("^[a-zA-Z0-9]+$")) {
+            return ValidationResult.error("Username should be in English");
+        }
         return userService.checkNotExistUsername(username) ? ValidationResult.ok() : ValidationResult.error("This username is busy");
     }
 
     /**
-     * THis method shows is user's email busy or not
+     * This method shows is user's email busy or not
      *
      * @param email user's email
      * @param ctx   context
@@ -108,10 +111,24 @@ public class RegistrationFormBinder {
         return userService.checkNotExistEmail(email) ? ValidationResult.ok() : ValidationResult.error("This email is busy");
     }
 
+    /**
+     * This method check tht firstname less than 30 characters
+     *
+     * @param firstName for check
+     * @param ctx       context
+     * @return ValidationResult
+     */
     private ValidationResult firstNameValidator(String firstName, ValueContext ctx) {
         return firstName.length() < 30 ? ValidationResult.ok() : ValidationResult.error("Name should be less than 30 characters");
     }
 
+    /**
+     * This method check tht lastname less than 30 characters
+     *
+     * @param lastName for check
+     * @param ctx      context
+     * @return ValidationResult
+     */
     private ValidationResult lastNameValidator(String lastName, ValueContext ctx) {
         return lastName.length() < 35 ? ValidationResult.ok() : ValidationResult.error("Last name should be less than 35 characters");
     }

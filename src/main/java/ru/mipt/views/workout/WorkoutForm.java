@@ -36,7 +36,8 @@ public class WorkoutForm extends VerticalLayout {
     private final WorkoutService workoutService;
     private final MenuBar ratingBar;
     private final String STAR_SIZE = "33px";
-    private final String PALE_STAR_COLOR = "rgb(113, 117, 40)";
+    private final String STAR_COLOR = "#0C6CE9";
+    private final String PALE_STAR_COLOR = "#54677F";
     private final Label rating;
 
     /**
@@ -58,10 +59,10 @@ public class WorkoutForm extends VerticalLayout {
 
         Button favoriteButton = new Button();
         Icon favoriteStar = VaadinIcon.STAR_O.create();
-        favoriteStar.setColor("yellow");
+        favoriteStar.setColor(STAR_COLOR);
         favoriteStar.setSize("38px");
         Icon favoriteStarChosen = VaadinIcon.STAR.create();
-        favoriteStarChosen.setColor("yellow");
+        favoriteStarChosen.setColor(STAR_COLOR);
         favoriteStarChosen.setSize("38px");
         favoriteButton.setIcon(favoriteStar);
 
@@ -136,7 +137,8 @@ public class WorkoutForm extends VerticalLayout {
         for (int i = 1; i < 6; i++) {
             if (i <= Integer.parseInt(value)) {
                 Icon star = VaadinIcon.STAR.create();
-                star.setColor("yellow");
+                star.setColor(STAR_COLOR);
+
                 star.setSize(STAR_SIZE);
                 ratingBar.addItem(star).setEnabled(false);
             } else {

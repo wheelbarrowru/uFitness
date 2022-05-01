@@ -1,8 +1,10 @@
 package ru.mipt.views.profile;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Section;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -70,11 +72,15 @@ public class ProfileForm extends VerticalLayout {
             authenticatedUser.logout();
         });
 
+        Button save = new Button("Save");
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.setIcon(VaadinIcon.CHECK.create());
+
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         Section context = new Section(username, firstName, lastName, email);
-        context.addClassNames("flex", "flex-col", "mb-xl", "mt-m", "mx-s");
+        context.addClassNames("flex", "flex-col", "mt-s", "mx-s");
         context.setMinWidth("400px");
 
         HorizontalLayout buttons = new HorizontalLayout(logout, delete);
@@ -82,11 +88,13 @@ public class ProfileForm extends VerticalLayout {
         buttons.setMinWidth("400px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
+        setHorizontalComponentAlignment(Alignment.CENTER, save);
         setHorizontalComponentAlignment(Alignment.CENTER, buttons);
 
         H2 header = new H2("Your profile");
+        header.addClassNames("text-3xl", "m-0");
         setHorizontalComponentAlignment(Alignment.CENTER, header);
 
-        add(header, context, buttons);
+        add(header, context, save, buttons);
     }
 }

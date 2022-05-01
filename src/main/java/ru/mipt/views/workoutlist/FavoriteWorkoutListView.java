@@ -20,7 +20,16 @@ import ru.mipt.security.AuthenticatedUser;
 import javax.annotation.security.RolesAllowed;
 import java.util.NoSuchElementException;
 
-
+/**
+ * The view that holds the favorite-workouts-page form
+ * <p>
+ * This view is itself a component (specifically a VerticalLayout) to
+ * which the start-page form is added. This view is made accessible
+ * to the end-user via the @Route annotation.
+ * <p>
+ * A new instance of this class opens every time you starts web application
+ * browser tab/window.
+ */
 @PageTitle("Favorite workouts")
 @Route(value = "favorite-workouts")
 @RolesAllowed("USER")

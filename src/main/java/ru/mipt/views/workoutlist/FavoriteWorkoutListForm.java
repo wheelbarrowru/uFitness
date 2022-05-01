@@ -3,6 +3,7 @@ package ru.mipt.views.workoutlist;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,6 +17,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * This class is responsible for customer favorite workouts
+ */
 public class FavoriteWorkoutListForm extends Div implements HasComponents, HasStyle {
 
     public FavoriteWorkoutListForm(@Autowired UserService userService,
@@ -49,6 +53,7 @@ public class FavoriteWorkoutListForm extends Div implements HasComponents, HasSt
 
         Button searchButton = new Button("Search");
         searchButton.setIcon(VaadinIcon.SEARCH.create());
+        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         HorizontalLayout searchLayout = new HorizontalLayout(search, searchButton);
         searchLayout.addClassNames("p-l");

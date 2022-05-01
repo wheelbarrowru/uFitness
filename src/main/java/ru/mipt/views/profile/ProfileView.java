@@ -56,6 +56,7 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
+                profileForm.addClassName("m-0");
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
@@ -65,14 +66,15 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
 
                 Icon star = VaadinIcon.STAR.create();
                 star.setSize("30px");
-                star.setColor("yellow");
+                String STAR_COLOR = "#0C6CE9";
+                star.setColor(STAR_COLOR);
                 Button favoriteWorkoutsButton = new Button("Favorite workouts", star);
                 favoriteWorkoutsButton.addClickListener(e -> favoriteWorkoutsButton.getUI().ifPresent(ui -> ui.navigate("favorite-workouts/" + param)));
                 favoriteWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
                 favoriteWorkoutsButton.addClassName("m-0");
 
                 HorizontalLayout buttons = new HorizontalLayout(back, favoriteWorkoutsButton);
-                buttons.addClassName("m-m");
+                buttons.addClassName("p-m");
 
                 add(buttons, profileForm);
             } else {
