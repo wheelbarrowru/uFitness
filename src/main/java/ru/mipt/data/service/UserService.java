@@ -95,6 +95,20 @@ public class UserService {
         return userRepository.findByUsername(username) == null;
     }
 
+
+    /**
+     * Method for checking is username used or not, considering the author of the request
+     *
+     * @param username User's username
+     * @param userId   who sent request
+     * @return boolean
+     * @see UserRepository#findByUsername(String)
+     */
+    //TODO test me
+    public boolean checkNotExistUsernameWithDifferentID(String username, int userId) {
+        return checkNotExistUsername(username) || userRepository.findUserById(userId).equals(userRepository.findByUsername(username));
+    }
+
     /**
      * Method for checking is email used or not
      *
@@ -104,6 +118,19 @@ public class UserService {
      */
     public boolean checkNotExistEmail(String email) {
         return userRepository.findUserByEmail(email) == null;
+    }
+
+    /**
+     * Method for checking is email used or not, considering the author of the request
+     *
+     * @param email  User's email
+     * @param userID who sen't request
+     * @return boolean
+     * @see UserRepository#findUserByEmail(String)
+     */
+    //TODO test me
+    public boolean checkNotExistEmailWithDifferentID(String email, int userID) {
+        return checkNotExistEmail(email) || userRepository.findUserById(userID).equals(userRepository.findUserByEmail(email));
     }
 
     /**
@@ -224,6 +251,21 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    /**
+     * Update user info
+     *
+     * @param userId    for update
+     * @param username  new value
+     * @param firstname new value
+     * @param lastName  new value
+     * @param email     new value
+     */
+    //TODO test me
+    @Transactional
+    public void updateUserInfo(int userId, String username, String firstname, String lastName, String email) {
+        userRepository.updateUserInfo(userId, username, firstname, lastName, email);
     }
 
 

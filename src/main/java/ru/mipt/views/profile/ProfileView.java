@@ -57,6 +57,8 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
                 profileForm.addClassName("m-0");
+                ProfileFormBinder profileFormBinder = new ProfileFormBinder(profileForm, param);
+                profileFormBinder.addBindingAndValidation(userService);
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));

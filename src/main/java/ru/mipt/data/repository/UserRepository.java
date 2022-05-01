@@ -58,5 +58,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true)
     void removeFavoriteWorkouts(int userId, int workoutId);
 
+    @Modifying
+    @Query(value = "UPDATE User SET username = ?2, firstname = ?3, lastname = ?4, email = ?5 where id=?1")
+    void updateUserInfo(int userId, String username, String firstname, String lastName, String email);
 
 }
