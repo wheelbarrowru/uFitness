@@ -10,8 +10,11 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.data.model.User;
 import ru.mipt.data.repository.WorkoutRepository;
+import ru.mipt.data.service.UserService;
 import ru.mipt.data.service.WorkoutService;
+import ru.mipt.security.AuthenticatedUser;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -27,13 +30,20 @@ import javax.annotation.security.RolesAllowed;
 @RolesAllowed("USER")
 public class WorkoutView extends Div implements HasUrlParameter<Integer> {
     private final WorkoutService workoutService;
+    private final UserService userService;
+    private final User user;
 
     /**
-     * @param workoutService basic service
+     * @param workoutService    basic service
+     * @param authenticatedUser basic service
      * @see WorkoutService#WorkoutService(WorkoutRepository)
      */
-    public WorkoutView(@Autowired WorkoutService workoutService) {
+    public WorkoutView(@Autowired WorkoutService workoutService,
+                       @Autowired AuthenticatedUser authenticatedUser,
+                       @Autowired UserService userService) {
         this.workoutService = workoutService;
+        this.userService = userService;
+        user = authenticatedUser.get().orElse(new User());
     }
 
     /**
@@ -53,14 +63,12 @@ public class WorkoutView extends Div implements HasUrlParameter<Integer> {
      * @param workoutService basic service
      * @param parameter      workout's id
      * @see WorkoutService#WorkoutService(WorkoutRepository)
-     * @see WorkoutForm#WorkoutForm(WorkoutService, int)
      */
     private void addWorkoutForm(@Autowired WorkoutService workoutService, int parameter) {
-        WorkoutForm workoutForm = new WorkoutForm(workoutService, parameter);
+        WorkoutForm workoutForm = new WorkoutForm(workoutService, userService, user.getId(), parameter);
         addClassName("m-s");
-
         Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
-        back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
+        back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.getPage().getHistory().back()));
         back.addClickShortcut(Key.ESCAPE);
         back.addThemeVariants(ButtonVariant.LUMO_LARGE);
         back.addClassName("m-s");
