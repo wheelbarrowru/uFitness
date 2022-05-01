@@ -1,15 +1,15 @@
 package ru.mipt.data.service;
 
-import ru.mipt.data.dto.TagsDTO;
-import ru.mipt.data.dto.WorkoutDTO;
-import ru.mipt.data.model.Tags;
-import ru.mipt.data.model.Workout;
-import ru.mipt.data.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mipt.data.dto.TagsDTO;
+import ru.mipt.data.dto.WorkoutDTO;
+import ru.mipt.data.model.Tags;
+import ru.mipt.data.model.Workout;
+import ru.mipt.data.repository.WorkoutRepository;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -150,6 +150,21 @@ public class WorkoutService {
                 workout.getDescription(),
                 workout.getRating(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
+    }
+
+    /**
+     * Method for converting Workout set to WorkoutDTO set
+     *
+     * @param workoutSet set to convert
+     * @return set of WorkoutDTO
+     */
+    //TODO test me
+    protected static Set<WorkoutDTO> convertToWorkoutDTOSet(Set<Workout> workoutSet) {
+        Set<WorkoutDTO> workoutDTOSet = new HashSet<>();
+        for (Workout workout : workoutSet) {
+            workoutDTOSet.add(convertToWorkoutDTO(workout));
+        }
+        return workoutDTOSet;
     }
 
     /**

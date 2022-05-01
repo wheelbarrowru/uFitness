@@ -5,7 +5,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
@@ -54,14 +56,29 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
+                profileForm.addClassName("m-0");
+                ProfileFormBinder profileFormBinder = new ProfileFormBinder(profileForm, param);
+                profileFormBinder.addBindingAndValidation(userService);
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.navigate("workout-list")));
                 back.addClickShortcut(Key.ESCAPE);
                 back.addThemeVariants(ButtonVariant.LUMO_LARGE);
-                back.addClassName("m-m");
+                back.addClassName("m-0");
 
-                add(back, profileForm);
+                Icon star = VaadinIcon.STAR.create();
+                star.setSize("30px");
+                String STAR_COLOR = "#0C6CE9";
+                star.setColor(STAR_COLOR);
+                Button favoriteWorkoutsButton = new Button("Favorite workouts", star);
+                favoriteWorkoutsButton.addClickListener(e -> favoriteWorkoutsButton.getUI().ifPresent(ui -> ui.navigate("favorite-workouts/" + param)));
+                favoriteWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
+                favoriteWorkoutsButton.addClassName("m-0");
+
+                HorizontalLayout buttons = new HorizontalLayout(back, favoriteWorkoutsButton);
+                buttons.addClassName("p-m");
+
+                add(buttons, profileForm);
             } else {
                 add(errorMessage);
             }

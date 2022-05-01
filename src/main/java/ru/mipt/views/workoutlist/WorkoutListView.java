@@ -5,6 +5,7 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -131,12 +132,15 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
         String address = "profile/" + id;
         Button profile = new Button("Profile");
         profile.addClickListener(e -> UI.getCurrent().navigate(address));
+        profile.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
         Button createWorkout = new Button("Create workout");
         createWorkout.addClickListener(e -> UI.getCurrent().navigate("create-workout"));
+        createWorkout.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
         Button logout = new Button("Log out");
         logout.addClickListener(e -> authenticatedUser.logout());
+        logout.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
         buttons.add(profile, createWorkout, logout);
         buttons.addClassNames("justify-end");
@@ -156,6 +160,7 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
 
         Button searchButton = new Button("Search");
         searchButton.setIcon(VaadinIcon.SEARCH.create());
+        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         HorizontalLayout searchLayout = new HorizontalLayout(search, searchButton);
         searchLayout.addClassNames("p-l");
@@ -165,7 +170,7 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.addToPrimary(searchAndWorkouts);
         splitLayout.addToSecondary(tagsGrid);
-        splitLayout.setSplitterPosition(75);
+        splitLayout.setSplitterPosition(72);
         add(headerAndButtons, splitLayout);
     }
 }

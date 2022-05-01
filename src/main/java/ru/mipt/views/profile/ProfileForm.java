@@ -1,17 +1,25 @@
 package ru.mipt.views.profile;
 
+import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Section;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import lombok.Getter;
 import ru.mipt.data.dto.UserDTO;
 import ru.mipt.data.repository.UserRepository;
 import ru.mipt.data.service.RestClientService;
 import ru.mipt.data.service.UserService;
 import ru.mipt.security.AuthenticatedUser;
+
+import java.util.stream.Stream;
 
 
 /**
@@ -24,6 +32,21 @@ import ru.mipt.security.AuthenticatedUser;
  * accessible to the user.
  */
 public class ProfileForm extends VerticalLayout {
+    @Getter
+    private final TextField usernameField;
+    @Getter
+    private final TextField firstNameField;
+    @Getter
+    private final TextField lastNameField;
+    @Getter
+    private final EmailField emailField;
+    @Getter
+    private final Span errorMessageField;
+    @Getter
+    private final Button save;
+    @Getter
+    private final Button logout;
+
 
     /**
      * Constructor - creating a new form of profile
@@ -38,27 +61,26 @@ public class ProfileForm extends VerticalLayout {
                        UserService userService, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
 
-        TextField username = new TextField("Username");
-        username.setValue(userDTO.getUsername());
-        username.addClassNames("text-l");
-        username.setReadOnly(true);
+        errorMessageField = new Span();
 
-        TextField firstName = new TextField("First name");
-        firstName.setValue(userDTO.getFirstName());
-        firstName.addClassNames("text-l");
-        firstName.setReadOnly(true);
 
-        TextField lastName = new TextField("Last name");
-        lastName.setValue(userDTO.getLastName());
-        lastName.addClassNames("text-l");
-        lastName.setReadOnly(true);
+        usernameField = new TextField("Username");
+        usernameField.setValue(userDTO.getUsername());
+        usernameField.addClassNames("text-l");
 
-        TextField email = new TextField("Email");
-        email.setValue(userDTO.getEmail());
-        email.addClassNames("text-l");
-        email.setReadOnly(true);
+        firstNameField = new TextField("First name");
+        firstNameField.setValue(userDTO.getFirstName());
+        firstNameField.addClassNames("text-l");
 
-        Button logout = new Button("Log out");
+        lastNameField = new TextField("Last name");
+        lastNameField.setValue(userDTO.getLastName());
+        lastNameField.addClassNames("text-l");
+
+        emailField = new EmailField("Email");
+        emailField.setValue(userDTO.getEmail());
+        emailField.addClassNames("text-l");
+
+        logout = new Button("Log out");
         logout.setWidthFull();
         logout.addClickListener(e -> authenticatedUser.logout());
 
@@ -70,11 +92,17 @@ public class ProfileForm extends VerticalLayout {
             authenticatedUser.logout();
         });
 
+        save = new Button("Save");
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.setIcon(VaadinIcon.CHECK.create());
+
+        setRequiredIndicatorVisible(firstNameField, lastNameField, emailField, usernameField);
+
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
-        Section context = new Section(username, firstName, lastName, email);
-        context.addClassNames("flex", "flex-col", "mb-xl", "mt-m", "mx-s");
+        Section context = new Section(usernameField, firstNameField, lastNameField, emailField);
+        context.addClassNames("flex", "flex-col", "mt-s", "mx-s");
         context.setMinWidth("400px");
 
         HorizontalLayout buttons = new HorizontalLayout(logout, delete);
@@ -82,11 +110,22 @@ public class ProfileForm extends VerticalLayout {
         buttons.setMinWidth("400px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
+        setHorizontalComponentAlignment(Alignment.CENTER, save);
         setHorizontalComponentAlignment(Alignment.CENTER, buttons);
 
         H2 header = new H2("Your profile");
+        header.addClassNames("text-3xl", "m-0");
         setHorizontalComponentAlignment(Alignment.CENTER, header);
 
-        add(header, context, buttons);
+        add(header, context, save, buttons);
+    }
+
+    /**
+     * Set indicators for validation
+     *
+     * @param components components
+     */
+    private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
+        Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }
 }
