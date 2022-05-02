@@ -1,6 +1,7 @@
 package ru.mipt.views.workout;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
@@ -91,6 +92,27 @@ public class WorkoutForm extends VerticalLayout {
         text.setReadOnly(true);
         text.setWidth("70%");
 
+
+        Div tags = new Div();
+        for (TagsDTO tagsDTO : workoutDTO.getWorkoutTags()) {
+            Span pending = new Span(tagsDTO.getMessage());
+            pending.getElement().getThemeList().add("badge contrast");
+            pending.getElement().getStyle().set("margin", "5px");
+            tags.add(pending);
+        }
+        tags.setWidth("70%");
+        tags.addClassNames("gap-s", "m-0");
+
+
+        setSizeFull();
+
+        setHorizontalComponentAlignment(Alignment.CENTER, headerAndFavoriteButton);
+        setHorizontalComponentAlignment(Alignment.CENTER, rating);
+        setHorizontalComponentAlignment(Alignment.CENTER, text);
+        setHorizontalComponentAlignment(Alignment.CENTER, tags);
+
+        add(headerAndFavoriteButton, rating, tags, text);
+
         ratingBar = new MenuBar();
 
         for (int i = 1; i < 6; i++) {
@@ -101,28 +123,22 @@ public class WorkoutForm extends VerticalLayout {
             ratingBar.addItem(star, e -> updateAndLock(String.valueOf(value), workoutID));
         }
         ratingBar.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
+        setHorizontalComponentAlignment(Alignment.CENTER, ratingBar);
 
-
-        Div tags = new Div();
-        for (TagsDTO tagsDTO : workoutDTO.getWorkoutTags()) {
-            Span pending = new Span(tagsDTO.getMessage());
-            pending.getElement().getThemeList().add("badge contrast");
-            pending.getElement().getStyle().set("margin", "5px");
-            tags.add(pending);
+        if (userId == workoutDTO.getAuthorId()) {
+            Button delete = new Button("Delete my workout");
+            delete.addClassNames("bg-error", "text-error-contrast");
+            setHorizontalComponentAlignment(Alignment.CENTER, delete);
+            add(delete);
+            delete.addClickListener(e -> {
+                workoutService.delete(workoutDTO.getId());
+                UI.getCurrent().getPage().getHistory().back();
+            });
+        } else {
+            add(ratingBar);
         }
 
-        tags.setWidth("70%");
-        tags.addClassNames("gap-s", "m-0");
 
-        setSizeFull();
-
-        setHorizontalComponentAlignment(Alignment.CENTER, headerAndFavoriteButton);
-        setHorizontalComponentAlignment(Alignment.CENTER, rating);
-        setHorizontalComponentAlignment(Alignment.CENTER, text);
-        setHorizontalComponentAlignment(Alignment.CENTER, ratingBar);
-        setHorizontalComponentAlignment(Alignment.CENTER, tags);
-
-        add(headerAndFavoriteButton, rating, tags, text, ratingBar);
     }
 
     /**
@@ -149,7 +165,12 @@ public class WorkoutForm extends VerticalLayout {
             }
         }
         workoutDTO = workoutService.getDTO(workoutID);
-        rating.setText("Rating: " + workoutDTO.getRating());
+        if (workoutDTO == null) {
+            UI.getCurrent().getPage().getHistory().back();
+        } else {
+            rating.setText("Rating: " + workoutDTO.getRating());
+        }
+
 
     }
 

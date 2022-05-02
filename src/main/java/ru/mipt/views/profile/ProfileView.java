@@ -1,10 +1,10 @@
 package ru.mipt.views.profile;
 
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -51,8 +51,6 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
      * @param param user's id
      */
     public void addProfileForm(Integer param) {
-        String ERROR_MESSAGE = "You haven't access to this page";
-        H2 errorMessage = new H2(ERROR_MESSAGE);
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 ProfileForm profileForm = new ProfileForm(restClientService, authenticatedUser, userService, param);
@@ -75,15 +73,20 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
                 favoriteWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
                 favoriteWorkoutsButton.addClassName("m-0");
 
-                HorizontalLayout buttons = new HorizontalLayout(back, favoriteWorkoutsButton);
+                Button customerWorkoutsButton = new Button("Your workouts");
+                customerWorkoutsButton.addClickListener(e -> favoriteWorkoutsButton.getUI().ifPresent(ui -> ui.navigate("customer-workouts/" + param)));
+                customerWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
+                customerWorkoutsButton.addClassName("m-0");
+
+                HorizontalLayout buttons = new HorizontalLayout(back, favoriteWorkoutsButton, customerWorkoutsButton);
                 buttons.addClassName("p-m");
 
                 add(buttons, profileForm);
             } else {
-                add(errorMessage);
+                UI.getCurrent().getPage().getHistory().back();
             }
         } catch (NoSuchElementException e) {
-            add(errorMessage);
+            UI.getCurrent().getPage().getHistory().back();
         }
 
     }

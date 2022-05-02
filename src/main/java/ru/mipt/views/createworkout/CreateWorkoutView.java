@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.mipt.security.AuthenticatedUser;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -33,7 +34,9 @@ public class CreateWorkoutView extends VerticalLayout {
      * @see WorkoutService#WorkoutService(WorkoutRepository)
      * @see TagsService#TagsService(TagsRepository)
      */
-    public CreateWorkoutView(@Autowired WorkoutService workoutService, @Autowired TagsService tagsService) {
+    public CreateWorkoutView(@Autowired WorkoutService workoutService,
+                             @Autowired TagsService tagsService,
+                             @Autowired AuthenticatedUser authenticatedUser) {
         CreateWorkoutForm createWorkoutForm = new CreateWorkoutForm(tagsService);
         setHorizontalComponentAlignment(Alignment.CENTER, createWorkoutForm);
 
@@ -49,7 +52,7 @@ public class CreateWorkoutView extends VerticalLayout {
 
         add(back, createWorkoutForm);
         CreateWorkoutBinder createWorkoutBinder = new CreateWorkoutBinder(createWorkoutForm);
-        createWorkoutBinder.addBindingAndValidation(workoutService);
+        createWorkoutBinder.addBindingAndValidation(workoutService, authenticatedUser);
     }
 
 }

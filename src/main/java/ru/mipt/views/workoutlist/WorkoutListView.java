@@ -81,7 +81,7 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
                     }
                     if (workoutDTOSet.isEmpty()) {
                         Div hint = new Div();
-                        hint.setText("There are no workouts with the given tags");
+                        hint.setText("Nothing found");
                         hint.getStyle().set("padding", "var(--lumo-size-l)")
                                 .set("text-align", "center")
                                 .set("color", "var(--lumo-contrast-70pct)");
@@ -98,7 +98,7 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
                 workoutContainer.add(new WorkoutListViewCard(workoutDTO.getId(), workoutService));
             }
             if (workoutDTOSet.isEmpty()) {
-                workoutContainer.add(new ListItem(new Text("There are no workouts with the given tags")));
+                workoutContainer.add(new ListItem(new Text("Nothing found")));
             }
 
         });
