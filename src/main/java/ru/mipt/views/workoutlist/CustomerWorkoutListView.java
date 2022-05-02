@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 //FIXME
 
 /**
- * The view that holds the favorite-workouts-page form
+ * The view that holds the customer-workouts-page form
  * <p>
  * This view is itself a component (specifically a VerticalLayout) to
  * which the start-page form is added. This view is made accessible
@@ -67,7 +67,7 @@ public class CustomerWorkoutListView extends Div implements HasComponents, HasSt
                 BasicWorkoutListForm basicWorkoutListForm = new BasicWorkoutListForm(workoutService,
                         findWorkoutsService.findWorkoutByAuthorId(param)
                                 .stream().sorted().collect(Collectors.toList()));
-                basicWorkoutListForm.getHeader().setText("Your workouts");
+                basicWorkoutListForm.getHeader().setText("My workouts");
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.getPage().getHistory().back()));

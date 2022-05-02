@@ -73,7 +73,7 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
                 favoriteWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
                 favoriteWorkoutsButton.addClassName("m-0");
 
-                Button customerWorkoutsButton = new Button("Your workouts");
+                Button customerWorkoutsButton = new Button("My workouts");
                 customerWorkoutsButton.addClickListener(e -> favoriteWorkoutsButton.getUI().ifPresent(ui -> ui.navigate("customer-workouts/" + param)));
                 customerWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
                 customerWorkoutsButton.addClassName("m-0");

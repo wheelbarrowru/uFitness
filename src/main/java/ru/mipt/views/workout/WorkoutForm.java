@@ -36,22 +36,20 @@ public class WorkoutForm extends VerticalLayout {
     private WorkoutDTO workoutDTO;
     private final WorkoutService workoutService;
     private final MenuBar ratingBar;
-    private final String STAR_SIZE = "33px";
     private final String STAR_COLOR = "#0C6CE9";
-    private final String PALE_STAR_COLOR = "#54677F";
     private final Label rating;
 
     /**
      * Constructor - creating a new view for workouts
      *
      * @param workoutService basic service
-     * @param workoutID      workout's id
+     * @param workoutId      workout's id
      * @see WorkoutService#WorkoutService(WorkoutRepository)
      */
     public WorkoutForm(@Autowired WorkoutService workoutService,
                        @Autowired UserService userService,
-                       int userId, int workoutID) {
-        this.workoutDTO = workoutService.getDTO(workoutID);
+                       int userId, int workoutId) {
+        this.workoutDTO = workoutService.getDTO(workoutId);
         this.workoutService = workoutService;
 
         Component header = new H2(workoutDTO.getTitle());
@@ -67,7 +65,7 @@ public class WorkoutForm extends VerticalLayout {
         favoriteStarChosen.setSize("38px");
         favoriteButton.setIcon(favoriteStar);
 
-        if (userService.checkFavorite(workoutID, userId)) {
+        if (userService.checkFavorite(workoutId, userId)) {
             favoriteButton.setIcon(favoriteStarChosen);
         } else {
             favoriteButton.setIcon(favoriteStar);
@@ -114,14 +112,8 @@ public class WorkoutForm extends VerticalLayout {
         add(headerAndFavoriteButton, rating, tags, text);
 
         ratingBar = new MenuBar();
+        initAndUpdateRatingButtons("0", userId, workoutId);
 
-        for (int i = 1; i < 6; i++) {
-            Icon star = VaadinIcon.STAR.create();
-            star.setColor(PALE_STAR_COLOR);
-            star.setSize(STAR_SIZE);
-            Integer value = i;
-            ratingBar.addItem(star, e -> updateAndLock(String.valueOf(value), workoutID));
-        }
         ratingBar.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
         setHorizontalComponentAlignment(Alignment.CENTER, ratingBar);
 
@@ -143,34 +135,49 @@ public class WorkoutForm extends VerticalLayout {
 
     /**
      * Update rating stars appearance and rating in system & page
+     * <p>0 - init value</p>
+     * <p>>0 - add</p>
+     * <p><0 - remove</p>
      *
      * @param value     to add
-     * @param workoutID workout's id to update
+     * @param workoutId workout's id to update
+     * @param userId    to add
      */
-    private void updateAndLock(String value, int workoutID) {
-        workoutService.updateRating(workoutDTO, value);
+    private void initAndUpdateRatingButtons(String value, int userId, int workoutId) {
+        Integer previousUserVote = workoutService.getVotedUserId(workoutId, userId);
+        if (previousUserVote != null && !"0".equals(value)) {
+            workoutService.updateRating(workoutId, userId, String.valueOf(-previousUserVote));
+        }
+        workoutService.updateRating(workoutId, userId, value);
         ratingBar.removeAll();
+        if (previousUserVote == null) {
+            previousUserVote = 0;
+        }
+        if ("0".equals(value)) {
+            value = String.valueOf(previousUserVote);
+        }
         for (int i = 1; i < 6; i++) {
+            String STAR_SIZE = "33px";
+            int inc = i;
             if (i <= Integer.parseInt(value)) {
                 Icon star = VaadinIcon.STAR.create();
                 star.setColor(STAR_COLOR);
-
                 star.setSize(STAR_SIZE);
-                ratingBar.addItem(star).setEnabled(false);
+                ratingBar.addItem(star, e -> initAndUpdateRatingButtons(String.valueOf(inc), userId, workoutId));
             } else {
                 Icon paleStar = VaadinIcon.STAR.create();
+                String PALE_STAR_COLOR = "#54677F";
                 paleStar.setColor(PALE_STAR_COLOR);
                 paleStar.setSize(STAR_SIZE);
-                ratingBar.addItem(paleStar).setEnabled(false);
+                ratingBar.addItem(paleStar, e -> initAndUpdateRatingButtons(String.valueOf(inc), userId, workoutId));
             }
         }
-        workoutDTO = workoutService.getDTO(workoutID);
+        workoutDTO = workoutService.getDTO(workoutId);
         if (workoutDTO == null) {
             UI.getCurrent().getPage().getHistory().back();
         } else {
             rating.setText("Rating: " + workoutDTO.getRating());
         }
-
 
     }
 

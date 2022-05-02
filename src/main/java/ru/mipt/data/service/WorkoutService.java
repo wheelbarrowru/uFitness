@@ -97,8 +97,11 @@ public class WorkoutService {
 
     /**
      * Method for counting new rating of workout after user's reaction
+     * <p>0 - immediate return value</p>
+     * <p>>0 - add</p>
+     * <p><0 - remove</p>
      *
-     * @param workoutDTO  WorkoutDTO object
+     * @param workoutId   workout id for update
      * @param valueString user's rating of the workout
      * @throws NoSuchElementException throws if you can't update rating
      * @see WorkoutRepository#findById(Object)
@@ -106,15 +109,40 @@ public class WorkoutService {
      * @see WorkoutDTO#getId()
      * @see Workout#getCountVote()
      */
+    //TODO update test
     @Transactional
-    public void updateRating(WorkoutDTO workoutDTO, String valueString) {
+    public void updateRating(int workoutId, int userId, String valueString) {
         int value = Integer.parseInt(valueString);
+        if (value == 0) {
+            return;
+        }
         try {
-            Workout workout = workoutRepository.findById(workoutDTO.getId()).orElseThrow();
+            Workout workout = workoutRepository.findById(workoutId).orElseThrow();
             int count = workout.getCountVote();
-            workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
+            if (value > 0) {
+                workoutRepository.updateRatingAndCount(workoutId, (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
+                workoutRepository.addVotedUsersId(workout.getId(), userId, value);
+            } else {
+                if (count - 1 != 0) {
+                    workoutRepository.updateRatingAndCount(workoutId, (double) Math.round(100 * (workout.getRating() * count + value) / (count - 1)) / 100, count - 1);
+                } else {
+                    workoutRepository.updateRatingAndCount(workoutId, 0, 0);
+                }
+                workoutRepository.removeVotedUsersId(workoutId, userId);
+            }
         } catch (NoSuchElementException ignored) {
         }
+    }
+
+    /**
+     * Get voted user's id
+     *
+     * @param workoutId for search
+     * @param userId    for search
+     * @return set of voted users' id
+     */
+    public Integer getVotedUserId(int workoutId, int userId) {
+        return workoutRepository.findVotedUserId(workoutId, userId);
     }
 
     /**
