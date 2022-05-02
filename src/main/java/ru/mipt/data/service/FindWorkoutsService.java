@@ -55,4 +55,15 @@ public class FindWorkoutsService {
         return resultSet;
     }
 
+    /**
+     * Search workouts by author id
+     *
+     * @param authorId for search
+     * @return set of workoutDTO
+     */
+    //TODO test me
+    public Set<WorkoutDTO> findWorkoutByAuthorId(int authorId) {
+        return WorkoutService.convertToWorkoutDTOSet(workoutRepository.findByAuthorId(authorId));
+    }
+
 }

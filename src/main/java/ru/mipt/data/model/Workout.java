@@ -63,6 +63,12 @@ public class Workout extends AbstractEntity {
     private int countVote;
 
     /**
+     * User-author id
+     */
+    @Column(name = "author_id")
+    private int authorId;
+
+    /**
      * Set of tags of this workout
      */
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

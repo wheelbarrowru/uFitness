@@ -50,8 +50,13 @@ public class WorkoutService {
      * @param id workout id
      * @return WorkoutDTO
      */
+    //TODO update test
     public WorkoutDTO getDTO(int id) {
-        return convertToWorkoutDTO(get(id).orElse(new Workout()));
+        try {
+            return convertToWorkoutDTO(get(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -108,8 +113,7 @@ public class WorkoutService {
             Workout workout = workoutRepository.findById(workoutDTO.getId()).orElseThrow();
             int count = workout.getCountVote();
             workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
-        } catch (NoSuchElementException e) {
-            System.out.println("Ошибка updateRating: " + workoutDTO);
+        } catch (NoSuchElementException ignored) {
         }
     }
 
@@ -123,12 +127,14 @@ public class WorkoutService {
      * @see Workout#setRating(double)
      * @see Workout#setWorkoutTags(Set)
      */
+    //TODO update test with authorID
     private Workout convertToWorkout(WorkoutDTO workoutDTO) {
         Workout workout = new Workout();
         workout.setTitle(workoutDTO.getTitle());
         workout.setDescription(workoutDTO.getDescription());
         workout.setRating(workoutDTO.getRating());
         workout.setWorkoutTags(convertToTagsSet(workoutDTO.getWorkoutTags()));
+        workout.setAuthorId(workoutDTO.getAuthorId());
 
         return workout;
     }
@@ -144,11 +150,13 @@ public class WorkoutService {
      * @see WorkoutDTO#getTitle() ()
      * @see WorkoutService#convertToTagsDTOSet(Set)
      */
+    //TODO update test with authorID
     protected static WorkoutDTO convertToWorkoutDTO(Workout workout) {
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
+                workout.getAuthorId(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
     }
 

@@ -13,13 +13,14 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.mipt.data.service.UserService;
+import ru.mipt.data.service.FindWorkoutsService;
 import ru.mipt.data.service.WorkoutService;
 import ru.mipt.security.AuthenticatedUser;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+//FIXME
 
 /**
  * The view that holds the favorite-workouts-page form
@@ -31,13 +32,13 @@ import java.util.stream.Collectors;
  * A new instance of this class opens every time you starts web application
  * browser tab/window.
  */
-@PageTitle("Favorite workouts")
-@Route(value = "favorite-workouts")
+@PageTitle("Your workouts")
+@Route(value = "customer-workouts")
 @RolesAllowed("USER")
-public class FavoriteWorkoutListView extends Div implements HasComponents, HasStyle, HasUrlParameter<Integer> {
+public class CustomerWorkoutListView extends Div implements HasComponents, HasStyle, HasUrlParameter<Integer> {
 
     private final AuthenticatedUser authenticatedUser;
-    private final UserService userService;
+    private final FindWorkoutsService findWorkoutsService;
     private final WorkoutService workoutService;
 
     /**
@@ -49,24 +50,24 @@ public class FavoriteWorkoutListView extends Div implements HasComponents, HasSt
      */
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer param) {
-        addFavoriteWorkoutForm(param);
+        addCustomerWorkoutForm(param);
     }
 
-    public FavoriteWorkoutListView(@Autowired AuthenticatedUser authenticatedUser,
-                                   @Autowired UserService userService,
+    public CustomerWorkoutListView(@Autowired AuthenticatedUser authenticatedUser,
+                                   @Autowired FindWorkoutsService findWorkoutsService,
                                    @Autowired WorkoutService workoutService) {
         this.authenticatedUser = authenticatedUser;
-        this.userService = userService;
+        this.findWorkoutsService = findWorkoutsService;
         this.workoutService = workoutService;
     }
 
-    public void addFavoriteWorkoutForm(Integer param) {
+    public void addCustomerWorkoutForm(Integer param) {
         try {
             if (authenticatedUser.get().orElseThrow().getId() == param) {
                 BasicWorkoutListForm basicWorkoutListForm = new BasicWorkoutListForm(workoutService,
-                        userService.getFavoriteWorkouts(param)
+                        findWorkoutsService.findWorkoutByAuthorId(param)
                                 .stream().sorted().collect(Collectors.toList()));
-                basicWorkoutListForm.getHeader().setText("Your favorite workouts");
+                basicWorkoutListForm.getHeader().setText("Your workouts");
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.getPage().getHistory().back()));

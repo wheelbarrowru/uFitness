@@ -60,6 +60,13 @@ public class WorkoutDTO implements Comparable<WorkoutDTO> {
     private double rating;
 
     /**
+     * User-author id
+     */
+    @NotBlank
+    @Schema(description = "Workout's author")
+    private int authorId;
+
+    /**
      * Tags of workout
      */
     @NotBlank
