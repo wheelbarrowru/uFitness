@@ -66,7 +66,7 @@ public class FavoriteWorkoutListView extends Div implements HasComponents, HasSt
                 BasicWorkoutListForm basicWorkoutListForm = new BasicWorkoutListForm(workoutService,
                         userService.getFavoriteWorkouts(param)
                                 .stream().sorted().collect(Collectors.toList()));
-                basicWorkoutListForm.getHeader().setText("Your favorite workouts");
+                basicWorkoutListForm.getHeader().setText("My favorite workouts");
 
                 Button back = new Button("back", VaadinIcon.ARROW_LEFT.create());
                 back.addClickListener(e -> back.getUI().ifPresent(ui -> ui.getPage().getHistory().back()));
