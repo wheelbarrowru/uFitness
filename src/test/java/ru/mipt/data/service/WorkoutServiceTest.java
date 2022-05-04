@@ -30,6 +30,26 @@ class WorkoutServiceTest {
         }
 
         @Override
+        public Set<Workout> findByAuthorId(int authorId) {
+            return null;
+        }
+
+        @Override
+        public Integer findVotedUserId(int workoutId, int userId) {
+            return null;
+        }
+
+        @Override
+        public void addVotedUsersId(int workoutId, int userId, int userVote) {
+
+        }
+
+        @Override
+        public void removeVotedUsersId(int workoutId, int userId) {
+
+        }
+
+        @Override
         public List<Workout> findAll() {
             return null;
         }
@@ -194,6 +214,7 @@ class WorkoutServiceTest {
         workout.setId(0);
         workout.setRating(5);
         workout.setDescription("test");
+        workout.setAuthorId(0);
         workout.setTitle("test");
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
@@ -202,7 +223,7 @@ class WorkoutServiceTest {
 
     @Test
     void getDTO() {
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5,0,  new HashSet<TagsDTO>());
         WorkoutDTO workout = new WorkoutDTO();
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTO(workoutService.get(0).orElse(new Workout())), workoutDTO);
     }
@@ -214,9 +235,10 @@ class WorkoutServiceTest {
         workout.setRating(5);
         workout.setDescription("test");
         workout.setTitle("test");
+        workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
         Assertions.assertEquals(workout, workoutService.update(workoutDTO));
     }
 
@@ -235,10 +257,11 @@ class WorkoutServiceTest {
     @Test
     void updateRating() {
         int value = Integer.parseInt("5");
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0,  new HashSet<TagsDTO>());
         Workout workout = new Workout();
         workout.setId(0);
         workout.setRating(5);
+        workout.setAuthorId(0);
         workout.setDescription("test");
         workout.setTitle("test");
         HashSet<Tags> hashSet = new HashSet<>();
@@ -257,9 +280,10 @@ class WorkoutServiceTest {
         workout.setRating(5);
         workout.setDescription("test");
         workout.setTitle("test");
+        workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTO(workout), workoutDTO);
     }
 
