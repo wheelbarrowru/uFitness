@@ -246,6 +246,21 @@ class UserServiceTest {
             }
         }
 
+        @Override
+        public void addFavoriteWorkouts(int userId, int workoutId) {
+
+        }
+
+        @Override
+        public void removeFavoriteWorkouts(int userId, int workoutId) {
+
+        }
+
+        @Override
+        public void updateUserInfo(int userId, String username, String firstname, String lastName, String email) {
+
+        }
+
     };
 
     @Autowired
