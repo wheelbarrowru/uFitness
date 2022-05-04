@@ -1,16 +1,25 @@
 package ru.mipt.views.profile;
 
+import com.vaadin.flow.component.HasValueAndElement;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Section;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.TextField;
+import lombok.Getter;
 import ru.mipt.data.dto.UserDTO;
 import ru.mipt.data.repository.UserRepository;
 import ru.mipt.data.service.RestClientService;
 import ru.mipt.data.service.UserService;
 import ru.mipt.security.AuthenticatedUser;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
+import java.util.stream.Stream;
 
 
 /**
@@ -23,6 +32,21 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
  * accessible to the user.
  */
 public class ProfileForm extends VerticalLayout {
+    @Getter
+    private final TextField usernameField;
+    @Getter
+    private final TextField firstNameField;
+    @Getter
+    private final TextField lastNameField;
+    @Getter
+    private final EmailField emailField;
+    @Getter
+    private final Span errorMessageField;
+    @Getter
+    private final Button save;
+    @Getter
+    private final Button logout;
+
 
     /**
      * Constructor - creating a new form of profile
@@ -37,58 +61,71 @@ public class ProfileForm extends VerticalLayout {
                        UserService userService, Integer param) {
         UserDTO userDTO = restClientService.fetchUserProfile(param);
 
-        Label usernameLabel = new Label("Username: ");
-        usernameLabel.addClassNames("text-l");
-        Label firstNameLabel = new Label("First name: ");
-        firstNameLabel.addClassNames("text-l");
-        Label lastNameLabel = new Label("Second name: ");
-        lastNameLabel.addClassNames("text-l");
-        Label emailLabel = new Label("Email: ");
-        emailLabel.addClassNames("text-l");
+        errorMessageField = new Span();
 
-        Label username = new Label(userDTO.getUsername());
-        username.addClassNames("text-l");
-        Label firstName = new Label(userDTO.getFirstName());
-        firstName.addClassNames("text-l");
-        Label lastName = new Label(userDTO.getLastName());
-        lastName.addClassNames("text-l");
-        Label email = new Label(userDTO.getEmail());
-        email.addClassNames("text-l");
-        Button logout = new Button("Log out");
-        Button delete = new Button("Delete my account");
-        delete.addClassNames("bg-error", "text-error-contrast");
+
+        usernameField = new TextField("Username");
+        usernameField.setValue(userDTO.getUsername());
+        usernameField.addClassNames("text-l");
+
+        firstNameField = new TextField("First name");
+        firstNameField.setValue(userDTO.getFirstName());
+        firstNameField.addClassNames("text-l");
+
+        lastNameField = new TextField("Last name");
+        lastNameField.setValue(userDTO.getLastName());
+        lastNameField.addClassNames("text-l");
+
+        emailField = new EmailField("Email");
+        emailField.setValue(userDTO.getEmail());
+        emailField.addClassNames("text-l");
+
+        logout = new Button("Log out");
         logout.setWidthFull();
-        delete.setWidthFull();
-
         logout.addClickListener(e -> authenticatedUser.logout());
 
+        Button delete = new Button("Delete my account");
+        delete.addClassNames("bg-error", "text-error-contrast");
+        delete.setWidthFull();
         delete.addClickListener(e -> {
             userService.delete(param);
             authenticatedUser.logout();
         });
 
+        save = new Button("Save");
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.setIcon(VaadinIcon.CHECK.create());
+
+        setRequiredIndicatorVisible(firstNameField, lastNameField, emailField, usernameField);
+
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
-        VerticalLayout context = new VerticalLayout();
-        context.add(new HorizontalLayout(usernameLabel, username));
-        context.add(new HorizontalLayout(firstNameLabel, firstName));
-        context.add(new HorizontalLayout(lastNameLabel, lastName));
-        context.add(new HorizontalLayout(emailLabel, email));
-        context.setWidth("450px");
+        Section context = new Section(usernameField, firstNameField, lastNameField, emailField);
+        context.addClassNames("flex", "flex-col", "mt-s", "mx-s");
+        context.setMinWidth("400px");
 
         HorizontalLayout buttons = new HorizontalLayout(logout, delete);
-        buttons.addClassNames("justify-between", "self-end");
-        buttons.setWidthFull();
-
-        HorizontalLayout space = new HorizontalLayout();
-        context.add(space);
+        buttons.addClassNames("justify-between", "self-end", "mt-xl");
+        buttons.setMinWidth("400px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
+        setHorizontalComponentAlignment(Alignment.CENTER, save);
         setHorizontalComponentAlignment(Alignment.CENTER, buttons);
+
         H2 header = new H2("Your profile");
+        header.addClassNames("text-3xl", "m-0");
         setHorizontalComponentAlignment(Alignment.CENTER, header);
-        context.add(buttons);
-        add(header, context);
+
+        add(header, context, save, buttons);
+    }
+
+    /**
+     * Set indicators for validation
+     *
+     * @param components components
+     */
+    private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
+        Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }
 }

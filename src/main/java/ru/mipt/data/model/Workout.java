@@ -63,18 +63,27 @@ public class Workout extends AbstractEntity {
     private int countVote;
 
     /**
+     * User-author id
+     */
+    @Column(name = "author_id")
+    private int authorId;
+
+    /**
      * Set of tags of this workout
      */
-    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "workouts_tags",
             joinColumns = @JoinColumn(name = "workouts_id"),
             inverseJoinColumns = @JoinColumn(name = "tags_id"))
     private Set<Tags> workoutTags;
 
+    @ManyToMany(mappedBy = "favoriteWorkouts",fetch = FetchType.EAGER)
+    private Set<User> userFavoriteWorkouts;
 
     /**
      * This method return is objects equals or not
+     *
      * @param o object
      * @return boolean
      * @see Workout#getId()
@@ -82,13 +91,14 @@ public class Workout extends AbstractEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!(o instanceof Workout) || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Workout workout = (Workout) o;
         return Objects.equals(getId(), workout.getId());
     }
 
     /**
      * Method return hashcode of this class
+     *
      * @return hashcode
      */
     @Override
@@ -98,6 +108,7 @@ public class Workout extends AbstractEntity {
 
     /**
      * This method returns workout's parameters in String format
+     *
      * @return Workout in String format
      */
     @Override

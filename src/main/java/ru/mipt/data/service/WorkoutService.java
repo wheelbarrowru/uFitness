@@ -1,15 +1,15 @@
 package ru.mipt.data.service;
 
-import ru.mipt.data.dto.TagsDTO;
-import ru.mipt.data.dto.WorkoutDTO;
-import ru.mipt.data.model.Tags;
-import ru.mipt.data.model.Workout;
-import ru.mipt.data.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mipt.data.dto.TagsDTO;
+import ru.mipt.data.dto.WorkoutDTO;
+import ru.mipt.data.model.Tags;
+import ru.mipt.data.model.Workout;
+import ru.mipt.data.repository.WorkoutRepository;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -50,8 +50,13 @@ public class WorkoutService {
      * @param id workout id
      * @return WorkoutDTO
      */
+    //TODO update test
     public WorkoutDTO getDTO(int id) {
-        return convertToWorkoutDTO(get(id).orElse(new Workout()));
+        try {
+            return convertToWorkoutDTO(get(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -92,8 +97,11 @@ public class WorkoutService {
 
     /**
      * Method for counting new rating of workout after user's reaction
+     * <p>0 - immediate return value</p>
+     * <p>>0 - add</p>
+     * <p><0 - remove</p>
      *
-     * @param workoutDTO  WorkoutDTO object
+     * @param workoutId   workout id for update
      * @param valueString user's rating of the workout
      * @throws NoSuchElementException throws if you can't update rating
      * @see WorkoutRepository#findById(Object)
@@ -101,16 +109,40 @@ public class WorkoutService {
      * @see WorkoutDTO#getId()
      * @see Workout#getCountVote()
      */
+    //TODO update test
     @Transactional
-    public void updateRating(WorkoutDTO workoutDTO, String valueString) {
+    public void updateRating(int workoutId, int userId, String valueString) {
         int value = Integer.parseInt(valueString);
-        try {
-            Workout workout = workoutRepository.findById(workoutDTO.getId()).orElseThrow();
-            int count = workout.getCountVote();
-            workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
-        } catch (NoSuchElementException e) {
-            System.out.println("Ошибка updateRating: " + workoutDTO);
+        if (value == 0) {
+            return;
         }
+        try {
+            Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+            int count = workout.getCountVote();
+            if (value > 0) {
+                workoutRepository.updateRatingAndCount(workoutId, (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
+                workoutRepository.addVotedUsersId(workout.getId(), userId, value);
+            } else {
+                if (count - 1 != 0) {
+                    workoutRepository.updateRatingAndCount(workoutId, (double) Math.round(100 * (workout.getRating() * count + value) / (count - 1)) / 100, count - 1);
+                } else {
+                    workoutRepository.updateRatingAndCount(workoutId, 0, 0);
+                }
+                workoutRepository.removeVotedUsersId(workoutId, userId);
+            }
+        } catch (NoSuchElementException ignored) {
+        }
+    }
+
+    /**
+     * Get voted user's id
+     *
+     * @param workoutId for search
+     * @param userId    for search
+     * @return set of voted users' id
+     */
+    public Integer getVotedUserId(int workoutId, int userId) {
+        return workoutRepository.findVotedUserId(workoutId, userId);
     }
 
     /**
@@ -123,12 +155,14 @@ public class WorkoutService {
      * @see Workout#setRating(double)
      * @see Workout#setWorkoutTags(Set)
      */
+    //TODO update test with authorID
     private Workout convertToWorkout(WorkoutDTO workoutDTO) {
         Workout workout = new Workout();
         workout.setTitle(workoutDTO.getTitle());
         workout.setDescription(workoutDTO.getDescription());
         workout.setRating(workoutDTO.getRating());
         workout.setWorkoutTags(convertToTagsSet(workoutDTO.getWorkoutTags()));
+        workout.setAuthorId(workoutDTO.getAuthorId());
 
         return workout;
     }
@@ -144,12 +178,29 @@ public class WorkoutService {
      * @see WorkoutDTO#getTitle() ()
      * @see WorkoutService#convertToTagsDTOSet(Set)
      */
+    //TODO update test with authorID
     protected static WorkoutDTO convertToWorkoutDTO(Workout workout) {
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
                 workout.getDescription(),
                 workout.getRating(),
+                workout.getAuthorId(),
                 convertToTagsDTOSet(workout.getWorkoutTags()));
+    }
+
+    /**
+     * Method for converting Workout set to WorkoutDTO set
+     *
+     * @param workoutSet set to convert
+     * @return set of WorkoutDTO
+     */
+    //TODO test me
+    protected static Set<WorkoutDTO> convertToWorkoutDTOSet(Set<Workout> workoutSet) {
+        Set<WorkoutDTO> workoutDTOSet = new HashSet<>();
+        for (Workout workout : workoutSet) {
+            workoutDTOSet.add(convertToWorkoutDTO(workout));
+        }
+        return workoutDTOSet;
     }
 
     /**

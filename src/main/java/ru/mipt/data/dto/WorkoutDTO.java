@@ -18,13 +18,25 @@ import java.util.Set;
 @AllArgsConstructor
 @ApiModel(value = "WorkoutDTO", description = "Complete data of an entity training")
 @NoArgsConstructor
-public class WorkoutDTO {
+public class WorkoutDTO implements Comparable<WorkoutDTO> {
     /**
      * Workout's generated in database id
      */
     @NotBlank
     @Schema(description = "Workout id")
     private int id;
+
+    /**
+     * Compare workoutDTO using rating as first and title as second
+     *
+     * @param o to compare
+     * @return compare result
+     */
+    @Override
+    public int compareTo(WorkoutDTO o) {
+        int rating = (int) (o.getRating() * 100 - this.getRating() * 100);
+        return rating != 0 ? rating : this.getTitle().compareTo(o.getTitle());
+    }
 
     /**
      * "Name" of Workout
@@ -46,6 +58,13 @@ public class WorkoutDTO {
     @NotBlank
     @Schema(description = "Workout rating")
     private double rating;
+
+    /**
+     * User-author id
+     */
+    @NotBlank
+    @Schema(description = "Workout's author")
+    private int authorId;
 
     /**
      * Tags of workout

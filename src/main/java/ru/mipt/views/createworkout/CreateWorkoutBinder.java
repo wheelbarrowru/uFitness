@@ -9,9 +9,11 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.data.dto.WorkoutDTO;
+import ru.mipt.data.model.User;
 import ru.mipt.data.repository.WorkoutRepository;
 import ru.mipt.data.service.TagsService;
 import ru.mipt.data.service.WorkoutService;
+import ru.mipt.security.AuthenticatedUser;
 
 /**
  * Binding and Validation class for creating workout with <b>WorkoutService</b>
@@ -38,7 +40,8 @@ public class CreateWorkoutBinder {
      * @param workoutService workoutService
      * @see WorkoutService#WorkoutService(WorkoutRepository)
      */
-    public void addBindingAndValidation(@Autowired WorkoutService workoutService) {
+    public void addBindingAndValidation(@Autowired WorkoutService workoutService,
+                                        @Autowired AuthenticatedUser authenticatedUser) {
         BeanValidationBinder<WorkoutDTO> binder = new BeanValidationBinder<>(WorkoutDTO.class);
         binder.bindInstanceFields(createWorkoutForm);
         binder.forField(createWorkoutForm.getTitle()).withValidator(this::titleValidation).bind("title");
@@ -54,6 +57,7 @@ public class CreateWorkoutBinder {
                     throw new Exception();
                 }
                 workoutDTO.setWorkoutTags(createWorkoutForm.getTagsSet());
+                workoutDTO.setAuthorId(authenticatedUser.get().orElse(new User()).getId());
                 workoutService.update(workoutDTO);
 
                 showSuccess();
@@ -70,6 +74,8 @@ public class CreateWorkoutBinder {
      * @return ValidationResult
      */
     private ValidationResult titleValidation(String title, ValueContext ctx) {
+        if (title.length() > 100) return ValidationResult.error("Title should be less than 100 characters");
+
         return !title.isEmpty() ? ValidationResult.ok() : ValidationResult.error("Title cannot be empty");
     }
 
@@ -79,6 +85,8 @@ public class CreateWorkoutBinder {
      * @return ValidationResult
      */
     private ValidationResult bodyValidation(String body, ValueContext ctx) {
+        if (body.length() > 1000) return ValidationResult.error("Description should be less than 1000 characters");
+
         return !body.isEmpty() ? ValidationResult.ok() : ValidationResult.error("Description cannot be empty");
     }
 

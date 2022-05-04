@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @ApiModel(value = "TagsDTO", description = "Complete data of an entity tags")
 @AllArgsConstructor
-public class TagsDTO {
+public class TagsDTO implements Comparable<TagsDTO> {
     /**
      * TagsDTO's id
      */
@@ -29,4 +29,15 @@ public class TagsDTO {
     @NotBlank
     @Schema(description = "Tag name")
     private String message;
+
+    /**
+     * Compare Tags using messages
+     *
+     * @param o tagsDTO
+     * @return compare result
+     */
+    @Override
+    public int compareTo(TagsDTO o) {
+        return this.getMessage().compareTo(o.getMessage());
+    }
 }

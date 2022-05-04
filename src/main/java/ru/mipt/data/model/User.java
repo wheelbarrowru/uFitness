@@ -1,5 +1,7 @@
 package ru.mipt.data.model;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 import ru.mipt.data.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,7 @@ import org.hibernate.Hibernate;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -82,23 +85,19 @@ public class User extends AbstractEntity {
     private Set<Role> roles;
 
 
-    /*
-    @OneToMany(mappedBy = "description", cascade = ALL)
-    @ToString.Exclude
-    private List<Workout> favoriteTrainings = new ArrayList<Workout>();
-    */
-
     /**
-     * This method return is objects equals or not
-     *
-     * @param o object
-     * @return boolean
-     * @see User#getId()
+     * User's favorite workouts
      */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_favorite_workouts",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "workouts_id"))
+    private Set<Workout> favoriteWorkouts = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!(o instanceof User) || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         User user = (User) o;
         return Objects.equals(getId(), user.getId());
     }
