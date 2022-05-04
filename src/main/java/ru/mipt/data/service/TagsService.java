@@ -60,7 +60,7 @@ public class TagsService {
      * @param message name
      * @return TagsDTO
      */
-    public TagsDTO getDTOByMessage(String message) {
+    public static TagsDTO getDTOByMessage(String message) {
         return tagsRepository.findByMessage(message) != null ? convertToTagsDTO(tagsRepository.findByMessage(message)) : new TagsDTO(0, null);
     }
 

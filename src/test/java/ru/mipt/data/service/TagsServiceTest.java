@@ -30,7 +30,7 @@ class TagsServiceTest {
             tags.setMessage("test");
             HashSet<Workout> hashset = new HashSet<Workout>();
             tags.setWorkouts(hashset);
-            return tags;
+            return message == "test" ? tags : null;
         }
 
         @Override
@@ -249,5 +249,13 @@ class TagsServiceTest {
         HashSet<Workout> hashSet = new HashSet<Workout>();
         tags.setWorkouts(hashSet);
         Assertions.assertEquals(TagsService.convertToTagsDTO(tags), tagsDTO);
+    }
+    @Test
+    void getDTOByMessage() {
+        String message = "test";
+        TagsDTO tagsDTO = new TagsDTO(0, "test");
+        TagsDTO empty = new TagsDTO(0, null);
+        Assertions.assertEquals(TagsService.getDTOByMessage(message), tagsDTO);
+        Assertions.assertEquals(TagsService.getDTOByMessage("aaaaaaaaaaa"), empty);
     }
 }
