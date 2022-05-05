@@ -36,7 +36,7 @@ class WorkoutServiceTest {
 
         @Override
         public Integer findVotedUserId(int workoutId, int userId) {
-            return null;
+            return 0;
         }
 
         @Override
@@ -136,6 +136,7 @@ class WorkoutServiceTest {
             workout.setId(0);
             workout.setRating(5);
             workout.setDescription("test");
+            workout.setAuthorId(0);
             workout.setTitle("test");
             HashSet<Tags> hashSet = new HashSet<>();
             workout.setWorkoutTags(hashSet);
@@ -225,7 +226,8 @@ class WorkoutServiceTest {
     void getDTO() {
         WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5,0,  new HashSet<TagsDTO>());
         WorkoutDTO workout = new WorkoutDTO();
-        Assertions.assertEquals(WorkoutService.convertToWorkoutDTO(workoutService.get(0).orElse(new Workout())), workoutDTO);
+        Assertions.assertEquals(workoutService.getDTO(0), workoutDTO);
+        Assertions.assertNull(workoutService.getDTO(222));
     }
 
     @Test
@@ -254,6 +256,7 @@ class WorkoutServiceTest {
         Assertions.assertEquals(0, workoutService.count());
     }
 
+    //TODO update
     @Test
     void updateRating() {
         int value = Integer.parseInt("5");
@@ -459,5 +462,29 @@ class WorkoutServiceTest {
         tagsDTO.add(TagsService.convertToTagsDTO(tags));
         tags1.add(tags);
         Assertions.assertEquals(WorkoutService.convertToTagsSet(tagsDTO), tags1);
+    }
+    @Test
+    void convertToWorkoutDTOSet(){
+        Set<Workout> workout = new HashSet<>();
+        Set<WorkoutDTO> workout1 = new HashSet<>();
+        Workout workout2 = new Workout();
+        workout2.setId(0);
+        workout2.setRating(5);
+        workout2.setAuthorId(0);
+        workout2.setDescription("test");
+        workout2.setTitle("test");
+        HashSet<Tags> hashSet = new HashSet<>();
+        workout2.setWorkoutTags(hashSet);
+        workout.add(workout2);
+        WorkoutDTO workout3 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        workout1.add(workout3);
+        Assertions.assertEquals(WorkoutService.convertToWorkoutDTOSet(workout), workout1);
+    }
+
+    @Test
+    void getVotedUserId(){
+        int workoutId = 0;
+        int userId = 0;
+        Assertions.assertEquals(workoutService.getVotedUserId(workoutId, userId), 0);
     }
 }
