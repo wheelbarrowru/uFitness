@@ -165,7 +165,7 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
         tagsGrid.addClassNames("p-m");
         if (!isMobileDevice()) {
             headerAndButtons.add(header);
-        } else{
+        } else {
             headerAndButtons.addClassName("mt-s");
         }
         headerAndButtons.add(buttons);
@@ -202,6 +202,9 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
         splitLayout.addToPrimary(searchAndWorkouts);
         splitLayout.addToSecondary(tagsGrid);
         add(headerAndButtons, splitLayout);
+        if (!isMobileDevice()) {
+            sidebarCollapsed = true;
+        }
 
         updateSidebar();
     }
