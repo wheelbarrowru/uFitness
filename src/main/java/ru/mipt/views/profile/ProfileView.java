@@ -78,6 +78,11 @@ public class ProfileView extends Div implements HasUrlParameter<Integer> {
                 customerWorkoutsButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
                 customerWorkoutsButton.addClassName("m-0");
 
+                if (profileForm.isMobileDevice()){
+                    back.setText("");
+                    favoriteWorkoutsButton.setText("Favorites");
+                }
+
                 HorizontalLayout buttons = new HorizontalLayout(back, favoriteWorkoutsButton, customerWorkoutsButton);
                 buttons.addClassName("p-m");
 

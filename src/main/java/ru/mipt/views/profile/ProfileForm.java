@@ -1,8 +1,10 @@
 package ru.mipt.views.profile;
 
 import com.vaadin.flow.component.HasValueAndElement;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Section;
 import com.vaadin.flow.component.html.Span;
@@ -12,6 +14,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WebBrowser;
 import lombok.Getter;
 import ru.mipt.data.dto.UserDTO;
 import ru.mipt.data.repository.UserRepository;
@@ -84,13 +88,29 @@ public class ProfileForm extends VerticalLayout {
         logout.setWidthFull();
         logout.addClickListener(e -> authenticatedUser.logout());
 
-        Button delete = new Button("Delete my account");
-        delete.addClassNames("bg-error", "text-error-contrast");
-        delete.setWidthFull();
+        Dialog deleteDialog = new Dialog();
+        deleteDialog.setCloseOnEsc(true);
+        deleteDialog.add("Are you sure? This action cannot be undone");
+
+        Button delete = new Button("Delete");
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        delete.getStyle().set("margin-right", "auto");
         delete.addClickListener(e -> {
             userService.delete(param);
             authenticatedUser.logout();
         });
+
+        Button cancel = new Button("Cancel", e -> deleteDialog.close());
+        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancel.addClickShortcut(Key.ESCAPE);
+
+        HorizontalLayout deleteAndCancel = new HorizontalLayout(delete, cancel);
+        deleteAndCancel.addClassNames("justify-between", "mt-m");
+        deleteDialog.add(deleteAndCancel);
+
+        Button openDelete = new Button("Delete my account", e -> deleteDialog.open());
+        openDelete.addClassNames("bg-error", "text-error-contrast");
+        openDelete.setWidthFull();
 
         save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -105,7 +125,7 @@ public class ProfileForm extends VerticalLayout {
         context.addClassNames("flex", "flex-col", "mt-s", "mx-s");
         context.setMinWidth("400px");
 
-        HorizontalLayout buttons = new HorizontalLayout(logout, delete);
+        HorizontalLayout buttons = new HorizontalLayout(logout, openDelete);
         buttons.addClassNames("justify-between", "self-end", "mt-xl");
         buttons.setMinWidth("400px");
 
@@ -115,6 +135,9 @@ public class ProfileForm extends VerticalLayout {
 
         H2 header = new H2("Your profile");
         header.addClassNames("text-3xl", "m-0");
+        if (isMobileDevice()) {
+            header.removeClassName("text-3xl");
+        }
         setHorizontalComponentAlignment(Alignment.CENTER, header);
 
         add(header, context, save, buttons);
@@ -127,5 +150,10 @@ public class ProfileForm extends VerticalLayout {
      */
     private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
+    }
+
+    public boolean isMobileDevice() {
+        WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
+        return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }
 }

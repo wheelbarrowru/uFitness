@@ -11,6 +11,8 @@ import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WebBrowser;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.data.dto.WorkoutDTO;
@@ -33,9 +35,15 @@ public class BasicWorkoutListForm extends Div implements HasComponents, HasStyle
      */
     public BasicWorkoutListForm(@Autowired WorkoutService workoutService, List<WorkoutDTO> workoutDTOList) {
         addClassNames("workout-list-view", "max-w-screen-2xl", "mx-xl", "pb-l", "px-m");
+        if (isMobileDevice()) {
+            removeClassNames("mx-xl", "pb-l", "px-m");
+        }
 
         header = new H2();
-        header.addClassNames("px-l", "text-3xl");
+        header.addClassName("px-l");
+        if (!isMobileDevice()) {
+            header.addClassName("text-3xl");
+        }
 
         OrderedList workoutContainer = new OrderedList();
         workoutContainer.addClassNames("gap-m", "grid", "list-none", "m-0", "px-l");
@@ -80,5 +88,10 @@ public class BasicWorkoutListForm extends Div implements HasComponents, HasStyle
         );
 
         add(header, searchLayout, workoutContainer);
+    }
+
+    private boolean isMobileDevice() {
+        WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
+        return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }
 }
