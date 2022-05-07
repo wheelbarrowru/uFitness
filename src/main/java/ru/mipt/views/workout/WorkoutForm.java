@@ -1,9 +1,11 @@
 package ru.mipt.views.workout;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
@@ -127,14 +129,32 @@ public class WorkoutForm extends VerticalLayout {
         setHorizontalComponentAlignment(Alignment.CENTER, ratingBar);
 
         if (userId == workoutDTO.getAuthorId()) {
-            Button delete = new Button("Delete my workout");
-            delete.addClassNames("bg-error", "text-error-contrast");
-            setHorizontalComponentAlignment(Alignment.CENTER, delete);
-            add(delete);
+
+            Dialog deleteDialog = new Dialog();
+            deleteDialog.setCloseOnEsc(true);
+            deleteDialog.add("Are you sure? This action cannot be undone");
+
+            Button delete = new Button("Delete");
+            delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+            delete.getStyle().set("margin-right", "auto");
             delete.addClickListener(e -> {
                 workoutService.delete(workoutDTO.getId());
+                deleteDialog.close();
                 UI.getCurrent().getPage().getHistory().back();
             });
+
+            Button cancel = new Button("Cancel", e -> deleteDialog.close());
+            cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+            cancel.addClickShortcut(Key.ESCAPE);
+
+            HorizontalLayout deleteAndCancel = new HorizontalLayout(delete, cancel);
+            deleteAndCancel.addClassNames("justify-between", "mt-m");
+            deleteDialog.add(deleteAndCancel);
+
+            Button openDelete = new Button("Delete my workout", e -> deleteDialog.open());
+            openDelete.addClassNames("bg-error", "text-error-contrast");
+            setHorizontalComponentAlignment(Alignment.CENTER, openDelete);
+            add(openDelete);
         } else {
             add(ratingBar);
         }

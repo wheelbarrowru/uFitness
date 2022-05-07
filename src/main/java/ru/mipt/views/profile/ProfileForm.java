@@ -97,6 +97,7 @@ public class ProfileForm extends VerticalLayout {
         delete.getStyle().set("margin-right", "auto");
         delete.addClickListener(e -> {
             userService.delete(param);
+            deleteDialog.close();
             authenticatedUser.logout();
         });
 
