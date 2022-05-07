@@ -37,3 +37,16 @@ jobs:
       run: |
          chmod +x mvnw 
          ./mvnw test -B -D"license.skip=true"
+
+    - name: UploadArtifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-report
+        path: ${{ github.workspace }}
+
+    - name: Codecov uploader
+      run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+  
+        chmod +x codecov
+        ./codecov
