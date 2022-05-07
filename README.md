@@ -1,7 +1,7 @@
 uFitness
 ==============================
 ![workflow](https://github.com/wheelbarrowru/uFitness/actions/workflows/main.yml/badge.svg)
-![Coverage](https://img.shields.io/badge/Coverage-72%25-yellowgreen)
+![Coverage](.github/badges/jacoco.svg)
 ![jdk](https://img.shields.io/badge/JDK-11-blue)
 
 ## Team:
