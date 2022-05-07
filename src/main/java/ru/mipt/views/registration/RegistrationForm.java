@@ -66,6 +66,7 @@ public class RegistrationForm extends FormLayout {
         submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         H2 title = new H2("Signup form");
+        title.addClassNames("text-2xl");
         add(title, firstName, lastName, email, username, password, passwordConfirm, allowMarketing, errorMessageField, submitButton);
 
         setMaxWidth("500px");

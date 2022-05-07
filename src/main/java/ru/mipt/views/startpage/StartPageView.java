@@ -1,9 +1,9 @@
 package ru.mipt.views.startpage;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -52,14 +52,20 @@ public class StartPageView extends VerticalLayout {
         buttonLayout.addClassName("button-layout");
         buttonLayout.add(login);
         buttonLayout.add(registration);
-        buttonLayout.setWidth("400px");
+        buttonLayout.setWidth("380px");
 
         H1 welcomeToUFitness = new H1("Welcome to uFitness");
-        welcomeToUFitness.addClassName("text-3xl");
+        welcomeToUFitness.addClassNames("text-3xl", "mt-0");
+
+        Image image = new Image("icons/icon.png", "logo");
+        image.setWidth("150px");
+        image.addClassName("m-0");
+
+        setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, image);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, welcomeToUFitness);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, buttonLayout);
 
-        add(welcomeToUFitness, buttonLayout);
+        add(image, welcomeToUFitness, buttonLayout);
     }
 
 }

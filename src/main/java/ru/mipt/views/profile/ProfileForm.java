@@ -123,11 +123,11 @@ public class ProfileForm extends VerticalLayout {
 
         Section context = new Section(usernameField, firstNameField, lastNameField, emailField);
         context.addClassNames("flex", "flex-col", "mt-s", "mx-s");
-        context.setMinWidth("400px");
+        context.setMinWidth("380px");
 
         HorizontalLayout buttons = new HorizontalLayout(logout, openDelete);
         buttons.addClassNames("justify-between", "self-end", "mt-xl");
-        buttons.setMinWidth("400px");
+        buttons.setMinWidth("377px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
         setHorizontalComponentAlignment(Alignment.CENTER, save);
@@ -152,7 +152,7 @@ public class ProfileForm extends VerticalLayout {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
     }
 
-    public boolean isMobileDevice() {
+    protected boolean isMobileDevice() {
         WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
         return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }

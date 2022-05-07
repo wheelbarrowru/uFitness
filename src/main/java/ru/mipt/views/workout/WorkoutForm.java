@@ -15,6 +15,8 @@ import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WebBrowser;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.dto.WorkoutDTO;
@@ -52,6 +54,13 @@ public class WorkoutForm extends VerticalLayout {
         this.workoutDTO = workoutService.getDTO(workoutId);
         this.workoutService = workoutService;
 
+        String size;
+        if (isMobileDevice()) {
+            size = "90%";
+        } else {
+            size = "70%";
+        }
+
         Component header = new H2(workoutDTO.getTitle());
         rating = new Label("Rating: " + workoutDTO.getRating());
         rating.addClassNames("text-l", "text-body");
@@ -88,7 +97,7 @@ public class WorkoutForm extends VerticalLayout {
         TextArea text = new TextArea();
         text.setValue(workoutDTO.getDescription());
         text.setReadOnly(true);
-        text.setWidth("70%");
+        text.setWidth(size);
 
 
         Div tags = new Div();
@@ -98,7 +107,7 @@ public class WorkoutForm extends VerticalLayout {
             pending.getElement().getStyle().set("margin", "5px");
             tags.add(pending);
         }
-        tags.setWidth("70%");
+        tags.setWidth(size);
         tags.addClassNames("gap-s", "m-0");
 
 
@@ -179,6 +188,11 @@ public class WorkoutForm extends VerticalLayout {
             rating.setText("Rating: " + workoutDTO.getRating());
         }
 
+    }
+
+    private boolean isMobileDevice() {
+        WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
+        return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }
 
 }

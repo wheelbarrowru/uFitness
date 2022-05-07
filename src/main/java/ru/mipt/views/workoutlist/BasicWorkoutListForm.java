@@ -71,6 +71,11 @@ public class BasicWorkoutListForm extends Div implements HasComponents, HasStyle
 
         HorizontalLayout searchLayout = new HorizontalLayout(search, searchButton);
         searchLayout.addClassNames("p-l");
+        if (isMobileDevice()) {
+            searchLayout.setWidthFull();
+            search.setWidthFull();
+            searchButton.setMinWidth("120px");
+        }
 
         search.addValueChangeListener(event -> {
                     workoutContainer.removeAll();
