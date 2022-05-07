@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.function.Function;
 
 class TagsServiceTest {
-    public ArrayList<Optional<Tags>> arraylist = new ArrayList<Optional<Tags>>();
+    public ArrayList<Optional<Tags>> arraylist = new ArrayList<>();
     @InjectMocks
     private TagsRepository tagsRepository = new TagsRepository() {
         @Override
@@ -30,12 +30,24 @@ class TagsServiceTest {
             tags.setMessage("test");
             HashSet<Workout> hashset = new HashSet<Workout>();
             tags.setWorkouts(hashset);
-            return message == "test" ? tags : null;
+            return Objects.equals(message, "test") ? tags : null;
         }
 
         @Override
         public List<Tags> findAll() {
-            return null;
+            ArrayList<Tags> arraylist = new ArrayList<>();
+            Tags tags = new Tags();
+            tags.setId(0);
+            tags.setMessage("test");
+            HashSet<Workout> hashset = new HashSet<Workout>();
+            tags.setWorkouts(hashset);
+            Tags tags1 = new Tags();
+            tags1.setId(0);
+            tags1.setMessage("test");
+            tags1.setWorkouts(hashset);
+            arraylist.add(tags);
+            arraylist.add(tags1);
+            return arraylist;
         }
 
         @Override
@@ -202,8 +214,8 @@ class TagsServiceTest {
     void getDTO() {
         TagsDTO tagsDTO = new TagsDTO(0, "test");
         TagsDTO tags = new TagsDTO(0, null);
-        Assertions.assertEquals(TagsService.convertToTagsDTO(tagsService.get(0).orElse(new Tags())), tagsDTO);
-        Assertions.assertEquals(TagsService.convertToTagsDTO(tagsService.get(222).orElse(new Tags())), tags);
+        Assertions.assertEquals(tagsService.getDTO(0), tagsDTO);
+        Assertions.assertEquals(tagsService.getDTO(22), tags);
     }
 
     @Test
@@ -219,7 +231,7 @@ class TagsServiceTest {
 
     @Test
     void delete() {
-        tagsRepository.deleteById(0);
+        tagsService.delete(0);
         ArrayList<User> ArrayList = new ArrayList<User>();
         Assertions.assertEquals(ArrayList, arraylist);
     }
@@ -258,4 +270,14 @@ class TagsServiceTest {
         Assertions.assertEquals(TagsService.getDTOByMessage(message), tagsDTO);
         Assertions.assertEquals(TagsService.getDTOByMessage("aaaaaaaaaaa"), empty);
     }
+    @Test
+    void getSetOfDTO(){
+        Set<TagsDTO> tagsDTOSet = new HashSet<>();
+        Set<Tags> tags = new HashSet<>(tagsRepository.findAll());
+        for (Tags tag : tags) {
+            tagsDTOSet.add(TagsService.convertToTagsDTO(tag));}
+        Assertions.assertEquals(tagsService.getSetOfDTO(), tagsDTOSet);
+
+    }
+
 }
