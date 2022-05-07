@@ -2,7 +2,6 @@ uFitness
 ==============================
 ![workflow](https://github.com/wheelbarrowru/uFitness/actions/workflows/main.yml/badge.svg)
 ![Coverage](.github/badges/jacoco.svg)
-![jdk](https://img.shields.io/badge/JDK-11-blue)
 
 ## Team:
 - [Ildar Khabibulin](https://github.com/wheelbarrowru)
