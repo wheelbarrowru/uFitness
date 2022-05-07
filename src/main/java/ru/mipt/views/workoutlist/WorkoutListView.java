@@ -7,12 +7,15 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WebBrowser;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.User;
@@ -48,6 +51,11 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
     private TextField search;
     private final TagsService tagsService;
     private final AuthenticatedUser authenticatedUser;
+    private boolean sidebarCollapsed;
+    private Icon leftArrowIcon;
+    private Icon rightArrowIcon;
+    private Button slideButton;
+    private SplitLayout splitLayout;
 
     /**
      * Constructor of WorkoutListView
@@ -114,6 +122,9 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
      */
     private void constructUI() {
         addClassNames("workout-list-view", "max-w-screen-2xl", "mx-xl", "pb-l", "px-m");
+        if (isMobileDevice()) {
+            removeClassNames("mx-xl", "pb-l", "px-m");
+        }
 
         HorizontalLayout headerAndButtons = new HorizontalLayout();
         headerAndButtons.addClassNames("items-center", "justify-between", "px-l");
@@ -150,8 +161,14 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
 
         tagsGrid = new TagsGrid(tagsService);
         tagsGrid.setWidth("50%");
+        tagsGrid.setMinWidth("0px");
         tagsGrid.addClassNames("p-m");
-        headerAndButtons.add(header, buttons);
+        if (!isMobileDevice()) {
+            headerAndButtons.add(header);
+        } else{
+            headerAndButtons.addClassName("mt-s");
+        }
+        headerAndButtons.add(buttons);
 
         search = new TextField();
         search.setPlaceholder("Workout name");
@@ -165,12 +182,45 @@ public class WorkoutListView extends Div implements HasComponents, HasStyle {
         HorizontalLayout searchLayout = new HorizontalLayout(search, searchButton);
         searchLayout.addClassNames("p-l");
 
-        Main searchAndWorkouts = new Main(searchLayout, workoutContainer);
 
-        SplitLayout splitLayout = new SplitLayout();
+        slideButton = new Button();
+        leftArrowIcon = VaadinIcon.ARROW_LEFT.create();
+        rightArrowIcon = VaadinIcon.ARROW_RIGHT.create();
+
+        slideButton.addClickListener(event -> {
+            sidebarCollapsed = !sidebarCollapsed;
+            updateSidebar();
+        });
+
+        Main searchAndWorkouts = new Main(slideButton, searchLayout, workoutContainer);
+
+        slideButton.getElement().setAttribute("aria-label", "Expand/collapse sidebar");
+        slideButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        slideButton.getStyle().set("float", "right");
+
+        splitLayout = new SplitLayout();
         splitLayout.addToPrimary(searchAndWorkouts);
         splitLayout.addToSecondary(tagsGrid);
-        splitLayout.setSplitterPosition(72);
         add(headerAndButtons, splitLayout);
+
+        updateSidebar();
+    }
+
+    private void updateSidebar() {
+        slideButton.setIcon(sidebarCollapsed ? rightArrowIcon : leftArrowIcon);
+        splitLayout.setSplitterPosition(sidebarCollapsed ? 72 : 100);
+        if (!sidebarCollapsed) {
+            splitLayout.remove(tagsGrid);
+        } else {
+            splitLayout.addToSecondary(tagsGrid);
+            if (isMobileDevice()) {
+                splitLayout.setSplitterPosition(10);
+            }
+        }
+    }
+
+    private boolean isMobileDevice() {
+        WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
+        return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }
 }

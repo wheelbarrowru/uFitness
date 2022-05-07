@@ -14,6 +14,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WebBrowser;
 import lombok.Getter;
 import ru.mipt.data.dto.UserDTO;
 import ru.mipt.data.repository.UserRepository;
@@ -133,6 +135,9 @@ public class ProfileForm extends VerticalLayout {
 
         H2 header = new H2("Your profile");
         header.addClassNames("text-3xl", "m-0");
+        if (isMobileDevice()) {
+            header.removeClassName("text-3xl");
+        }
         setHorizontalComponentAlignment(Alignment.CENTER, header);
 
         add(header, context, save, buttons);
@@ -145,5 +150,10 @@ public class ProfileForm extends VerticalLayout {
      */
     private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
         Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
+    }
+
+    public boolean isMobileDevice() {
+        WebBrowser webBrowser = VaadinSession.getCurrent().getBrowser();
+        return webBrowser.isAndroid() || webBrowser.isIPhone() || webBrowser.isWindowsPhone() || webBrowser.isSafari();
     }
 }
