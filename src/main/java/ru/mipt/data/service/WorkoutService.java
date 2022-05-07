@@ -109,7 +109,6 @@ public class WorkoutService {
      * @see WorkoutDTO#getId()
      * @see Workout#getCountVote()
      */
-    //TODO update test
     @Transactional
     public void updateRating(int workoutId, int userId, String valueString) {
         int value = Integer.parseInt(valueString);
@@ -141,7 +140,7 @@ public class WorkoutService {
      * @param userId    for search
      * @return set of voted users' id
      */
-    public Integer getVotedUserId(int workoutId, int userId) {
+    public int getVotedUserId(int workoutId, int userId) {
         return workoutRepository.findVotedUserId(workoutId, userId);
     }
 
@@ -155,7 +154,6 @@ public class WorkoutService {
      * @see Workout#setRating(double)
      * @see Workout#setWorkoutTags(Set)
      */
-    //TODO update test with authorID
     private Workout convertToWorkout(WorkoutDTO workoutDTO) {
         Workout workout = new Workout();
         workout.setTitle(workoutDTO.getTitle());
@@ -178,7 +176,6 @@ public class WorkoutService {
      * @see WorkoutDTO#getTitle() ()
      * @see WorkoutService#convertToTagsDTOSet(Set)
      */
-    //TODO update test with authorID
     protected static WorkoutDTO convertToWorkoutDTO(Workout workout) {
         return new WorkoutDTO(workout.getId(),
                 workout.getTitle(),
@@ -194,7 +191,6 @@ public class WorkoutService {
      * @param workoutSet set to convert
      * @return set of WorkoutDTO
      */
-    //TODO test me
     protected static Set<WorkoutDTO> convertToWorkoutDTOSet(Set<Workout> workoutSet) {
         Set<WorkoutDTO> workoutDTOSet = new HashSet<>();
         for (Workout workout : workoutSet) {

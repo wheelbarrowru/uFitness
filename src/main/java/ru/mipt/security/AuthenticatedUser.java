@@ -1,10 +1,7 @@
 package ru.mipt.security;
 
-import ru.mipt.data.model.User;
-import ru.mipt.data.repository.UserRepository;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +9,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
+import ru.mipt.data.model.User;
+import ru.mipt.data.repository.UserRepository;
+
+import java.util.Optional;
 
 /**
  * This class works with authenticated user and protect his data with <b>UserRepository</b>
@@ -41,6 +42,7 @@ public class AuthenticatedUser {
 
     /**
      * Get authorized user
+     *
      * @return userRepository
      * @see UserRepository#findByUsername(String)
      */

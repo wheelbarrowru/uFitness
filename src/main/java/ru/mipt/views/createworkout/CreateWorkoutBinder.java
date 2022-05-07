@@ -100,6 +100,9 @@ public class CreateWorkoutBinder {
         UI.getCurrent().navigate("workout-list");
     }
 
+    /**
+     * This method throws exeption if you're trying to create workout without tags
+     */
     private void showFail() {
         Notification notification = Notification.show("Choose at least one tag");
         notification.addThemeVariants(NotificationVariant.LUMO_ERROR);

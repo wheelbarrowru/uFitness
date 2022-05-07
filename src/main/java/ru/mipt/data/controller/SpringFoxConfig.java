@@ -16,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpringFoxConfig {
     /**
      * This method creates swagger-ui web application
+     *
      * @return Docket
      */
     @Bean

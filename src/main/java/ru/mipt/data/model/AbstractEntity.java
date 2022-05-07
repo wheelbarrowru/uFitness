@@ -11,32 +11,32 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractEntity {
 
     /**
-     * Generated Entity's id
+     * Generated id
      */
     @Id
     @GeneratedValue
     private int id;
 
     /**
-     * This method returns Entity's id
+     * This method returns id
      *
-     * @return Entity's id
+     * @return id
      */
     public int getId() {
         return id;
     }
 
     /**
-     * This method set Entity's id
+     * This method set id
      *
-     * @param id Entity's id
+     * @param id id
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Method return hashcode of this class
+     * Method return hashcode of this object
      *
      * @return hashcode
      */

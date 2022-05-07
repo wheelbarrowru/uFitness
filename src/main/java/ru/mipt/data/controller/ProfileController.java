@@ -29,7 +29,7 @@ public class ProfileController {
     /**
      * Constructor of ProfileController
      *
-     * @param userService User's userServoce
+     * @param userService User's userService
      */
     @Autowired
     public ProfileController(UserService userService) {

@@ -1,10 +1,10 @@
 package ru.mipt.data.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.model.Tags;
 import ru.mipt.data.repository.TagsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -51,7 +51,6 @@ public class TagsService {
         return convertToTagsDTO(get(id).orElse(new Tags()));
     }
 
-    //TODO test me
 
     /**
      * Method to get converted Tags into TagsGTO by message
@@ -60,7 +59,7 @@ public class TagsService {
      * @param message name
      * @return TagsDTO
      */
-    public TagsDTO getDTOByMessage(String message) {
+    public static TagsDTO getDTOByMessage(String message) {
         return tagsRepository.findByMessage(message) != null ? convertToTagsDTO(tagsRepository.findByMessage(message)) : new TagsDTO(0, null);
     }
 

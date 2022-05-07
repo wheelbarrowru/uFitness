@@ -152,7 +152,7 @@ public class UserService {
      * @see User#setUsername(String)
      * @see User#setRoles(Set)
      */
-    private User convertToUser(UserDTO userDTO) {
+    protected static User convertToUser(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setFirstname(userDTO.getFirstName());
