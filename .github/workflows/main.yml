@@ -44,7 +44,7 @@ jobs:
         if: failure()
         with:
           name: test-fail-results
-          path: target/report.txt
+          path: report.txt
 
       - name: Jacoco badge generator
         uses: cicirello/jacoco-badge-generator@v2.6.1
