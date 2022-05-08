@@ -86,8 +86,7 @@ class UserServiceTest {
 
         @Override
         public <S extends User> S save(S entity) {
-            User user = entity;
-            return (S) user;
+            return (S) entity;
         }
 
         @Override

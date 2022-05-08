@@ -22,11 +22,58 @@ import java.util.function.Function;
 
 class WorkoutServiceTest {
     public ArrayList<Optional<Workout>> arraylist = new ArrayList<Optional<Workout>>();
+    public ArrayList<Optional<Workout>> arraylist1 = new ArrayList<Optional<Workout>>();
+
+    {
+        Workout workout = new Workout();
+        workout.setId(0);
+        workout.setRating(5);
+        workout.setDescription("test");
+        workout.setTitle("test");
+        workout.setAuthorId(0);
+        HashSet<Tags> hashSet1 = new HashSet<>();
+        workout.setWorkoutTags(hashSet1);
+        Workout workout1 = new Workout();
+        workout1.setId(1);
+        workout1.setRating(5);
+        workout1.setDescription("test");
+        workout1.setTitle("test");
+        workout1.setAuthorId(0);
+        workout1.setCountVote(1);
+        workout1.setWorkoutTags(hashSet1);
+        Workout workout2 = new Workout();
+        workout2.setId(2);
+        workout2.setRating(5);
+        workout2.setDescription("test");
+        workout2.setTitle("test");
+        workout2.setAuthorId(0);
+        workout2.setCountVote(2);
+        workout2.setWorkoutTags(hashSet1);
+        Workout workout3 = new Workout();
+        workout3.setId(3);
+        workout3.setRating(5);
+        workout3.setDescription("test");
+        workout3.setTitle("test");
+        workout3.setAuthorId(0);
+        workout3.setCountVote(1);
+        workout3.setWorkoutTags(hashSet1);
+        arraylist.add(Optional.of(workout));
+        arraylist.add(Optional.of(workout1));
+        arraylist.add(Optional.of(workout2));
+        arraylist.add(Optional.of(workout3));
+    }
+
     @InjectMocks
     private WorkoutRepository workoutRepository = new WorkoutRepository() {
         @Override
         public void updateRatingAndCount(int id, double rating, int count) {
-
+            for (Optional<Workout> workout : arraylist) {
+                System.out.println(workout);
+                if (workout.get().getId() == id) {
+                    workout.get().setRating(rating);
+                    workout.get().setCountVote(count);
+                }
+            }
         }
 
         @Override
@@ -41,7 +88,6 @@ class WorkoutServiceTest {
 
         @Override
         public void addVotedUsersId(int workoutId, int userId, int userVote) {
-
         }
 
         @Override
@@ -132,15 +178,12 @@ class WorkoutServiceTest {
 
         @Override
         public Optional<Workout> findById(Integer integer) {
-            Workout workout = new Workout();
-            workout.setId(0);
-            workout.setRating(5);
-            workout.setDescription("test");
-            workout.setAuthorId(0);
-            workout.setTitle("test");
-            HashSet<Tags> hashSet = new HashSet<>();
-            workout.setWorkoutTags(hashSet);
-            return integer == 0 ? Optional.of(workout) : Optional.empty();
+            for (Optional<Workout> workout : arraylist) {
+                if (workout.get().getId() == integer) {
+                    return integer <= 4 ? workout : Optional.empty();
+                }
+            }
+            return Optional.empty();
         }
 
         @Override
@@ -155,7 +198,7 @@ class WorkoutServiceTest {
 
         @Override
         public void deleteById(Integer integer) {
-            arraylist.remove(workoutRepository.findById(integer));
+            arraylist1.remove(workoutRepository.findById(integer));
 
         }
 
@@ -245,10 +288,10 @@ class WorkoutServiceTest {
 
     @Test
     void delete() {
-        arraylist.add(workoutRepository.findById(0));
+        arraylist1.add(workoutRepository.findById(0));
         workoutService.delete(0);
         ArrayList<User> ArrayList = new ArrayList<>();
-        Assertions.assertEquals(ArrayList, arraylist);
+        Assertions.assertEquals(ArrayList, arraylist1);
     }
 
     @Test
@@ -259,20 +302,15 @@ class WorkoutServiceTest {
     //TODO update
     @Test
     void updateRating() {
-        int value = Integer.parseInt("5");
-        Workout workout = new Workout();
-        workout.setId(0);
-        workout.setRating(4);
-        workout.setDescription("test");
-        workout.setTitle("test");
-        workout.setAuthorId(0);
-        HashSet<Tags> hashSet = new HashSet<>();
-        workout.setWorkoutTags(hashSet);
-
-        workoutService.updateRating(0, 0, "3");
-        Assertions.assertEquals(workoutRepository.findById(0), workout.getRating());
+        workoutService.updateRating(1, 0, "3");
+        Assertions.assertEquals(workoutRepository.findById(1).get().getRating(), 4);
+        workoutService.updateRating(2, 0, "-5");
+        Assertions.assertEquals(workoutRepository.findById(2).get().getRating(), 5);
+        workoutService.updateRating(3, 0, "-5");
+        Assertions.assertEquals(workoutRepository.findById(3).get().getRating(), 0);
 
 
+//asrt remix
     }
 
     @Test

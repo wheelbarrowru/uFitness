@@ -1,6 +1,6 @@
 uFitness
 ==============================
-![workflow](https://github.com/wheelbarrowru/uFitness/actions/workflows/main.yml/badge.svg)
+[![Java CI](https://github.com/wheelbarrowru/uFitness/actions/workflows/main.yml/badge.svg)](https://github.com/wheelbarrowru/uFitness/actions/workflows/main.yml)
 ![Coverage](.github/badges/jacoco.svg)
 
 ## Team:
@@ -32,8 +32,6 @@ Once the JAR file is built, you can run it using
 
 ## Project structure
 
-- `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the
-  side/top bar and the main menu). This setup uses
   [App Layout](https://vaadin.com/components/vaadin-app-layout).
 - `views` package in `src/main/java` contains the server-side Java views of your application.
 - `data` package in `src/main/java` contains server controller, dto, model, repository and service packages.

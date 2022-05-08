@@ -112,6 +112,7 @@ public class WorkoutService {
     @Transactional
     public void updateRating(int workoutId, int userId, String valueString) {
         int value = Integer.parseInt(valueString);
+        System.out.println(value);
         if (value == 0) {
             return;
         }
