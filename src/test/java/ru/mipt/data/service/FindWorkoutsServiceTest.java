@@ -3,13 +3,11 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.Tags;
 import ru.mipt.data.model.Workout;
@@ -19,11 +17,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class FindWorkoutsServiceTest {
     @InjectMocks
-    private WorkoutRepository workoutRepository = new WorkoutRepository() {
+    @SuppressWarnings({"all"})
+    private final WorkoutRepository workoutRepository = new WorkoutRepository() {
 
         @Override
         public List<Workout> findAll() {
@@ -223,29 +220,29 @@ class FindWorkoutsServiceTest {
 
         }
     };
-    @Autowired
-    private FindWorkoutsService findWorkoutsService = new FindWorkoutsService(workoutRepository);
+
+    private final FindWorkoutsService findWorkoutsService = new FindWorkoutsService(workoutRepository);
+
     @Test
     void findWorkoutsByTitleAndTagsDTOTest() {
-        Set<Tags> tagsSet = new HashSet<>();
         List<Workout> workouts = workoutRepository.findAll();
         System.out.println(workouts);
         Set<WorkoutDTO> resultSet = new HashSet<>();
         Pattern pattern = Pattern.compile(String.format(".*%s.*", "test1"));
         for (Workout workout :
                 workouts) {
-            if (workout.getWorkoutTags().containsAll(tagsSet) && pattern.matcher(workout.getTitle()).matches()) {
+            if (workout.getWorkoutTags().containsAll(new HashSet<Tags>()) && pattern.matcher(workout.getTitle()).matches()) {
                 resultSet.add(WorkoutService.convertToWorkoutDTO(workout));
             }
         }
         System.out.println(resultSet);
-        Assertions.assertEquals(findWorkoutsService.findWorkoutsByTitleAndTagsDTO("test1", new ArrayList<TagsDTO>()), resultSet);
+        Assertions.assertEquals(findWorkoutsService.findWorkoutsByTitleAndTagsDTO("test1", new ArrayList<>()), resultSet);
     }
 
     @Test
     void findWorkoutByAuthorId() {
         Set<WorkoutDTO> set = new HashSet<>();
-        WorkoutDTO workoutDTO = new WorkoutDTO(1, "test1", "test1", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(1, "test1", "test1", 5, 0, new HashSet<>());
         set.add(workoutDTO);
         Assertions.assertEquals(findWorkoutsService.findWorkoutByAuthorId(0), set);
     }

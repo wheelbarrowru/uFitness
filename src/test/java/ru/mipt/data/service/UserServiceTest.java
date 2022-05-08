@@ -3,7 +3,6 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +26,10 @@ class UserServiceTest {
     public ArrayList<User> arraylist2 = new ArrayList<>();
     public ArrayList<User> arraylist3 = new ArrayList<>();
     public ArrayList<User> arraylist4 = new ArrayList<>();
+
     @InjectMocks
-    private UserRepository userRepository =new UserRepository(){
+    @SuppressWarnings({"all"})
+    private UserRepository userRepository = new UserRepository() {
 
         @Override
         public List<User> findAll() {
@@ -59,7 +60,6 @@ class UserServiceTest {
         public void deleteById(Integer integer) {
             arraylist.add(userRepository.findUserById(0));
             arraylist.remove(userRepository.findUserById(integer));
-
 
 
         }
@@ -96,7 +96,7 @@ class UserServiceTest {
 
         @Override
         public Optional<User> findById(Integer integer) {
-            User user =new User();
+            User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
             user.setFirstname("test");
@@ -117,7 +117,7 @@ class UserServiceTest {
             Set<Workout> workouts = new HashSet<>();
             workouts.add(workout);
             user.setFavoriteWorkouts(workouts);
-            return integer==0? Optional.of(user) : Optional.empty();
+            return integer == 0 ? Optional.of(user) : Optional.empty();
         }
 
         @Override
@@ -203,7 +203,7 @@ class UserServiceTest {
         @Override
         public User findByUsername(String username) {
             ArrayList<User> array = new ArrayList<User>();
-            User user =new User();
+            User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
             user.setFirstname("test");
@@ -228,15 +228,14 @@ class UserServiceTest {
 
             if (username.equals(array.get(0).getUsername())) {
                 return user;
-            }
-            else {
+            } else {
                 return null;
             }
         }
 
         @Override
-        public User findUserById(int id){
-            User user =new User();
+        public User findUserById(int id) {
+            User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
             user.setFirstname("test");
@@ -263,7 +262,7 @@ class UserServiceTest {
         @Override
         public User findUserByEmail(String email) {
             ArrayList<User> array = new ArrayList<User>();
-            User user =new User();
+            User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
             user.setFirstname("test");
@@ -288,8 +287,7 @@ class UserServiceTest {
 
             if (email.equals(array.get(0).getEmail())) {
                 return user;
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -326,13 +324,13 @@ class UserServiceTest {
 
     };
 
-    @Autowired
-    private UserService userService = new UserService(userRepository);
+
+    private final UserService userService = new UserService(userRepository);
 
 
     @Test
     void get() {
-        User user =new User();
+        User user = new User();
         user.setEmail("test@mail.ru");
         user.setUsername("username");
         user.setFirstname("test");
@@ -357,7 +355,7 @@ class UserServiceTest {
     }
 
     @Test
-    void convertToUser(){
+    void convertToUser() {
         UserDTO userDTO = new UserDTO(0, "username", "test",
                 "test", "test@mail.ru", "test");
         User user1 = new User();
@@ -405,7 +403,7 @@ class UserServiceTest {
     @Test
     void delete() {
         userService.delete(0);
-        ArrayList<User> ArrayList = new ArrayList<User>();
+        ArrayList<User> ArrayList = new ArrayList<>();
         Assertions.assertEquals(ArrayList, arraylist);
     }
 
@@ -460,7 +458,7 @@ class UserServiceTest {
         Set<Role> roles = new HashSet<>();
         roles.add(USER);
         user1.setRoles(roles);
-        Assertions.assertEquals(userService.convertToUserDTO(user1), userDTO);
+        Assertions.assertEquals(UserService.convertToUserDTO(user1), userDTO);
     }
 
     @Test
@@ -471,31 +469,35 @@ class UserServiceTest {
         Assertions.assertEquals(UserService.convertToUserDTO(userService.get(0).orElse(new User())), userDTO);
         Assertions.assertEquals(UserService.convertToUserDTO(userService.get(222).orElse(new User())), userDTO1);
     }
+
     @Test
-    void checkNotExistUsernameWithDifferentID(){
-        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))){
-            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));}
-        else {
+    void checkNotExistUsernameWithDifferentID() {
+        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))) {
+            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));
+        } else {
             assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
         }
     }
+
     @Test
-    void checkNotExistEmailWithDifferentID(){
-        if ((userService.checkNotExistEmail("test")) | userRepository.findUserById(0).equals(userRepository.findUserByEmail("test"))){
-            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));}
-        else {
+    void checkNotExistEmailWithDifferentID() {
+        if ((userService.checkNotExistEmail("test")) | userRepository.findUserById(0).equals(userRepository.findUserByEmail("test"))) {
+            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));
+        } else {
             assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
         }
     }
+
     @Test
-    void getFavoriteWorkouts(){
+    void getFavoriteWorkouts() {
         User user = userRepository.findUserById(0);
         Assertions.assertEquals(userService.getFavoriteWorkouts(0), WorkoutService.convertToWorkoutDTOSet(
                 user.getFavoriteWorkouts()));
 
     }
+
     @Test
-    void addFavoriteWorkout(){
+    void addFavoriteWorkout() {
         User user1 = new User();
         user1.setEmail("test@mail.ru");
         user1.setUsername("username");
@@ -515,13 +517,14 @@ class UserServiceTest {
         HashSet<Tags> hashSet = new HashSet<>();
         workout1.setWorkoutTags(hashSet);
         arraylist4.add(user1);
-        userService.addFavoriteWorkout(0,0);
+        userService.addFavoriteWorkout(0, 0);
         Set<Workout> workouts1 = new HashSet<>();
         workouts1.add(workout1);
         assertEquals(arraylist4.get(0).getFavoriteWorkouts(), workouts1);
     }
+
     @Test
-    void removeFavoriteWorkouts(){
+    void removeFavoriteWorkouts() {
         User user1 = new User();
         user1.setEmail("test@mail.ru");
         user1.setUsername("username");
@@ -554,17 +557,19 @@ class UserServiceTest {
         workouts1.add(workout1);
         user1.setFavoriteWorkouts(workouts);
         arraylist3.add(user1);
-        userService.removeFavoriteWorkouts(0,0);
+        userService.removeFavoriteWorkouts(0, 0);
         Assertions.assertEquals(arraylist3.get(0).getFavoriteWorkouts(), workouts1);
     }
+
     @Test
-    void checkFavorite(){
+    void checkFavorite() {
         assertTrue(userService.checkFavorite(0, 0));
         assertFalse(userService.checkFavorite(222, 0));
 
     }
+
     @Test
-    void updateUserInfo(){
+    void updateUserInfo() {
         User user1 = new User();
         user1.setEmail("test@mail.ru");
         user1.setUsername("username");
@@ -586,7 +591,7 @@ class UserServiceTest {
         Set<Role> roles1 = new HashSet<>();
         roles.add(USER);
         user1.setRoles(roles1);
-        userService.updateUserInfo(0,"test1", "test1", "test", "test");
+        userService.updateUserInfo(0, "test1", "test1", "test", "test");
         Assertions.assertEquals(arraylist2.get(0), user);
     }
 }
