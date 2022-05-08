@@ -195,8 +195,6 @@ public class UserService {
         return convertToUserDTO(get(id).orElse(new User()));
     }
 
-    //TODO test me
-
     /**
      * Get set of workoutDTOs of favorite workouts
      *

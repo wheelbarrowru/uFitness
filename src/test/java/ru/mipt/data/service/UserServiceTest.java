@@ -474,14 +474,25 @@ class UserServiceTest {
     }
     @Test
     void checkNotExistUsernameWithDifferentID(){
-
+        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))){
+            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));}
+        else {
+            assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
+        }
     }
     @Test
     void checkNotExistEmailWithDifferentID(){
-
+        if ((userService.checkNotExistEmail("test")) | userRepository.findUserById(0).equals(userRepository.findUserByEmail("test"))){
+            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));}
+        else {
+            assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
+        }
     }
     @Test
     void getFavoriteWorkouts(){
+        User user = userRepository.findUserById(0);
+        Assertions.assertEquals(userService.getFavoriteWorkouts(0), WorkoutService.convertToWorkoutDTOSet(
+                user.getFavoriteWorkouts()));
 
     }
     @Test
