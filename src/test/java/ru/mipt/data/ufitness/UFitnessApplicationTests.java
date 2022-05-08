@@ -9,7 +9,7 @@ class UFitnessApplicationTests {
 
     @Test
     public void applicationContextTest() {
-        Application.main(new String[] {});
+        Application.main(new String[]{});
     }
 
 }

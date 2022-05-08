@@ -3,16 +3,13 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.dto.TagsDTO;
-import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.Tags;
-import ru.mipt.data.model.User;
 import ru.mipt.data.model.Workout;
 import ru.mipt.data.repository.TagsRepository;
 
@@ -20,8 +17,13 @@ import java.util.*;
 import java.util.function.Function;
 
 class TagsServiceTest {
+
     public ArrayList<Optional<Tags>> arraylist = new ArrayList<>();
+    private final ArrayList<Tags> tagsArrayList = new ArrayList<>();
+    private final Tags testTag = new Tags("test");
+
     @InjectMocks
+    @SuppressWarnings({"all"})
     private TagsRepository tagsRepository = new TagsRepository() {
         @Override
         public Tags findByMessage(String message) {
@@ -148,8 +150,7 @@ class TagsServiceTest {
 
         @Override
         public void deleteById(Integer integer) {
-            arraylist.add(tagsRepository.findById(0));
-            arraylist.remove(tagsRepository.findById(integer));
+            tagsArrayList.remove(testTag);
         }
 
         @Override
@@ -197,15 +198,15 @@ class TagsServiceTest {
             return null;
         }
     };
-    @Autowired
-    private TagsService tagsService = new TagsService(tagsRepository);
+
+    private final TagsService tagsService = new TagsService(tagsRepository);
 
     @Test
     void get() {
         Tags tags = new Tags();
         tags.setMessage("test");
         tags.setId(0);
-        HashSet<Workout> hashset = new HashSet<Workout>();
+        HashSet<Workout> hashset = new HashSet<>();
         tags.setWorkouts(hashset);
         Assertions.assertEquals(Optional.of(tags), tagsService.get(0));
     }
@@ -223,17 +224,19 @@ class TagsServiceTest {
         Tags tags = new Tags();
         tags.setMessage("test");
         tags.setId(0);
-        HashSet<Workout> hashset = new HashSet<Workout>();
+        HashSet<Workout> hashset = new HashSet<>();
         tags.setWorkouts(hashset);
-        TagsDTO tagsDTO = new TagsDTO(0, "test");
         Assertions.assertEquals(tags, tagsService.update(tags));
     }
 
     @Test
     void delete() {
+
+        tagsArrayList.add(testTag);
         tagsService.delete(0);
-        ArrayList<User> ArrayList = new ArrayList<User>();
-        Assertions.assertEquals(ArrayList, arraylist);
+        ArrayList<Tags> arrayList2 = new ArrayList<>();
+        Assertions.assertEquals(arrayList2, tagsArrayList);
+
     }
 
     @Test
@@ -247,7 +250,7 @@ class TagsServiceTest {
         Tags tags = new Tags();
         tags.setId(0);
         tags.setMessage("test");
-        HashSet<Workout> hashset = new HashSet<Workout>();
+        HashSet<Workout> hashset = new HashSet<>();
         tags.setWorkouts(hashset);
         Assertions.assertEquals(TagsService.convertToTags(tagsDTO), tags);
     }
@@ -258,10 +261,11 @@ class TagsServiceTest {
         Tags tags = new Tags();
         tags.setId(0);
         tags.setMessage("test");
-        HashSet<Workout> hashSet = new HashSet<Workout>();
+        HashSet<Workout> hashSet = new HashSet<>();
         tags.setWorkouts(hashSet);
         Assertions.assertEquals(TagsService.convertToTagsDTO(tags), tagsDTO);
     }
+
     @Test
     void getDTOByMessage() {
         String message = "test";
@@ -270,12 +274,14 @@ class TagsServiceTest {
         Assertions.assertEquals(TagsService.getDTOByMessage(message), tagsDTO);
         Assertions.assertEquals(TagsService.getDTOByMessage("aaaaaaaaaaa"), empty);
     }
+
     @Test
-    void getSetOfDTO(){
+    void getSetOfDTO() {
         Set<TagsDTO> tagsDTOSet = new HashSet<>();
-        Set<Tags> tags = new HashSet<>(tagsRepository.findAll());
+        HashSet<Tags> tags = new HashSet<>(tagsRepository.findAll());
         for (Tags tag : tags) {
-            tagsDTOSet.add(TagsService.convertToTagsDTO(tag));}
+            tagsDTOSet.add(TagsService.convertToTagsDTO(tag));
+        }
         Assertions.assertEquals(tagsService.getSetOfDTO(), tagsDTOSet);
 
     }

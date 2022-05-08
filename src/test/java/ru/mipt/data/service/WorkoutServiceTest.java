@@ -3,7 +3,6 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.Tags;
-import ru.mipt.data.model.User;
 import ru.mipt.data.model.Workout;
 import ru.mipt.data.repository.TagsRepository;
 import ru.mipt.data.repository.WorkoutRepository;
@@ -21,8 +19,8 @@ import java.util.*;
 import java.util.function.Function;
 
 class WorkoutServiceTest {
-    public ArrayList<Optional<Workout>> arraylist = new ArrayList<Optional<Workout>>();
-    public ArrayList<Optional<Workout>> arraylist1 = new ArrayList<Optional<Workout>>();
+    public ArrayList<Optional<Workout>> arraylist = new ArrayList<>();
+    public ArrayList<Optional<Workout>> arraylist1 = new ArrayList<>();
 
     {
         Workout workout = new Workout();
@@ -64,6 +62,7 @@ class WorkoutServiceTest {
     }
 
     @InjectMocks
+    @SuppressWarnings({"all"})
     private WorkoutRepository workoutRepository = new WorkoutRepository() {
         @Override
         public void updateRatingAndCount(int id, double rating, int count) {
@@ -247,8 +246,8 @@ class WorkoutServiceTest {
             return null;
         }
     };
-    @Autowired
-    private WorkoutService workoutService = new WorkoutService(workoutRepository);
+
+    private final WorkoutService workoutService = new WorkoutService(workoutRepository);
 
 
     @Test
@@ -266,8 +265,7 @@ class WorkoutServiceTest {
 
     @Test
     void getDTO() {
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
-        WorkoutDTO workout = new WorkoutDTO();
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(workoutService.getDTO(0), workoutDTO);
         Assertions.assertNull(workoutService.getDTO(222));
     }
@@ -282,7 +280,7 @@ class WorkoutServiceTest {
         workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(workout, workoutService.update(workoutDTO));
     }
 
@@ -290,8 +288,8 @@ class WorkoutServiceTest {
     void delete() {
         arraylist1.add(workoutRepository.findById(0));
         workoutService.delete(0);
-        ArrayList<User> ArrayList = new ArrayList<>();
-        Assertions.assertEquals(ArrayList, arraylist1);
+        ArrayList<Optional<Workout>> arrayList = new ArrayList<>();
+        Assertions.assertEquals(arrayList, arraylist1);
     }
 
     @Test
@@ -299,18 +297,16 @@ class WorkoutServiceTest {
         Assertions.assertEquals(0, workoutService.count());
     }
 
-    //TODO update
+
     @Test
     void updateRating() {
         workoutService.updateRating(1, 0, "3");
-        Assertions.assertEquals(workoutRepository.findById(1).get().getRating(), 4);
+        Assertions.assertEquals(workoutRepository.findById(1).orElseThrow().getRating(), 4);
         workoutService.updateRating(2, 0, "-5");
-        Assertions.assertEquals(workoutRepository.findById(2).get().getRating(), 5);
+        Assertions.assertEquals(workoutRepository.findById(2).orElseThrow().getRating(), 5);
         workoutService.updateRating(3, 0, "-5");
-        Assertions.assertEquals(workoutRepository.findById(3).get().getRating(), 0);
+        Assertions.assertEquals(workoutRepository.findById(3).orElseThrow().getRating(), 0);
 
-
-//asrt remix
     }
 
     @Test
@@ -323,11 +319,12 @@ class WorkoutServiceTest {
         workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTO(workout), workoutDTO);
     }
 
     @InjectMocks
+    @SuppressWarnings({"all"})
     private TagsRepository tagsRepository = new TagsRepository() {
         @Override
         public Tags findByMessage(String message) {
@@ -484,8 +481,9 @@ class WorkoutServiceTest {
             return null;
         }
     };
-    @Autowired
-    private TagsService tagsService = new TagsService(tagsRepository);
+
+    @SuppressWarnings("unused")
+    private final TagsService tagsService = new TagsService(tagsRepository);
 
     @Test
     void convertToTagsSet() {
@@ -494,7 +492,7 @@ class WorkoutServiceTest {
         Tags tags = new Tags();
         tags.setId(0);
         tags.setMessage("test");
-        HashSet<Workout> hashset = new HashSet<Workout>();
+        HashSet<Workout> hashset = new HashSet<>();
         tags.setWorkouts(hashset);
         tagsDTO.add(TagsService.convertToTagsDTO(tags));
         tags1.add(tags);
@@ -514,7 +512,7 @@ class WorkoutServiceTest {
         HashSet<Tags> hashSet = new HashSet<>();
         workout2.setWorkoutTags(hashSet);
         workout.add(workout2);
-        WorkoutDTO workout3 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workout3 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         workout1.add(workout3);
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTOSet(workout), workout1);
     }
