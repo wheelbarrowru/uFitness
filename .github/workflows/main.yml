@@ -42,7 +42,7 @@ jobs:
         if: failure()
         with:
           name: test-fail-results
-          path: target/failsafe-reports
+          path: target/
 
       - name: Jacoco badge generator
         uses: cicirello/jacoco-badge-generator@v2.6.1
