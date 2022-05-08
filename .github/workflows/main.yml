@@ -37,6 +37,13 @@ jobs:
         run: |
           mvn -B test
 
+      - name: Upload fail result
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-fail-results
+          path: target/failsafe-reports
+
       - name: Jacoco badge generator
         uses: cicirello/jacoco-badge-generator@v2.6.1
         with:
