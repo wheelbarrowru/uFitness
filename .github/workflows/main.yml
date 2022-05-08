@@ -36,6 +36,10 @@ jobs:
       - name: Run tests
         run: |
           mvn -B test
+
+      - name: Generate report.txt
+        if: failure()
+        run: |
           touch report.txt
           cat target/surefire-reports/*.txt >> report.txt
 
