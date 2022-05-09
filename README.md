@@ -18,8 +18,8 @@ You can also import the project to your IDE of choice as you would with any
 Maven project. Read more on [how to import Vaadin projects to different 
 IDEs](https://vaadin.com/docs/latest/flow/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
 
-We also use swagger2 so you can visit http:localhost:8080/swagger-ui.html.
-//
+We also use swagger2 so you can visit http://localhost:8080/swagger-ui.html.
+
 ## Deploying to 
 To create a production build, call `mvnw clean package -Pproduction` (Windows),
 or `./mvnw clean package -Pproduction` (Mac & Linux).
@@ -31,8 +31,6 @@ Once the JAR file is built, you can run it using
 `java -jar target/ufitness-1.0-SNAPSHOT.jar`
 
 ## Project structure
-
-  [App Layout](https://vaadin.com/components/vaadin-app-layout).
 - `views` package in `src/main/java` contains the server-side Java views of your application.
 - `data` package in `src/main/java` contains server controller, dto, model, repository and service packages.
 - `security` package in `src/main/java` contains security configuration files.
