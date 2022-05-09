@@ -1,5 +1,6 @@
 package ru.mipt.views.workoutlist;
 
+import com.vaadin.flow.component.HasText;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Span;
@@ -49,9 +50,19 @@ public class WorkoutListViewCard extends ListItem {
 
         String shortDescription = StringUtils.abbreviate(workoutDTO.getDescription(), 145);
         StringBuilder longDescription = new StringBuilder(shortDescription);
-        if (shortDescription.length() < 145) {
-            longDescription.append(" ".repeat(Math.max(0, 145 - shortDescription.length() - shortDescription.length())));
+        int counter = 0;
+        for (int i = 0; i < longDescription.length(); i++) {
+            if (longDescription.charAt(i) != ' ') {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter > 30) {
+                longDescription.insert(i, ' ');
+                counter = 0;
+            }
         }
+
 
         Span description = new Span();
         description.setText(longDescription.toString());
