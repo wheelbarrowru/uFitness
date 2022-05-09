@@ -15,6 +15,7 @@ class UserDTOTest {
     UserDTO user2 = new UserDTO();
 
     @Test
+    @SuppressWarnings("all")
     void testEquals() {
         UserDTO userDTO1 = new UserDTO(0, "username", "test",
                 "test", "test@mail.ru", "test");
@@ -141,7 +142,9 @@ class UserDTOTest {
         user.setPassword("test");
         Assertions.assertEquals("test", user.getPassword());
     }
+
     @Test
+    @SuppressWarnings("all")
     void canEqual() {
         Assertions.assertEquals(true, user.canEqual(user2));
     }

@@ -3,10 +3,7 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.Role;
 import ru.mipt.data.dto.UserDTO;
@@ -43,7 +40,8 @@ class UserServiceTest {
 
         @Override
         public Page<User> findAll(Pageable pageable) {
-            return null;
+            Page<User> page = new PageImpl(new ArrayList());
+            return page;
         }
 
         @Override
@@ -471,10 +469,10 @@ class UserServiceTest {
     }
 
     @Test
-    void checkNotExistUsernameWithDifferentID(){
-        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))){
-            assertTrue(userService.checkNotExistUsernameWithDifferentID("test", 0));}
-        else {
+    void checkNotExistUsernameWithDifferentID() {
+        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))) {
+            assertTrue(userService.checkNotExistUsernameWithDifferentID("test", 0));
+        } else {
             assertFalse(userService.checkNotExistUsernameWithDifferentID("test", 0));
         }
     }
@@ -593,5 +591,12 @@ class UserServiceTest {
         user1.setRoles(roles1);
         userService.updateUserInfo(0, "test1", "test1", "test", "test");
         Assertions.assertEquals(arraylist2.get(0), user);
+    }
+
+    @Test
+    @SuppressWarnings("all")
+    void list() {
+        Page<User> page = new PageImpl(new ArrayList());
+        Assertions.assertEquals(userService.list(Pageable.unpaged()), page);
     }
 }

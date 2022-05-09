@@ -106,6 +106,7 @@ class WorkoutDTOTest {
     }
 
     @Test
+    @SuppressWarnings("all")
     void testEquals() {
         WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         WorkoutDTO workoutDTO1 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
