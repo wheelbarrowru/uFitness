@@ -471,11 +471,11 @@ class UserServiceTest {
     }
 
     @Test
-    void checkNotExistUsernameWithDifferentID() {
-        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))) {
-            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));
-        } else {
-            assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
+    void checkNotExistUsernameWithDifferentID(){
+        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))){
+            assertTrue(userService.checkNotExistUsernameWithDifferentID("test", 0));}
+        else {
+            assertFalse(userService.checkNotExistUsernameWithDifferentID("test", 0));
         }
     }
 
