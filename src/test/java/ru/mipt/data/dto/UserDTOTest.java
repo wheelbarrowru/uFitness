@@ -25,6 +25,8 @@ class UserDTOTest {
         Assertions.assertTrue(userDTO1.equals(userDTO1));
         Assertions.assertFalse(userDTO1.equals(null));
         userDTO2.setId(0);
+        Set<Role> set = new HashSet<>();
+        UserDTO userDTO3 = new UserDTO(0, "username", "test", "test", "test@mail.ru", set, true, "test");
         Assertions.assertTrue(userDTO1.equals(userDTO2));
     }
 
