@@ -140,7 +140,7 @@ public class WorkoutService {
      * @param userId    for search
      * @return set of voted users' id
      */
-    public int getVotedUserId(int workoutId, int userId) {
+    public Integer getVotedUserId(int workoutId, int userId) {
         return workoutRepository.findVotedUserId(workoutId, userId);
     }
 
