@@ -112,7 +112,6 @@ public class WorkoutService {
     @Transactional
     public void updateRating(int workoutId, int userId, String valueString) {
         int value = Integer.parseInt(valueString);
-        System.out.println(value);
         if (value == 0) {
             return;
         }
@@ -141,7 +140,7 @@ public class WorkoutService {
      * @param userId    for search
      * @return set of voted users' id
      */
-    public int getVotedUserId(int workoutId, int userId) {
+    public Integer getVotedUserId(int workoutId, int userId) {
         return workoutRepository.findVotedUserId(workoutId, userId);
     }
 

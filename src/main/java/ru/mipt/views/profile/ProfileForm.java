@@ -127,7 +127,7 @@ public class ProfileForm extends VerticalLayout {
 
         HorizontalLayout buttons = new HorizontalLayout(logout, openDelete);
         buttons.addClassNames("justify-between", "self-end", "mt-xl");
-        buttons.setMinWidth("400px");
+        buttons.setMinWidth("397px");
 
         setHorizontalComponentAlignment(Alignment.CENTER, context);
         setHorizontalComponentAlignment(Alignment.CENTER, save);
@@ -137,6 +137,8 @@ public class ProfileForm extends VerticalLayout {
         header.addClassNames("text-3xl", "m-0");
         if (isMobileDevice()) {
             header.removeClassName("text-3xl");
+            context.setMinWidth("380px");
+            buttons.setMinWidth("377px");
         }
         setHorizontalComponentAlignment(Alignment.CENTER, header);
 

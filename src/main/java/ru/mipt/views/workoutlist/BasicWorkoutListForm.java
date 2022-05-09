@@ -87,6 +87,11 @@ public class BasicWorkoutListForm extends Div implements HasComponents, HasStyle
                 }
         );
 
+        if (isMobileDevice()) {
+            searchButton.setMinWidth("120px");
+            search.setWidthFull();
+        }
+
         add(header, searchLayout, workoutContainer);
     }
 
