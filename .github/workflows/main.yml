@@ -33,7 +33,9 @@ jobs:
         with:
           node-version: '14'
       - name: Build
-        run: ./mvnw clean package -Pproduction
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package -Pproduction
 
 
   test:
