@@ -3,10 +3,7 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.dto.WorkoutDTO;
@@ -166,7 +163,8 @@ class WorkoutServiceTest {
 
         @Override
         public Page<Workout> findAll(Pageable pageable) {
-            return null;
+            Page<Workout> page = new PageImpl(new ArrayList());
+            return page;
         }
 
         @Override
@@ -503,6 +501,7 @@ class WorkoutServiceTest {
     void convertToWorkoutDTOSet() {
         Set<Workout> workout = new HashSet<>();
         Set<WorkoutDTO> workout1 = new HashSet<>();
+        Assertions.assertEquals(WorkoutService.convertToWorkoutDTOSet(workout), workout1);
         Workout workout2 = new Workout();
         workout2.setId(0);
         workout2.setRating(5);
@@ -522,5 +521,12 @@ class WorkoutServiceTest {
         int workoutId = 0;
         int userId = 0;
         Assertions.assertEquals(workoutService.getVotedUserId(workoutId, userId), 0);
+    }
+
+    @Test
+    @SuppressWarnings("all")
+    void list() {
+        Page<Workout> page = new PageImpl(new ArrayList());
+        Assertions.assertEquals(workoutService.list(Pageable.unpaged()), page);
     }
 }

@@ -259,7 +259,7 @@ class UserServiceTest {
 
         @Override
         public User findUserByEmail(String email) {
-            ArrayList<User> array = new ArrayList<User>();
+            ArrayList<User> array = new ArrayList<>();
             User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
@@ -470,20 +470,17 @@ class UserServiceTest {
 
     @Test
     void checkNotExistUsernameWithDifferentID() {
-        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))) {
-            assertTrue(userService.checkNotExistUsernameWithDifferentID("test", 0));
-        } else {
-            assertFalse(userService.checkNotExistUsernameWithDifferentID("test", 0));
-        }
+        assertFalse(userService.checkNotExistUsernameWithDifferentID("username", 45));
+        assertTrue(userService.checkNotExistUsernameWithDifferentID("username2", 340));
+        assertTrue(userService.checkNotExistUsernameWithDifferentID("username", 0));
     }
 
     @Test
     void checkNotExistEmailWithDifferentID() {
-        if ((userService.checkNotExistEmail("test")) | userRepository.findUserById(0).equals(userRepository.findUserByEmail("test"))) {
-            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));
-        } else {
-            assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
-        }
+        assertTrue(userService.checkNotExistEmailWithDifferentID("test2",1));
+        assertFalse(userService.checkNotExistEmailWithDifferentID("test@mail.ru",1));
+        assertTrue(userService.checkNotExistEmailWithDifferentID("test@mail.ru",0));
+
     }
 
     @Test
