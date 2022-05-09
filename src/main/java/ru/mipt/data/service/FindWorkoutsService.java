@@ -61,7 +61,6 @@ public class FindWorkoutsService {
      * @param authorId for search
      * @return set of workoutDTO
      */
-    //TODO test me
     public Set<WorkoutDTO> findWorkoutByAuthorId(int authorId) {
         return WorkoutService.convertToWorkoutDTOSet(workoutRepository.findByAuthorId(authorId));
     }

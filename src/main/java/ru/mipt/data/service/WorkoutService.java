@@ -50,7 +50,6 @@ public class WorkoutService {
      * @param id workout id
      * @return WorkoutDTO
      */
-    //TODO update test
     public WorkoutDTO getDTO(int id) {
         try {
             return convertToWorkoutDTO(get(id).orElseThrow());

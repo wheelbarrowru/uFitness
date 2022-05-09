@@ -2,6 +2,7 @@ package ru.mipt.data.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.mipt.data.dto.UserDTO;
 
 class WorkoutVotedUserTest {
     WorkoutVotedUser workoutVotedUser = new WorkoutVotedUser();
@@ -24,6 +25,11 @@ class WorkoutVotedUserTest {
         workoutVotedUser2.setWorkoutId(workoutVotedUser.getWorkoutId());
         workoutVotedUser2.setId(workoutVotedUser.getId());
         Assertions.assertTrue(workoutVotedUser.equals(workoutVotedUser2));
+        Assertions.assertFalse(workoutVotedUser.equals(null));
+        Assertions.assertFalse(workoutVotedUser.equals(new UserDTO()));
+        workoutVotedUser2.setUserId(1000);
+        Assertions.assertFalse(workoutVotedUser.equals(workoutVotedUser2));
+        Assertions.assertTrue(workoutVotedUser.equals(workoutVotedUser));
     }
 
     @Test

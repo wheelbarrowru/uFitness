@@ -3,10 +3,7 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.Role;
 import ru.mipt.data.dto.UserDTO;
@@ -43,7 +40,8 @@ class UserServiceTest {
 
         @Override
         public Page<User> findAll(Pageable pageable) {
-            return null;
+            Page<User> page = new PageImpl(new ArrayList());
+            return page;
         }
 
         @Override
@@ -261,7 +259,7 @@ class UserServiceTest {
 
         @Override
         public User findUserByEmail(String email) {
-            ArrayList<User> array = new ArrayList<User>();
+            ArrayList<User> array = new ArrayList<>();
             User user = new User();
             user.setEmail("test@mail.ru");
             user.setUsername("username");
@@ -471,21 +469,18 @@ class UserServiceTest {
     }
 
     @Test
-    void checkNotExistUsernameWithDifferentID(){
-        if ((userService.checkNotExistUsername("test")) | userRepository.findUserById(0).equals(userRepository.findByUsername("test"))){
-            assertTrue(userService.checkNotExistUsernameWithDifferentID("test", 0));}
-        else {
-            assertFalse(userService.checkNotExistUsernameWithDifferentID("test", 0));
-        }
+    void checkNotExistUsernameWithDifferentID() {
+        assertFalse(userService.checkNotExistUsernameWithDifferentID("username", 45));
+        assertTrue(userService.checkNotExistUsernameWithDifferentID("username2", 340));
+        assertTrue(userService.checkNotExistUsernameWithDifferentID("username", 0));
     }
 
     @Test
     void checkNotExistEmailWithDifferentID() {
-        if ((userService.checkNotExistEmail("test")) | userRepository.findUserById(0).equals(userRepository.findUserByEmail("test"))) {
-            assertTrue(userService.checkNotExistEmailWithDifferentID("test", 0));
-        } else {
-            assertFalse(userService.checkNotExistEmailWithDifferentID("test", 0));
-        }
+        assertTrue(userService.checkNotExistEmailWithDifferentID("test2",1));
+        assertFalse(userService.checkNotExistEmailWithDifferentID("test@mail.ru",1));
+        assertTrue(userService.checkNotExistEmailWithDifferentID("test@mail.ru",0));
+
     }
 
     @Test
@@ -593,5 +588,12 @@ class UserServiceTest {
         user1.setRoles(roles1);
         userService.updateUserInfo(0, "test1", "test1", "test", "test");
         Assertions.assertEquals(arraylist2.get(0), user);
+    }
+
+    @Test
+    @SuppressWarnings("all")
+    void list() {
+        Page<User> page = new PageImpl(new ArrayList());
+        Assertions.assertEquals(userService.list(Pageable.unpaged()), page);
     }
 }

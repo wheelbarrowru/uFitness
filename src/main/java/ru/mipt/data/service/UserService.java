@@ -104,7 +104,6 @@ public class UserService {
      * @return boolean
      * @see UserRepository#findByUsername(String)
      */
-    //TODO test me
     public boolean checkNotExistUsernameWithDifferentID(String username, int userId) {
         return checkNotExistUsername(username) || userRepository.findUserById(userId).equals(userRepository.findByUsername(username));
     }
@@ -128,7 +127,6 @@ public class UserService {
      * @return boolean
      * @see UserRepository#findUserByEmail(String)
      */
-    //TODO test me
     public boolean checkNotExistEmailWithDifferentID(String email, int userID) {
         return checkNotExistEmail(email) || userRepository.findUserById(userID).equals(userRepository.findUserByEmail(email));
     }
