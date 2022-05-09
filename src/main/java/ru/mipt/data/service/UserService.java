@@ -195,8 +195,6 @@ public class UserService {
         return convertToUserDTO(get(id).orElse(new User()));
     }
 
-    //TODO test me
-
     /**
      * Get set of workoutDTOs of favorite workouts
      *
@@ -209,7 +207,6 @@ public class UserService {
                 user.getFavoriteWorkouts()
         );
     }
-//TODO test me
 
     /**
      * Add favorite workout
@@ -221,7 +218,6 @@ public class UserService {
     public void addFavoriteWorkout(int userId, int workoutId) {
         userRepository.addFavoriteWorkouts(userId, workoutId);
     }
-//TODO test me
 
     /**
      * Remove workout from favorites
@@ -233,7 +229,6 @@ public class UserService {
     public void removeFavoriteWorkouts(int userId, int workoutId) {
         userRepository.removeFavoriteWorkouts(userId, workoutId);
     }
-    //TODO test me
 
     /**
      * Check if user added workout as favorite
@@ -262,7 +257,6 @@ public class UserService {
      * @param lastName  new value
      * @param email     new value
      */
-    //TODO test me
     @Transactional
     public void updateUserInfo(int userId, String username, String firstname, String lastName, String email) {
         userRepository.updateUserInfo(userId, username, firstname, lastName, email);

@@ -3,7 +3,6 @@ package ru.mipt.data.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.data.repository.query.FluentQuery;
 import ru.mipt.data.dto.TagsDTO;
 import ru.mipt.data.dto.WorkoutDTO;
 import ru.mipt.data.model.Tags;
-import ru.mipt.data.model.User;
 import ru.mipt.data.model.Workout;
 import ru.mipt.data.repository.TagsRepository;
 import ru.mipt.data.repository.WorkoutRepository;
@@ -21,12 +19,60 @@ import java.util.*;
 import java.util.function.Function;
 
 class WorkoutServiceTest {
-    public ArrayList<Optional<Workout>> arraylist = new ArrayList<Optional<Workout>>();
+    public ArrayList<Optional<Workout>> arraylist = new ArrayList<>();
+    public ArrayList<Optional<Workout>> arraylist1 = new ArrayList<>();
+
+    {
+        Workout workout = new Workout();
+        workout.setId(0);
+        workout.setRating(5);
+        workout.setDescription("test");
+        workout.setTitle("test");
+        workout.setAuthorId(0);
+        HashSet<Tags> hashSet1 = new HashSet<>();
+        workout.setWorkoutTags(hashSet1);
+        Workout workout1 = new Workout();
+        workout1.setId(1);
+        workout1.setRating(5);
+        workout1.setDescription("test");
+        workout1.setTitle("test");
+        workout1.setAuthorId(0);
+        workout1.setCountVote(1);
+        workout1.setWorkoutTags(hashSet1);
+        Workout workout2 = new Workout();
+        workout2.setId(2);
+        workout2.setRating(5);
+        workout2.setDescription("test");
+        workout2.setTitle("test");
+        workout2.setAuthorId(0);
+        workout2.setCountVote(2);
+        workout2.setWorkoutTags(hashSet1);
+        Workout workout3 = new Workout();
+        workout3.setId(3);
+        workout3.setRating(5);
+        workout3.setDescription("test");
+        workout3.setTitle("test");
+        workout3.setAuthorId(0);
+        workout3.setCountVote(1);
+        workout3.setWorkoutTags(hashSet1);
+        arraylist.add(Optional.of(workout));
+        arraylist.add(Optional.of(workout1));
+        arraylist.add(Optional.of(workout2));
+        arraylist.add(Optional.of(workout3));
+    }
+
     @InjectMocks
+    @SuppressWarnings({"all"})
     private WorkoutRepository workoutRepository = new WorkoutRepository() {
         @Override
         public void updateRatingAndCount(int id, double rating, int count) {
-
+            for (Optional<Workout> workout : arraylist) {
+                System.out.println(workout);
+                if (workout.get().getId() == id) {
+                    workout.get().setRating(rating);
+                    workout.get().setCountVote(count);
+                }
+            }
         }
 
         @Override
@@ -41,7 +87,6 @@ class WorkoutServiceTest {
 
         @Override
         public void addVotedUsersId(int workoutId, int userId, int userVote) {
-
         }
 
         @Override
@@ -132,15 +177,12 @@ class WorkoutServiceTest {
 
         @Override
         public Optional<Workout> findById(Integer integer) {
-            Workout workout = new Workout();
-            workout.setId(0);
-            workout.setRating(5);
-            workout.setDescription("test");
-            workout.setAuthorId(0);
-            workout.setTitle("test");
-            HashSet<Tags> hashSet = new HashSet<>();
-            workout.setWorkoutTags(hashSet);
-            return integer == 0 ? Optional.of(workout) : Optional.empty();
+            for (Optional<Workout> workout : arraylist) {
+                if (workout.get().getId() == integer) {
+                    return integer <= 4 ? workout : Optional.empty();
+                }
+            }
+            return Optional.empty();
         }
 
         @Override
@@ -155,8 +197,7 @@ class WorkoutServiceTest {
 
         @Override
         public void deleteById(Integer integer) {
-            arraylist.add(workoutRepository.findById(0));
-            arraylist.remove(workoutRepository.findById(integer));
+            arraylist1.remove(workoutRepository.findById(integer));
 
         }
 
@@ -205,8 +246,8 @@ class WorkoutServiceTest {
             return null;
         }
     };
-    @Autowired
-    private WorkoutService workoutService = new WorkoutService(workoutRepository);
+
+    private final WorkoutService workoutService = new WorkoutService(workoutRepository);
 
 
     @Test
@@ -224,8 +265,7 @@ class WorkoutServiceTest {
 
     @Test
     void getDTO() {
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5,0,  new HashSet<TagsDTO>());
-        WorkoutDTO workout = new WorkoutDTO();
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(workoutService.getDTO(0), workoutDTO);
         Assertions.assertNull(workoutService.getDTO(222));
     }
@@ -240,15 +280,16 @@ class WorkoutServiceTest {
         workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(workout, workoutService.update(workoutDTO));
     }
 
     @Test
     void delete() {
-        workoutRepository.deleteById(0);
-        ArrayList<User> ArrayList = new ArrayList<User>();
-        Assertions.assertEquals(ArrayList, arraylist);
+        arraylist1.add(workoutRepository.findById(0));
+        workoutService.delete(0);
+        ArrayList<Optional<Workout>> arrayList = new ArrayList<>();
+        Assertions.assertEquals(arrayList, arraylist1);
     }
 
     @Test
@@ -256,23 +297,15 @@ class WorkoutServiceTest {
         Assertions.assertEquals(0, workoutService.count());
     }
 
-    //TODO update
+
     @Test
     void updateRating() {
-        int value = Integer.parseInt("5");
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0,  new HashSet<TagsDTO>());
-        Workout workout = new Workout();
-        workout.setId(0);
-        workout.setRating(5);
-        workout.setAuthorId(0);
-        workout.setDescription("test");
-        workout.setTitle("test");
-        HashSet<Tags> hashSet = new HashSet<>();
-        workout.setWorkoutTags(hashSet);
-        int count = workout.getCountVote();
-        workoutRepository.updateRatingAndCount(workoutDTO.getId(), (double) Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, count + 1);
-        Assertions.assertEquals(Math.round(100 * (workout.getRating() * count + value) / (count + 1)) / 100, workoutDTO.getRating());
-
+        workoutService.updateRating(1, 0, "3");
+        Assertions.assertEquals(workoutRepository.findById(1).orElseThrow().getRating(), 4);
+        workoutService.updateRating(2, 0, "-5");
+        Assertions.assertEquals(workoutRepository.findById(2).orElseThrow().getRating(), 5);
+        workoutService.updateRating(3, 0, "-5");
+        Assertions.assertEquals(workoutRepository.findById(3).orElseThrow().getRating(), 0);
 
     }
 
@@ -286,11 +319,12 @@ class WorkoutServiceTest {
         workout.setAuthorId(0);
         HashSet<Tags> hashSet = new HashSet<>();
         workout.setWorkoutTags(hashSet);
-        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTO(workout), workoutDTO);
     }
 
     @InjectMocks
+    @SuppressWarnings({"all"})
     private TagsRepository tagsRepository = new TagsRepository() {
         @Override
         public Tags findByMessage(String message) {
@@ -447,8 +481,9 @@ class WorkoutServiceTest {
             return null;
         }
     };
-    @Autowired
-    private TagsService tagsService = new TagsService(tagsRepository);
+
+    @SuppressWarnings("unused")
+    private final TagsService tagsService = new TagsService(tagsRepository);
 
     @Test
     void convertToTagsSet() {
@@ -457,14 +492,15 @@ class WorkoutServiceTest {
         Tags tags = new Tags();
         tags.setId(0);
         tags.setMessage("test");
-        HashSet<Workout> hashset = new HashSet<Workout>();
+        HashSet<Workout> hashset = new HashSet<>();
         tags.setWorkouts(hashset);
         tagsDTO.add(TagsService.convertToTagsDTO(tags));
         tags1.add(tags);
         Assertions.assertEquals(WorkoutService.convertToTagsSet(tagsDTO), tags1);
     }
+
     @Test
-    void convertToWorkoutDTOSet(){
+    void convertToWorkoutDTOSet() {
         Set<Workout> workout = new HashSet<>();
         Set<WorkoutDTO> workout1 = new HashSet<>();
         Workout workout2 = new Workout();
@@ -476,13 +512,13 @@ class WorkoutServiceTest {
         HashSet<Tags> hashSet = new HashSet<>();
         workout2.setWorkoutTags(hashSet);
         workout.add(workout2);
-        WorkoutDTO workout3 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<TagsDTO>());
+        WorkoutDTO workout3 = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
         workout1.add(workout3);
         Assertions.assertEquals(WorkoutService.convertToWorkoutDTOSet(workout), workout1);
     }
 
     @Test
-    void getVotedUserId(){
+    void getVotedUserId() {
         int workoutId = 0;
         int userId = 0;
         Assertions.assertEquals(workoutService.getVotedUserId(workoutId, userId), 0);
