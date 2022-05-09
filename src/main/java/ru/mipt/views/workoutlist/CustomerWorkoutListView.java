@@ -20,7 +20,6 @@ import ru.mipt.security.AuthenticatedUser;
 import javax.annotation.security.RolesAllowed;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-//FIXME
 
 /**
  * The view that holds the customer-workouts-page form
