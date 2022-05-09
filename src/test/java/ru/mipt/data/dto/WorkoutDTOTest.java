@@ -10,6 +10,12 @@ class WorkoutDTOTest {
     @Test
     void compareTo() {
         WorkoutDTO workoutDTO = new WorkoutDTO(0, "test", "test", 5, 0, new HashSet<>());
+        workoutDTO.setTitle("test");
+        workoutDTO.setDescription("test");
+        workoutDTO.setId(0);
+        workoutDTO.setRating(5);
+        workoutDTO.setWorkoutTags(new HashSet<>());
+        workoutDTO.setAuthorId(0);
         WorkoutDTO workoutDTO1 = new WorkoutDTO(1, "test1", "test1", 3, 0, new HashSet<>());
         WorkoutDTO workoutDTO2 = new WorkoutDTO(0, "test", "test", 4, 0, new HashSet<>());
         WorkoutDTO workoutDTO3 = new WorkoutDTO(0, "test1", "test1", 5, 0, new HashSet<>());
