@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: |
           chmod +x mvnw
-          ./mvnw clean package -Pproduction
+          ./mvnw clean package -Pproduction -DskipTests
 
 
   test:
